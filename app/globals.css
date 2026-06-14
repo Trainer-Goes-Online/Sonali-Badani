@@ -1,0 +1,373 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ──────────────────────────────────────────────────────────────────────
+ * Brand body font — Gangjiem Regular.
+ * Drop Gangjiem-Regular.woff2 into /public/fonts to activate it. Until then
+ * the stack falls back to the humanist sans loaded via next/font (--font-sans),
+ * so the site renders correctly with or without the licensed file.
+ * ─────────────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Gangjiem';
+  src: url('/fonts/Gangjiem-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --navy: #203f5c;
+    --coral: #f59075;
+    /* Decisive ease-out curves (no bounce/elastic) */
+    --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    /* Warm coral glow used for the "neon" accents */
+    --glow-coral: 0 0 24px rgba(245, 144, 117, 0.45);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* `clip` (not `hidden`) prevents horizontal scroll WITHOUT creating a
+       scroll container, so `position: sticky` keeps working (bonus stack). */
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000000;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  /* Display headlines use the serif; never used for body copy. */
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif), Georgia, 'Times New Roman', serif;
+    color: var(--navy);
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+  }
+
+  p, li, blockquote {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--coral);
+    color: var(--navy);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--navy);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Reading column + wide container */
+  .container-page {
+    @apply mx-auto w-full max-w-wide px-5 sm:px-7 lg:px-8;
+  }
+  .container-reading {
+    @apply mx-auto w-full max-w-reading px-5 sm:px-7;
+  }
+
+  /* Small uppercase eyebrow label */
+  .eyebrow {
+    @apply inline-block text-[12px] font-semibold uppercase tracking-[0.22em] text-coral;
+  }
+
+  /* Primary CTA — coral fill, navy text (the only accessible pairing for coral) */
+  .btn-primary {
+    @apply inline-flex min-h-[56px] items-center justify-center gap-2 whitespace-nowrap rounded-pill
+           bg-coral px-6 py-4 text-center font-body text-[15px] font-bold text-navy
+           shadow-cta transition-all duration-200
+           hover:-translate-y-0.5 hover:bg-coral-dark
+           active:translate-y-0
+           focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-coral/40
+           sm:px-8 sm:text-[16px];
+  }
+
+  /* Secondary — navy outline */
+  .btn-ghost {
+    @apply inline-flex min-h-[52px] items-center justify-center gap-2 rounded-pill
+           border border-navy/25 bg-white px-7 py-3.5 font-body text-[15px] font-semibold
+           text-navy transition-colors duration-200 hover:border-navy hover:bg-navy hover:text-white
+           focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/20;
+  }
+
+  /* Coral keyword highlight inside running text, with a soft warm glow. */
+  .hl {
+    @apply text-coral;
+    text-shadow: 0 0 22px rgba(245, 144, 117, 0.28);
+  }
+
+  /* Highlighter-marker emphasis: navy text over a swept coral underlay.
+     Wraps cleanly across lines. Drawn by default; when wrapped in a not-yet
+     revealed section it starts empty and sweeps in as the section reveals. */
+  .mark {
+    color: var(--navy);
+    background-image: linear-gradient(180deg, transparent 54%, rgba(245, 144, 117, 0.45) 54%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding: 0 0.06em;
+    border-radius: 2px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    transition: background-size 0.9s var(--ease-out-expo) 0.15s;
+  }
+  .reveal:not(.is-visible) .mark {
+    background-size: 0% 100%;
+  }
+
+  /* Glowing icon chip */
+  .glow-chip {
+    box-shadow: 0 0 0 1px rgba(245, 144, 117, 0.22), 0 10px 26px -10px rgba(245, 144, 117, 0.55);
+  }
+
+  /* Hairline section divider (tint of navy, no new neutral) */
+  .rule {
+    @apply mx-auto h-px w-full max-w-reading border-0 bg-navy/[0.12];
+  }
+
+  /* Very light warm tint for alternating sections and warm cards. A faint coral
+     tint over white reads warm while staying inside the locked palette (no new
+     colour). Used to give the page its white/warm section rhythm. */
+  .bg-warm {
+    background-color: #fbf6f4;
+  }
+
+  /* Lede / supporting paragraph */
+  .lede {
+    @apply font-body text-[17px] leading-relaxed text-navy/85 sm:text-[18px];
+  }
+
+  /* Checklist item with coral check */
+  .check-item {
+    @apply flex items-start gap-3 font-body text-[16px] leading-relaxed text-navy/90 sm:text-[17px];
+  }
+
+  /* Legal prose — restores native heading/list rendering inside .legal */
+  .legal h2 {
+    @apply mt-9 font-serif text-[20px] text-navy sm:text-[22px];
+  }
+  .legal p {
+    @apply mt-3;
+  }
+  .legal ul {
+    @apply mt-3 list-disc space-y-1.5 pl-5 marker:text-coral;
+  }
+  .legal a {
+    @apply font-semibold text-coral-dark underline underline-offset-2;
+  }
+  .legal strong {
+    @apply font-semibold text-navy;
+  }
+}
+
+/* ── Primary CTA: breathing pulse + left-to-right shine sweep + neon glow ──── */
+@keyframes cta-pulse {
+  0% {
+    transform: scale(0.97);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  /* Living coral gradient that gently pans, plus a slow breathing pulse. */
+  background: linear-gradient(120deg, #e5795c 0%, #f59075 50%, #e5795c 100%);
+  background-size: 200% 100%;
+  animation: cta-pulse 1.6s ease-in-out infinite alternate, gradient-pan 6s ease-in-out infinite;
+}
+@keyframes gradient-pan {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+/* The sheen that sweeps across on hover. */
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    100deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 75%
+  );
+  transform: translateX(-130%);
+  pointer-events: none;
+}
+.btn-primary:hover::after {
+  transform: translateX(130%);
+  transition: transform 0.85s var(--ease-out-quart);
+}
+.btn-primary:hover {
+  box-shadow: 0 18px 48px -12px rgba(245, 144, 117, 0.8), 0 0 22px rgba(245, 144, 117, 0.5);
+}
+/* Tactile press feedback. Uses `filter` (not transform) so it never fights the
+   breathing pulse animation, which owns the transform property. */
+.btn-primary:active {
+  filter: brightness(0.95);
+}
+
+/* ── Scroll-reveal (CSS + IntersectionObserver) with directional variants ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.85s var(--ease-out-expo), transform 0.85s var(--ease-out-expo),
+    filter 0.85s var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+.reveal--left {
+  transform: translateX(-30px);
+}
+.reveal--right {
+  transform: translateX(30px);
+}
+.reveal--scale {
+  transform: scale(0.93);
+}
+.reveal--blur {
+  filter: blur(10px);
+  transform: translateY(26px);
+}
+
+/* ── Brand sparkle (4-point star) twinkle + slow float ─────────────────────── */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.twinkle {
+  animation: twinkle 3.4s ease-in-out infinite;
+}
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+.drift {
+  animation: drift 7s ease-in-out infinite;
+}
+
+/* Pulsing neon ring behind the hero portrait / seals */
+@keyframes halo {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+.halo {
+  animation: halo 5.5s ease-in-out infinite;
+}
+
+/* Infinite testimonial marquee (mobile). Two copies of the track translate
+   -50% so the loop is seamless. No pause on hover, by request. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 34s linear infinite;
+}
+
+/* ── Success confirmation mark (thank-you / welcome) ───────────────────────── */
+@keyframes success-pop {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes success-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.success-mark {
+  animation: success-pop 0.5s var(--ease-out-expo) both;
+}
+.success-mark__tick {
+  /* Path length of "M4 12.5l5 5 11-11" is ~22.6; 24 fully hides it before draw. */
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: success-draw 0.5s var(--ease-out-expo) 0.22s forwards;
+}
+
+/* Top scroll-progress bar (width driven by JS via scaleX) */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--coral), #e5795c);
+  box-shadow: 0 0 12px rgba(245, 144, 117, 0.7);
+  z-index: 60;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  .mark {
+    background-size: 100% 100%;
+  }
+}
