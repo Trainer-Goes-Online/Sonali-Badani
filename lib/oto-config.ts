@@ -25,6 +25,22 @@ export const OTO_CONFIG = {
     product: '/Section-Images/section-image9.png',
     addon: '/Solani Bonuses/visualization.jpeg',
   },
+  /**
+   * Prefill the TagMango checkout from the OTO form so the buyer does not retype.
+   * `keys` are the query-param names TagMango's checkout reads. These are a best
+   * guess — VERIFY against a real TagMango checkout and adjust here if the fields
+   * do not populate (only this block needs changing).
+   */
+  prefill: {
+    enabled: true,
+    keys: {
+      name: 'name',
+      email: 'email',
+      phone: 'phone',
+      countryCode: 'country_code',
+      city: 'city',
+    },
+  },
 } as const;
 
 export function otoTotalRupees(withAddon: boolean) {

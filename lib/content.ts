@@ -335,6 +335,14 @@ export const OTO = {
     addLabel: 'Yes, add the Love Legacy Visualization for ₹199',
     addedLabel: 'Added. You will begin from calm tonight.',
   },
+  form: {
+    heading: 'Your details',
+    note: 'We will prefill these at checkout, so you will not have to type them again.',
+    name: 'Full name',
+    email: 'Email address',
+    phone: 'Phone number',
+    city: 'Town / City',
+  },
   cta: {
     withAddon: 'Continue with the Visualization',
     productOnly: 'Continue with the Reset only',

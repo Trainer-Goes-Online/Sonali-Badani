@@ -24,7 +24,7 @@ export default function Footer() {
 
         <nav
           aria-label="Legal"
-          className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[14px] font-medium text-white"
+          className="mt-7 flex flex-nowrap items-center justify-center gap-x-2.5 whitespace-nowrap text-[12px] font-medium text-white sm:gap-x-5 sm:text-[14px]"
         >
           <Link href="/privacy-policy" className="transition-colors hover:text-coral">
             Privacy Policy
