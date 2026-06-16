@@ -1,6 +1,7 @@
 import Footer from '@/components/Footer';
 import StickyMobileCTA from '@/components/StickyMobileCTA';
 import ScrollProgress from '@/components/ui/ScrollProgress';
+import FunnelTracker from '@/components/FunnelTracker';
 
 import Hero from '@/components/sections/Hero';
 import SoundLikeYou from '@/components/sections/SoundLikeYou';
@@ -23,6 +24,7 @@ import { SHOW_WHO_FOR } from '@/lib/flags';
 export default function HomePage() {
   return (
     <>
+      <FunnelTracker />
       <ScrollProgress />
       <main className="pb-20 md:pb-0">
         <Hero />              {/* 1 · Hero (closes with the brand crescendo) */}

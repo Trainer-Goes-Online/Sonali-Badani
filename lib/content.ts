@@ -297,6 +297,56 @@ export const CLOSE_PRICE =
 export const CLOSE_SCARCITY =
   'Founding price. The first 100 women join at ₹497. After that it rises to ₹997 and stays there.';
 
+// OTO · one-time offer page (main product + addon, two redirect paths)
+export const OTO = {
+  eyebrow: 'Your offer',
+  heading: 'One decision before you begin',
+  sub: 'Everything you need to start the One Partner Reset tonight. Before you go in, add the one thing most women say they wish they had from the very first evening.',
+  product: {
+    badge: 'Your core experience',
+    name: 'The One Partner Reset',
+    tagline: 'See the pattern. Feel the first shift. Begin tonight.',
+    includes: [
+      'The 45-minute One Partner Reset Experience',
+      'The One Partner Blueprint, with a simple 30-day path',
+      'The Hidden Needs Discovery Workbook',
+      'The Conscious Response Playbook',
+      'The Relationship Emergency Reset',
+      'Five named bonuses, plus your private 15-minute call with Sonali',
+    ],
+    includesShort:
+      'The full 45-minute experience, the Blueprint, three guided tools, five bonuses, plus your private 15-minute call with Sonali.',
+    priceLabel: '₹497',
+    priceNote: 'one time',
+    valueLabel: '₹12,500',
+  },
+  addon: {
+    badge: 'The perfect companion',
+    flag: 'Most women add this',
+    name: 'The Love Legacy Visualization',
+    tagline: 'A short guided meditation for your first moment of calm, before you open a single module.',
+    body: 'Most women start the One Partner Reset the same night they buy it. Add the Love Legacy Visualization and give yourself the first moment of calm before you begin. A lot of women say it is the first time in months their shoulders actually dropped.',
+    points: [
+      'Listen with your eyes closed, in under 10 minutes',
+      'Settle the noise before you open a single module',
+      'Begin from calm, not from the day you have just had',
+    ],
+    priceLabel: '₹199',
+    addLabel: 'Yes, add the Love Legacy Visualization for ₹199',
+    addedLabel: 'Added. You will begin from calm tonight.',
+  },
+  cta: {
+    withAddon: 'Continue with the Visualization',
+    productOnly: 'Continue with the Reset only',
+  },
+  declineLabel: 'No thanks, I will begin without the Visualization',
+  reassurance: [
+    'Secure checkout. Your details are safe.',
+    'A 14-day money-back guarantee. If it does not help, you get every rupee back.',
+    'Instant access the moment you complete your order.',
+  ],
+};
+
 // Checkout · order bump
 export const CHECKOUT = {
   bumpHeading: 'One thing before you go in',

@@ -7,6 +7,7 @@ import Reveal from '@/components/ui/Reveal';
 import Checklist from '@/components/ui/Checklist';
 import CalendlyEmbed from '@/components/CalendlyEmbed';
 import SuccessMark from '@/components/ui/SuccessMark';
+import FunnelWebhook from '@/components/welcome/FunnelWebhook';
 
 export const metadata: Metadata = {
   title: 'Book Your 15 Minutes With Sonali | The One Partner Reset',
@@ -23,6 +24,7 @@ const CALL_COVERS = [
 export default function WelcomePage() {
   return (
     <>
+      <FunnelWebhook />
       <header className="border-b border-navy/10">
         <div className="container-page flex h-16 items-center justify-center">
           <Logo height={42} />
