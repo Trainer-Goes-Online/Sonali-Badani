@@ -1,7 +1,11 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { CHECKOUT_FIELDS, FUNNEL_STORAGE_KEY, type FunnelLeadData } from '@/lib/tracking';
+import { FUNNEL_STORAGE_KEY, type FunnelLeadData } from '@/lib/tracking';
+
+/** Treat an unresolved merge tag (e.g. literal "{{email}}") as empty. */
+const cleanParam = (value: string | null) =>
+  value && !/^\{\{.*\}\}$/.test(value) ? value : '';
 
 const PABBLY_WEBHOOK_URL = process.env.NEXT_PUBLIC_PABBLY_WEBHOOK_URL;
 
@@ -36,28 +40,13 @@ export default function FunnelWebhook() {
 
     const params = new URLSearchParams(window.location.search);
 
-    // Contact details are entered at the TagMango checkout, so the values it
-    // appends to the redirect override anything cached on the landing page.
-    // Only present params override, so a missing one never blanks the cache.
-    const checkout = Object.fromEntries(
-      CHECKOUT_FIELDS.map((field) => [field, params.get(field)] as const).filter(
-        ([, value]) => value !== null
-      )
-    );
-
-    // TagMango supplies a single full name; split it into the first/last fields
-    // the payload expects (first token = first name, remainder = last name).
-    const fullName = (params.get('name') ?? '').trim();
-    const [firstName = '', ...lastNameParts] = fullName.split(/\s+/).filter(Boolean);
-    const nameParts = fullName
-      ? { first_name: firstName, last_name: lastNameParts.join(' ') }
-      : {};
-
+    // Contact details were captured on the OTO page and already live in `lead`.
+    // TagMango's redirect only supplies the transaction identifiers, so we just
+    // append those here.
     const payload = {
       ...lead,
-      ...checkout,
-      ...nameParts,
-      order_id: params.get('order_id') ?? '',
+      order_id: cleanParam(params.get('order_id')),
+      razorpay_payment_id: cleanParam(params.get('razorpay_payment_id')),
     };
 
     const restoreForRetry = () => {

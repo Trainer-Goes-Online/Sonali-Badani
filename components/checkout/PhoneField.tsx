@@ -19,10 +19,13 @@ type Item = { code: CountryCode; name: string; calling: string };
  */
 export default function PhoneField({
   onChange,
+  onParts,
   error,
   defaultCountry = 'IN' as CountryCode,
 }: {
-  onChange: (e164: string | undefined) => void;
+  onChange?: (e164: string | undefined) => void;
+  /** Emits the dial code and national number separately (e.g. "+91" and "90..."). */
+  onParts?: (parts: { country: CountryCode; dialCode: string; national: string; e164?: string }) => void;
   error?: boolean;
   defaultCountry?: CountryCode;
 }) {
@@ -58,7 +61,10 @@ export default function PhoneField({
 
   const emit = (c: CountryCode, n: string) => {
     const digits = n.replace(/\D/g, '');
-    onChange(digits ? `+${getCountryCallingCode(c)}${digits}` : undefined);
+    const dialCode = `+${getCountryCallingCode(c)}`;
+    const e164 = digits ? `${dialCode}${digits}` : undefined;
+    onChange?.(e164);
+    onParts?.({ country: c, dialCode, national: digits, e164 });
   };
 
   const onNational = (raw: string) => {
