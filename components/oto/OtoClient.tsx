@@ -40,6 +40,7 @@ export default function OtoClient() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [dialCode, setDialCode] = useState('+91'); // default India
+  const [countryIso, setCountryIso] = useState('IN'); // ISO code for Meta's "Country"
   const [phoneNational, setPhoneNational] = useState('');
   const [city, setCity] = useState('');
   const [errors, setErrors] = useState<ContactErrors>({});
@@ -70,15 +71,25 @@ export default function OtoClient() {
     }
     const base = Object.fromEntries(TRACKING_FIELDS.map((f) => [f, ''])) as Record<string, string>;
     const { first_name, last_name } = splitName(name);
+    const normalizedEmail = email.trim().toLowerCase();
     const merged = {
       ...base,
       ...existing,
       first_name,
       last_name,
       email: email.trim(),
+      // external_id is derived from the email (normalised), so it is created the
+      // moment the buyer enters their email here and ships with the payload.
+      external_id: normalizedEmail,
       country_code: dialCode,
+      // ISO country (e.g. "in") for Meta's "Country" parameter; country_code
+      // keeps the dial code (+91) for nurturing / the phone number.
+      country: countryIso.toLowerCase(),
       phone: phoneNational.replace(/\D/g, ''),
       city: city.trim(),
+      // Amount tracks the live selection (re-written on every Continue, so it
+      // updates if the buyer returns and adds/removes the companion).
+      amount: String(total),
     };
     localStorage.setItem(FUNNEL_STORAGE_KEY, JSON.stringify(merged));
   };
@@ -225,6 +236,7 @@ export default function OtoClient() {
               error={!!errors.phone}
               onParts={(p) => {
                 setDialCode(p.dialCode);
+                setCountryIso(p.country);
                 setPhoneNational(p.national);
                 clearError('phone');
               }}

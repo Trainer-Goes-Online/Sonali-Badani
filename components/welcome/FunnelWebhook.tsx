@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { FUNNEL_STORAGE_KEY, type FunnelLeadData } from '@/lib/tracking';
+import { buildHashedFields } from '@/lib/meta-capi';
 
 /** Treat an unresolved merge tag (e.g. literal "{{email}}") as empty. */
 const cleanParam = (value: string | null) =>
@@ -39,32 +40,39 @@ export default function FunnelWebhook() {
     }
 
     const params = new URLSearchParams(window.location.search);
-
-    // Contact details were captured on the OTO page and already live in `lead`.
-    // TagMango's redirect only supplies the transaction identifiers, so we just
-    // append those here.
-    const payload = {
-      ...lead,
-      order_id: cleanParam(params.get('order_id')),
-      razorpay_payment_id: cleanParam(params.get('razorpay_payment_id')),
-    };
+    const orderId = cleanParam(params.get('order_id'));
+    const paymentId = cleanParam(params.get('razorpay_payment_id'));
 
     const restoreForRetry = () => {
       hasFired.current = false;
       localStorage.setItem(FUNNEL_STORAGE_KEY, raw);
     };
 
-    fetch(PABBLY_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-      keepalive: true,
-    })
-      .then((res) => {
+    (async () => {
+      try {
+        // Contact details were captured on the OTO page and already live in
+        // `lead` (raw, for nurturing/manual use). Add the SHA-256 versions of
+        // Meta's hashed parameters and the transaction ids from the redirect.
+        const hashed = await buildHashedFields(lead as Record<string, string>);
+        const payload = {
+          ...lead,
+          ...hashed,
+          order_id: orderId,
+          razorpay_payment_id: paymentId,
+        };
+
+        const res = await fetch(PABBLY_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          keepalive: true,
+        });
         // Clean up only on a successful response; otherwise keep it for a retry.
         if (!res.ok) restoreForRetry();
-      })
-      .catch(restoreForRetry);
+      } catch {
+        restoreForRetry();
+      }
+    })();
   }, []);
 
   return null;
