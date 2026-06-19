@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import AccessButton from './AccessButton';
+import { COURSE_PRICE_LABEL } from '@/lib/pricing';
 
 /**
  * Mobile-only sticky checkout bar (a footer bar, not a header). Navy with the
@@ -39,7 +40,7 @@ export default function StickyMobileCTA() {
           </p>
           <p className="mt-0.5 font-body text-white">
             <span className="text-[12px] text-white/40 line-through">₹997</span>{' '}
-            <span className="text-[19px] font-bold">₹497</span>
+            <span className="text-[19px] font-bold">{COURSE_PRICE_LABEL}</span>
           </p>
           <p className="font-body text-[10px] text-white/45">14-day money-back guarantee</p>
         </div>

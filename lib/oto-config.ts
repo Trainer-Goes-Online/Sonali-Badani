@@ -8,6 +8,8 @@
  *
  * ▼▼▼  REPLACE THE TWO PLACEHOLDER URLS BELOW WITH YOUR REAL LINKS  ▼▼▼
  */
+import { COURSE_PRICE_RUPEES, VISUALIZATION_PRICE_RUPEES } from './pricing';
+
 export const OTO_CONFIG = {
   links: {
     /** link 1 — buyer chose the main product only. */
@@ -18,8 +20,8 @@ export const OTO_CONFIG = {
   /** Add-on is pre-selected so the recommended path is product + add-on. */
   addonDefaultSelected: true,
   pricing: {
-    productRupees: 497,
-    addonRupees: 199,
+    productRupees: COURSE_PRICE_RUPEES,
+    addonRupees: VISUALIZATION_PRICE_RUPEES,
   },
   images: {
     product: '/Section-Images/section-image9.png',

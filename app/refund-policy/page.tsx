@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import LegalPageLayout from '@/components/LegalPageLayout';
+import { COURSE_PRICE_LABEL } from '@/lib/pricing';
 
 export const metadata: Metadata = {
   title: 'Refund Policy | Sonali Badani',
@@ -12,7 +13,7 @@ export default function RefundPolicyPage() {
       <h2>14-Day Money Back Guarantee</h2>
       <p>
         Go through everything. Do the work. Sit on your call. If within 14 days of purchase you feel
-        it wasn&rsquo;t right for you, simply email us and we&rsquo;ll refund your ₹497 in full.
+        it wasn&rsquo;t right for you, simply email us and we&rsquo;ll refund your {COURSE_PRICE_LABEL} in full.
       </p>
 
       <h2>How to request a refund</h2>

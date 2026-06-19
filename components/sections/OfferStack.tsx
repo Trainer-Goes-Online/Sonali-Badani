@@ -7,6 +7,7 @@ import Sparkle from '@/components/ui/Sparkle';
 import AccessButton from '@/components/AccessButton';
 import { Check, Gift } from 'lucide-react';
 import { OFFER_CORE, OFFER_BONUSES, OFFER_INCLUDED, VALUE_STACK } from '@/lib/content';
+import { COURSE_PRICE_LABEL } from '@/lib/pricing';
 import { OFFER_VARIANT } from '@/lib/flags';
 
 // Numeric value behind the displayed "₹12,500" total, for the count-up.
@@ -204,7 +205,7 @@ export default function OfferStack() {
         )}
 
         <Reveal className="mt-9 flex flex-col items-center gap-3">
-          <AccessButton label="Get Instant Access · ₹497 one time" className="w-full sm:w-auto" />
+          <AccessButton label={`Get Instant Access · ${COURSE_PRICE_LABEL} one time`} className="w-full sm:w-auto" />
           <p className="font-body text-[13.5px] text-navy/60">14-day money-back guarantee.</p>
         </Reveal>
       </div>

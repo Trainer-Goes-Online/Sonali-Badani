@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import LegalPageLayout from '@/components/LegalPageLayout';
+import { COURSE_PRICE_LABEL } from '@/lib/pricing';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions | Sonali Badani',
@@ -18,7 +19,7 @@ export default function TermsPage() {
       <p>
         The One Partner Reset is a private, self-paced experience that includes the core modules, a
         blueprint and workbook, supporting bonuses, a private community, and a 15-minute Marriage
-        Assessment Call with Sonali, delivered digitally for a one-time fee of ₹497.
+        Assessment Call with Sonali, delivered digitally for a one-time fee of {COURSE_PRICE_LABEL}.
       </p>
 
       <h2>Not therapy or medical advice</h2>

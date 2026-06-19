@@ -4,6 +4,7 @@ import Sparkle from '@/components/ui/Sparkle';
 import SectionMedia from '@/components/ui/SectionMedia';
 import Reveal from '@/components/ui/Reveal';
 import { HERO, BRAND_BAND } from '@/lib/content';
+import { COURSE_PRICE_LABEL } from '@/lib/pricing';
 import { HEADLINE_VARIANT } from '@/lib/flags';
 
 function Headline() {
@@ -86,7 +87,7 @@ export default function Hero() {
               our palette). The offer line is gone; the price rides on the button. */}
           <div {...up(420)} className="mt-9 w-full max-w-md">
             <AccessButton
-              label="Get Instant Access · ₹497"
+              label={`Get Instant Access · ${COURSE_PRICE_LABEL}`}
               className="w-full px-8 py-5 text-[16.5px] sm:py-6 sm:text-[18px]"
             />
             <div

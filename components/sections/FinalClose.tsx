@@ -3,6 +3,7 @@ import AccessButton from '@/components/AccessButton';
 import Sparkle from '@/components/ui/Sparkle';
 import { ShieldCheck, Flame } from 'lucide-react';
 import { CLOSE_PARAS, CLOSE_BOLD, CLOSE_PRICE, CLOSE_SCARCITY } from '@/lib/content';
+import { COURSE_PRICE_LABEL } from '@/lib/pricing';
 
 export default function FinalClose() {
   return (
@@ -35,7 +36,7 @@ export default function FinalClose() {
 
           <div className="mt-5 flex items-end justify-center gap-3">
             <span className="font-serif text-[22px] leading-none text-white/40 line-through">₹997</span>
-            <span className="font-serif text-[52px] leading-none text-white">₹497</span>
+            <span className="font-serif text-[52px] leading-none text-white">{COURSE_PRICE_LABEL}</span>
           </div>
           <p className="mt-3 font-body text-[13.5px] leading-relaxed text-white/70">{CLOSE_PRICE}</p>
 

@@ -3,7 +3,10 @@
  * Copy is verbatim from the approved spec. House rule: NO em dashes and NO en
  * dashes anywhere in visible copy. Use periods, commas, or "to" for ranges.
  * The middot "·" is a separator, not a dash, and is allowed.
+ * Prices are interpolated from lib/pricing.ts (env-driven) so they stay in
+ * sync with checkout. Change the price in the env, not in this file.
  */
+import { COURSE_PRICE_LABEL, VISUALIZATION_PRICE_LABEL } from './pricing';
 
 // 1 · Hero
 export const HERO = {
@@ -13,7 +16,7 @@ export const HERO = {
     "Your marriage isn't broken. You're simply repeating a pattern that's slowly pulling you apart.",
   sub: "You've talked. You've given him space. You've tried being patient. And the same hurt keeps coming back. The One Partner Reset shows you the pattern underneath it, and how one shift on your side can begin to change the whole thing, even if he never changes.",
   without: "Without begging. Without a therapist's office. Without waiting years for him to be ready.",
-  price: 'Get instant access today for ₹497. Everything below is included.',
+  price: `Get instant access today for ${COURSE_PRICE_LABEL}. Everything below is included.`,
   cta: 'Get Instant Access',
   guarantee: '14-day money-back guarantee.',
   trustBar: '2,000+ transformation sessions  ·  The Soul Space, since 2023',
@@ -220,7 +223,7 @@ export const VALUE_STACK = {
     { name: 'Plus, a private 15-minute Marriage Assessment Call with Sonali', value: '₹5,000' },
   ],
   total: '₹12,500',
-  today: '₹497 one time',
+  today: `${COURSE_PRICE_LABEL} one time`,
 };
 
 // 11 · Meet Sonali
@@ -233,12 +236,12 @@ export const MEET_SONALI = {
     'Her mission is simple. A generation of women who stop shrinking, stop settling, and stop giving up on themselves. Women who design their marriages by choice.',
   ],
   callAnchor:
-    "Sonali's private one-to-one sessions are ₹15,000. Inside the One Partner Reset, you get 15 focused minutes with her, one to one, included. If you're serious about your marriage, that alone is worth far more than ₹497.",
+    `Sonali's private one-to-one sessions are ₹15,000. Inside the One Partner Reset, you get 15 focused minutes with her, one to one, included. If you're serious about your marriage, that alone is worth far more than ${COURSE_PRICE_LABEL}.`,
 };
 
 // 12 · Guarantee
 export const GUARANTEE_PARAS = [
-  "Go through everything. Do the work. Sit on your call. If it doesn't help you, email us within 14 days and we return your ₹497 in full. No questions, no forms, no awkward back and forth.",
+  `Go through everything. Do the work. Sit on your call. If it doesn't help you, email us within 14 days and we return your ${COURSE_PRICE_LABEL} in full. No questions, no forms, no awkward back and forth.`,
   'The only thing you risk is staying exactly where you are.',
 ];
 
@@ -292,10 +295,8 @@ export const CLOSE_PARAS = [
 ];
 export const CLOSE_BOLD =
   'You chose to stop surviving. You chose to start designing. You chose to begin your Love Legacy.';
-export const CLOSE_PRICE =
-  '₹497, one time. 14-day money-back guarantee. If it doesn’t help, you get every rupee back.';
-export const CLOSE_SCARCITY =
-  'Founding price. The first 100 women join at ₹497. After that it rises to ₹997 and stays there.';
+export const CLOSE_PRICE = `${COURSE_PRICE_LABEL}, one time. 14-day money-back guarantee. If it doesn’t help, you get every rupee back.`;
+export const CLOSE_SCARCITY = `Founding price. The first 100 women join at ${COURSE_PRICE_LABEL}. After that it rises to ₹997 and stays there.`;
 
 // OTO · one-time offer page (main product + addon, two redirect paths)
 export const OTO = {
@@ -312,7 +313,7 @@ export const OTO = {
     ],
     includesShort:
       'The full 45-minute experience, the Blueprint, three guided tools, five bonuses, plus your private 15-minute call with Sonali.',
-    priceLabel: '₹497',
+    priceLabel: COURSE_PRICE_LABEL,
     priceNote: 'one time',
     valueLabel: '₹3,500',
   },
@@ -342,8 +343,8 @@ export const OTO = {
     quote: 'I choose you. Every day. I choose us.',
     quoteCaption: 'From the meditation',
     valueNote: 'Yours to keep for life',
-    priceLabel: '₹199',
-    addLabel: 'Yes, add the Love Legacy Visualization for ₹199',
+    priceLabel: VISUALIZATION_PRICE_LABEL,
+    addLabel: `Yes, add the Love Legacy Visualization for ${VISUALIZATION_PRICE_LABEL}`,
     addedLabel: 'Added. Sonali will guide you the moment you begin.',
   },
   form: {
@@ -371,7 +372,7 @@ export const CHECKOUT = {
   bumpHeading: 'One thing before you go in',
   bumpBody:
     "Most women start the One Partner Reset the same night they buy it. If that's you, add the Love Legacy Visualization. It's a short guided meditation you listen to with your eyes closed, and it gives you your first moment of calm before you open a single module. A lot of women say it's the first time in months their shoulders actually dropped.",
-  bumpCheckbox: 'Yes, add the Love Legacy Visualization for ₹199. I want to begin tonight.',
+  bumpCheckbox: `Yes, add the Love Legacy Visualization for ${VISUALIZATION_PRICE_LABEL}. I want to begin tonight.`,
   reassurance: [
     'Secure checkout. Your details are safe.',
     "14-day money-back guarantee. If it doesn't help, you get every rupee back.",

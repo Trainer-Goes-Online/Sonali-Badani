@@ -2,17 +2,20 @@
  * Single source of truth for the offer + checkout.
  * Razorpay works in paise (1 rupee = 100 paise). Amounts are computed
  * server-side from these values, never trusted from the client.
+ * Prices come from lib/pricing.ts (driven by env), so change them there.
  */
+import { COURSE_PRICE_RUPEES, VISUALIZATION_PRICE_RUPEES } from './pricing';
+
 export const CHECKOUT_CONFIG = {
   productName: 'The One Partner Reset',
   brand: 'Sonali Badani',
-  basePriceRupees: 497,
-  basePricePaise: 497 * 100,
+  basePriceRupees: COURSE_PRICE_RUPEES,
+  basePricePaise: COURSE_PRICE_RUPEES * 100,
   // Order bump shown on the checkout step only.
   bump: {
     name: 'The Love Legacy Visualization',
-    priceRupees: 199,
-    pricePaise: 199 * 100,
+    priceRupees: VISUALIZATION_PRICE_RUPEES,
+    pricePaise: VISUALIZATION_PRICE_RUPEES * 100,
   },
   currency: 'INR',
   /** Where the buyer lands after a successful, verified payment. */

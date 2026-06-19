@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * Creates a Razorpay order. The amount is computed server-side from config
- * (base ₹497 + optional ₹199 bump, then any valid coupon) and never trusted
+ * (base price + optional add-on bump, then any valid coupon) and never trusted
  * from the client. If a coupon brings the total to zero (e.g. a 100%-off test
  * code), we skip Razorpay and return { free: true } so access can be granted.
  */
