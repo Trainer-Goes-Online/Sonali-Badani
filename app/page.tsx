@@ -1,5 +1,6 @@
 import Footer from '@/components/Footer';
 import StickyMobileCTA from '@/components/StickyMobileCTA';
+import AnnouncementBar from '@/components/AnnouncementBar';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import FunnelTracker from '@/components/FunnelTracker';
 
@@ -26,6 +27,7 @@ export default function HomePage() {
     <>
       <FunnelTracker />
       <ScrollProgress />
+      <AnnouncementBar />
       <main className="pb-20 md:pb-0">
         <Hero />              {/* 1 · Hero (closes with the brand crescendo) */}
         <SoundLikeYou />      {/* 2 · Does this sound like you */}

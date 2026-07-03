@@ -2,7 +2,7 @@ import Reveal from '@/components/ui/Reveal';
 import AccessButton from '@/components/AccessButton';
 import Sparkle from '@/components/ui/Sparkle';
 import { ShieldCheck, Flame } from 'lucide-react';
-import { CLOSE_PARAS, CLOSE_BOLD, CLOSE_PRICE, CLOSE_SCARCITY } from '@/lib/content';
+import { CLOSE_PARAS, CLOSE_BOLD, CLOSE_PRICE, CLOSE_SCARCITY, HERO } from '@/lib/content';
 import { COURSE_PRICE_LABEL } from '@/lib/pricing';
 
 export default function FinalClose() {
@@ -35,13 +35,13 @@ export default function FinalClose() {
           </span>
 
           <div className="mt-5 flex items-end justify-center gap-3">
-            <span className="font-serif text-[22px] leading-none text-white/40 line-through">₹997</span>
+            <span className="font-serif text-[22px] leading-none text-white/40 line-through">₹999</span>
             <span className="font-serif text-[52px] leading-none text-white">{COURSE_PRICE_LABEL}</span>
           </div>
           <p className="mt-3 font-body text-[13.5px] leading-relaxed text-white/70">{CLOSE_PRICE}</p>
 
           <div className="mt-6">
-            <AccessButton label="Get Instant Access" className="w-full" />
+            <AccessButton label={HERO.cta} className="w-full !whitespace-normal px-5 leading-tight" />
           </div>
 
           <p className="mt-4 flex items-center justify-center gap-2 font-body text-[12.5px] text-white/65">

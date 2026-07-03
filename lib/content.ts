@@ -8,16 +8,33 @@
  */
 import { COURSE_PRICE_LABEL, VISUALIZATION_PRICE_LABEL } from './pricing';
 
-// 1 · Hero
+// 1 · Hero (v2 structure: urgency bar -> audience tag -> headline -> outcome
+// line -> Sonali credibility card -> shortened subhead -> CTA -> trust badges)
 export const HERO = {
-  callout: 'For the woman who loves her husband but feels invisible in her own marriage.',
+  // [0] Sticky urgency bar
+  urgency: `${COURSE_PRICE_LABEL} for the first 100. ₹999 after.`,
+  // [1] Audience + format tag (who it is for)
+  audienceTag: 'For the married woman who feels invisible',
+  // [2] Headline (locked, do not touch)
   headlineA: "He's right there beside you. And you've never felt more alone.",
   headlineB:
     "Your marriage isn't broken. You're simply repeating a pattern that's slowly pulling you apart.",
-  sub: "You've talked. You've given him space. You've tried being patient. And the same hurt keeps coming back. The One Partner Reset shows you the pattern underneath it, and how one shift on your side can begin to change the whole thing, even if he never changes.",
-  without: "Without begging. Without a therapist's office. Without waiting years for him to be ready.",
-  price: `Get instant access today for ${COURSE_PRICE_LABEL}. Everything below is included.`,
-  cta: 'Get Instant Access',
+  // [3] Outcome + format promise
+  outcome:
+    'In about 45 minutes, see the exact pattern keeping you stuck, and the one shift that starts changing it from your side. Even if he never changes.',
+  // [4] Sonali photo + credibility card
+  credibility: {
+    lead: 'Led by Sonali Badani',
+    role: 'Founder, The Soul Space · The Marriage Architect',
+    stats: ['2,000+ coaching sessions', '50+ women guided'],
+  },
+  // [5] Shortened subhead (keeps the verbatim Point A opening, locked)
+  sub: "You've tried talking. You've tried space. You've tried being patient. Nothing changes. The One Partner Reset shows you the pattern underneath, and the one shift on your side that starts changing it, even if he never changes.",
+  // [6] Primary CTA
+  cta: `Start The One Partner Reset · ${COURSE_PRICE_LABEL}`,
+  // [7] Trust badges (format clarity)
+  badges: ['14-day money-back', '9 short videos, ~40 min', 'Instant access', 'Secure checkout'],
+  // Retained for metadata / secondary references
   guarantee: '14-day money-back guarantee.',
   trustBar: '2,000+ transformation sessions  ·  The Soul Space, since 2023',
 };
@@ -247,6 +264,7 @@ export const GUARANTEE_PARAS = [
 
 // 13 · Who this is for
 export const WHO_FOR = {
+  notThis: "No begging. No therapist's office. No waiting years for him to be ready.",
   forYou: "This is for you if you still love him, and you're willing to begin with your own side of the pattern.",
   notForYou:
     "This isn't for you if you're looking for a way to fix him, if you need him to do the work first, or if you want permission to leave.",
@@ -257,12 +275,12 @@ export const WHO_FOR = {
 // 14 · FAQ
 export const FAQS = [
   {
-    q: 'Can a marriage really change if only one person does the work?',
-    a: "Yes. A marriage runs on a pattern between two people. Change your side of the pattern and the pattern changes. You're not doing his work. You're taking back yours.",
+    q: "Is this for me if he won't participate?",
+    a: "Yes. This is built for you to do on your own. He doesn't need to read it, agree to it, or even know about it. A marriage runs on a pattern between two people, and when you change your side, the pattern starts to change.",
   },
   {
-    q: 'Does my husband need to know or take part?',
-    a: "No. This is built for you to do on your own. He doesn't need to read it, agree to it, or even know about it.",
+    q: 'Can a marriage really change if only one person does the work?',
+    a: "Yes. A marriage runs on a pattern between two people. Change your side of the pattern and the pattern changes. You're not doing his work. You're taking back yours.",
   },
   {
     q: 'Is this couples therapy?',
@@ -296,7 +314,7 @@ export const CLOSE_PARAS = [
 export const CLOSE_BOLD =
   'You chose to stop surviving. You chose to start designing. You chose to begin your Love Legacy.';
 export const CLOSE_PRICE = `${COURSE_PRICE_LABEL}, one time. 14-day money-back guarantee. If it doesn’t help, you get every rupee back.`;
-export const CLOSE_SCARCITY = `Founding price. The first 100 women join at ${COURSE_PRICE_LABEL}. After that it rises to ₹997 and stays there.`;
+export const CLOSE_SCARCITY = `Founding price. The first 100 women join at ${COURSE_PRICE_LABEL}. After that it rises to ₹999 and stays there.`;
 
 // OTO · one-time offer page (main product + addon, two redirect paths)
 export const OTO = {
