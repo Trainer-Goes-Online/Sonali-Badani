@@ -39,7 +39,7 @@ export default function StickyMobileCTA() {
             First 100 members only
           </p>
           <p className="mt-0.5 font-body text-white">
-            <span className="text-[12px] text-white/40 line-through">₹997</span>{' '}
+            <span className="text-[12px] text-white/40 line-through">₹999</span>{' '}
             <span className="text-[19px] font-bold">{COURSE_PRICE_LABEL}</span>
           </p>
           <p className="font-body text-[10px] text-white/45">14-day money-back guarantee</p>

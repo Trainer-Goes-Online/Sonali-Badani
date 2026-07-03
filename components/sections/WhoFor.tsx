@@ -13,6 +13,13 @@ export default function WhoFor() {
   return (
     <Section>
       <div className="container-page">
+        {/* Objection triad — what this isn't (relocated from the hero) */}
+        <Reveal className="mx-auto mb-9 max-w-2xl text-center">
+          <p className="font-serif text-[21px] font-semibold leading-snug text-navy sm:text-[27px]">
+            {WHO_FOR.notThis}
+          </p>
+        </Reveal>
+
         <div className="mx-auto grid max-w-5xl gap-5 sm:grid-cols-3">
           {COLS.map((c, i) => (
             <Reveal
