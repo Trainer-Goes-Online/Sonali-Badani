@@ -1,0 +1,26 @@
+[
+  {
+    "out": "testimonial-1.webp",
+    "width": 559,
+    "height": 1000,
+    "blurDataURL": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAADwAwCdASoMABYAPu1oqk6ppiQiMAgBMB2JaQAAXK+HmXUFCwC/J08AAP7Q2beUChDJPjtokoBGmW0hnPXBQRDu2AZ9NFa4+efILtvI3m86X9xoQAA="
+  },
+  {
+    "out": "testimonial-2.webp",
+    "width": 950,
+    "height": 1000,
+    "blurDataURL": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAADQAQCdASoMAA0AA4BaJaQAAudMuqGTAAD+5m4iHaC2bK/WVnlRuzh+EEgD6E7gAAA="
+  },
+  {
+    "out": "testimonial-3.webp",
+    "width": 951,
+    "height": 981,
+    "blurDataURL": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADQAQCdASoMAAwAA4BaJaQAAudMub3oAAD+6jGqdgg3AY6UxQiUVSA2udC+bJEcx3wQAAAA"
+  },
+  {
+    "out": "testimonial-4.webp",
+    "width": 894,
+    "height": 1000,
+    "blurDataURL": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADQAQCdASoMAA0AA4BaJaQAAu18ehvAAAD+3e+AdfZ9kvDXcmGaR/Zx3vaJMIBsfODzmwAA"
+  }
+]

@@ -1,133 +1,118 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { CalendarHeart } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 import Logo from '@/components/ui/Logo';
 import Footer from '@/components/Footer';
 import Reveal from '@/components/ui/Reveal';
-import Checklist from '@/components/ui/Checklist';
-import CalendlyEmbed from '@/components/CalendlyEmbed';
+import Sparkle from '@/components/ui/Sparkle';
 import SuccessMark from '@/components/ui/SuccessMark';
-import FunnelWebhook from '@/components/welcome/FunnelWebhook';
+import StepCard from '@/components/webinar/StepCard';
+import AddToCalendar from '@/components/webinar/AddToCalendar';
+import WhatsAppButton from '@/components/webinar/WhatsAppButton';
+import { WELCOME } from '@/lib/webinar-content';
 
 export const metadata: Metadata = {
-  title: 'Book Your 15 Minutes With Sonali | The One Partner Reset',
+  title: 'Your seat is saved | The Love Legacy Masterclass',
   robots: { index: false, follow: false },
 };
 
-const CALL_COVERS = [
-  'Understand the specific pattern that is keeping your marriage stuck right now',
-  'See the loop underneath the same argument that keeps coming back',
-  'Get clarity on what you can begin to shift from your side, tonight',
-  'Know your next best step inside the One Partner Reset',
-];
-
+/**
+ * P3B · /welcome  ·  registered, seat only.
+ *
+ * One job: get her into the WhatsApp group. That is where the Zoom link and the
+ * reminders go, and show up rate is won there.
+ *
+ * The second chance card is deliberately quiet and sits last. It is a courtesy
+ * for the woman who changed her mind, not a second pitch. No purchase webhook
+ * fires here: this woman did not buy.
+ */
 export default function WelcomePage() {
   return (
     <>
-      <FunnelWebhook />
-      <header className="border-b border-navy/10">
-        <div className="container-page flex h-16 items-center justify-center">
-          <Logo height={42} />
+      <header className="border-b border-navy/10 bg-cream">
+        <div className="container-page flex h-14 items-center justify-center sm:h-16">
+          <Logo height={32} />
         </div>
       </header>
 
-      <main className="pb-24 md:pb-0">
-        {/* 1 · Confirmation + offer of the call */}
-        <section className="container-reading pt-14 pb-10 text-center sm:pt-20">
-          <Reveal>
-            <SuccessMark size={56} />
-            <p className="eyebrow mt-6">You're in</p>
-            <h1 className="mt-3 text-balance text-[30px] font-semibold leading-[1.12] sm:text-[42px]">
-              You&rsquo;ve taken the first step
-            </h1>
-            <p className="lede mx-auto mt-6 max-w-reading">
-              Welcome to the One Partner Reset. Your access details are on their way to your inbox.
-              Before you begin, claim the part most women say changes everything:{' '}
-              <span className="font-semibold text-navy">your private 15-minute Marriage Assessment
-              Call with Sonali.</span> It is already included with your order. This is your moment to
-              look at your own situation, one to one, with someone who has sat with thousands of women
-              exactly where you are.
-            </p>
-            <div className="mt-8">
-              <a href="#book" className="btn-primary">
-                <CalendarHeart className="h-5 w-5" />
-                Book Your Call
-              </a>
-            </div>
-          </Reveal>
-        </section>
-
-        <hr className="rule" />
-
-        {/* 2 · What the call covers */}
-        <section className="container-page py-14 sm:py-16">
-          <div className="mx-auto max-w-3xl">
-            <Reveal className="text-center">
-              <p className="eyebrow mb-3">Your 15 minutes</p>
-              <h2 className="text-[26px] font-semibold sm:text-[32px]">What we&rsquo;ll look at together</h2>
-            </Reveal>
-            <div className="mt-9">
-              <Checklist items={CALL_COVERS} columns />
-            </div>
-          </div>
-        </section>
-
-        {/* 3 · No pressure */}
-        <section className="bg-warm py-14 sm:py-16">
-          <div className="container-reading text-center">
+      <main className="pb-14 sm:pb-20">
+        {/* Confirmation */}
+        <section className="relative overflow-hidden bg-navy-deep py-12 text-center sm:py-16">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-[320px] bg-[radial-gradient(55%_60%_at_50%_0%,rgba(245,144,117,0.2),transparent_70%)]"
+          />
+          <div className="container-reading relative">
             <Reveal>
-              <h2 className="text-[24px] font-semibold sm:text-[30px]">
-                A clarity conversation, not a pitch
-              </h2>
-              <p className="lede mt-6">
-                There is no pressure here. The aim is to help you see your situation more clearly, not
-                to push you into anything. Come exactly as you are, with complete honesty about where
-                things are right now.
+              <SuccessMark size={56} />
+            </Reveal>
+            <Reveal delay={90}>
+              <h1 className="mt-6 font-serif text-[30px] font-semibold leading-[1.14] text-white sm:text-[40px]">
+                {WELCOME.heading}
+              </h1>
+            </Reveal>
+            <Reveal delay={150}>
+              <p className="mx-auto mt-4 max-w-[480px] font-body text-[15px] leading-relaxed text-white/70 sm:text-[16.5px]">
+                {WELCOME.sub}
               </p>
             </Reveal>
           </div>
         </section>
 
-        {/* 4 · Booking — the only way forward */}
-        <section id="book" className="scroll-mt-20 py-14 sm:py-20">
-          <div className="container-page">
-            <Reveal className="text-center">
-              <p className="eyebrow mb-3">Booking</p>
-              <h2 className="text-[26px] font-semibold sm:text-[32px]">
-                Book your 15 minutes with Sonali
-              </h2>
-              <p className="lede mx-auto mt-4 max-w-reading">
-                Pick a time that works for you below. This is your next step. Once your call is
-                booked, you&rsquo;ll be taken straight through to your access instructions.
-              </p>
-            </Reveal>
-            <div className="mt-10">
-              <CalendlyEmbed />
-            </div>
-
-            {/* Skip booking — quiet hairline link through to your access page */}
-            <Reveal className="mt-9 text-center">
-              <Link
-                href="/thank-you"
-                className="inline-flex items-center gap-3 font-body text-[13.5px] text-navy/50 transition-colors hover:text-navy/80"
+        {/* Steps */}
+        <div className="container-page -mt-6 sm:-mt-8">
+          <div className="mx-auto max-w-[600px] space-y-3.5 sm:space-y-4">
+            {WELCOME.steps.map((step, i) => (
+              <StepCard
+                key={step.n}
+                n={step.n}
+                title={step.title}
+                body={step.body}
+                delay={i * 90}
+                highlight={i === 0}
               >
-                <span className="h-px w-7 bg-navy/20" aria-hidden="true" />
-                I don&rsquo;t want to book my call
-                <span className="h-px w-7 bg-navy/20" aria-hidden="true" />
+                {step.cta && (
+                  <WhatsAppButton label={step.cta} page="welcome" className="mt-5" />
+                )}
+                {i === 1 && (
+                  <div className="mt-5">
+                    <AddToCalendar page="welcome" />
+                  </div>
+                )}
+              </StepCard>
+            ))}
+
+            {/* Second chance, deliberately quiet */}
+            <Reveal
+              delay={120}
+              className="rounded-3xl border border-dashed border-navy/25 bg-warm p-5 sm:p-6"
+            >
+              <h2 className="font-body text-[14px] font-bold text-navy sm:text-[15.5px]">
+                {WELCOME.secondChance.heading}
+              </h2>
+              <p className="mt-2.5 font-body text-[13.5px] leading-[1.65] text-navy/70 sm:text-[14.5px]">
+                {WELCOME.secondChance.body}
+              </p>
+              <Link
+                href="/masterclass/upgrade"
+                className="mt-4 flex min-h-[50px] w-full items-center justify-center gap-2 rounded-pill border border-navy/35 bg-transparent px-6 py-3 font-body text-[14px] font-semibold text-navy transition-colors duration-200 hover:border-navy hover:bg-navy hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/20 sm:text-[15px]"
+              >
+                {WELCOME.secondChance.cta}
+                <ArrowRight className="h-4 w-4 shrink-0" />
               </Link>
             </Reveal>
-          </div>
-        </section>
-      </main>
 
-      {/* Mobile sticky — jumps to the booking section */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-navy/10 bg-white/95 p-3 backdrop-blur md:hidden">
-        <a href="#book" className="btn-primary w-full">
-          <CalendarHeart className="h-5 w-5" />
-          Book Your Call
-        </a>
-      </div>
+            {/* Closing */}
+            <Reveal delay={150} className="pt-4 text-center">
+              <Sparkle twinkle className="mx-auto h-4 w-4 text-gold" />
+              <p className="mt-3 font-serif text-[16px] italic text-navy/75 sm:text-[18px]">
+                {WELCOME.closing}
+              </p>
+            </Reveal>
+          </div>
+        </div>
+      </main>
 
       <Footer />
     </>

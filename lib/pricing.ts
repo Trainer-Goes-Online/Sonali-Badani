@@ -17,7 +17,7 @@ function priceFromEnv(value: string | undefined, fallback: number): number {
 }
 
 /** The One Partner Reset course price, in rupees. */
-export const COURSE_PRICE_RUPEES = priceFromEnv(process.env.NEXT_PUBLIC_COURSE_PRICE, 499);
+export const COURSE_PRICE_RUPEES = priceFromEnv(process.env.NEXT_PUBLIC_COURSE_PRICE, 299);
 
 /** The Love Legacy Visualization add-on price, in rupees. */
 export const VISUALIZATION_PRICE_RUPEES = priceFromEnv(
@@ -25,6 +25,17 @@ export const VISUALIZATION_PRICE_RUPEES = priceFromEnv(
   199
 );
 
-/** Display labels, e.g. "₹499" / "₹199". */
+/**
+ * The struck-through anchor shown beside the live price on the OTO. Kept in the
+ * environment too so the anchor never has to be hunted down in copy files.
+ */
+export const ANCHOR_PRICE_RUPEES = priceFromEnv(process.env.NEXT_PUBLIC_ANCHOR_PRICE, 999);
+
+/** Display labels, e.g. "₹299" / "₹199". */
 export const COURSE_PRICE_LABEL = `₹${COURSE_PRICE_RUPEES}`;
 export const VISUALIZATION_PRICE_LABEL = `₹${VISUALIZATION_PRICE_RUPEES}`;
+export const ANCHOR_PRICE_LABEL = `₹${ANCHOR_PRICE_RUPEES}`;
+
+/** Combined price when the buyer keeps the add-on, e.g. "₹498". */
+export const BUNDLE_PRICE_RUPEES = COURSE_PRICE_RUPEES + VISUALIZATION_PRICE_RUPEES;
+export const BUNDLE_PRICE_LABEL = `₹${BUNDLE_PRICE_RUPEES}`;
