@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import LegalPageLayout from '@/components/LegalPageLayout';
-import { COURSE_PRICE_LABEL } from '@/lib/pricing';
+import { COURSE_PRICE_LABEL, VISUALIZATION_PRICE_LABEL } from '@/lib/pricing';
 
 export const metadata: Metadata = {
   title: 'Refund Policy | Sonali Badani',
@@ -9,11 +9,23 @@ export const metadata: Metadata = {
 
 export default function RefundPolicyPage() {
   return (
-    <LegalPageLayout title="Refund Policy" updated="June 2026">
-      <h2>14-Day Money Back Guarantee</h2>
+    <LegalPageLayout title="Refund Policy" updated="August 2026">
+      <h2>The masterclass is free</h2>
       <p>
-        Go through everything. Do the work. Sit on your call. If within 14 days of purchase you feel
-        it wasn&rsquo;t right for you, simply email us and we&rsquo;ll refund your {COURSE_PRICE_LABEL} in full.
+        There is nothing to pay to attend The Love Legacy Masterclass, so there is nothing to refund.
+        If you cannot make the live session, simply do not attend. You are welcome to leave the
+        WhatsApp group at any time.
+      </p>
+
+      <h2>The Full Reset Guarantee</h2>
+      <p>
+        If you purchase The One Partner Reset ({COURSE_PRICE_LABEL}), you have fourteen days. Go
+        through it. Do the work. Sit on your call. If it does not give you something you can use,
+        write to us and we will return your money. No forms, no explanation needed.
+      </p>
+      <p>
+        The same fourteen days apply to the Love Legacy Visualization ({VISUALIZATION_PRICE_LABEL}) if
+        you added it to your order.
       </p>
 
       <h2>How to request a refund</h2>
@@ -28,8 +40,9 @@ export default function RefundPolicyPage() {
 
       <h2>Processing</h2>
       <p>
-        Approved refunds are issued to your original payment method via Razorpay. Depending on your
-        bank, it may take 5 to 10 business days for the amount to reflect.
+        Approved refunds are issued to your original payment method through the processor that took
+        the payment. Depending on your bank, it may take 5 to 10 business days for the amount to
+        reflect in your account.
       </p>
 
       <h2>Contact</h2>

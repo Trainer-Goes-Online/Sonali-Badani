@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Fraunces, Mulish } from 'next/font/google';
 import Script from 'next/script';
-import { CHECKOUT_CONFIG } from '@/lib/checkout-config';
 import SmoothScroll from '@/components/SmoothScroll';
 import MetaPixel from '@/components/MetaPixel';
 import './globals.css';
@@ -25,19 +24,26 @@ const sans = Mulish({
   display: 'swap',
 });
 
+const DESCRIPTION =
+  'A live 90 minute session for married women. See the pattern quietly ruining your marriage, and the first shift you can make from your side alone.';
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://sonalibadani.com'),
-  title: 'The One Partner Reset | Sonali Badani',
-  description: `Your marriage isn't broken. You're simply repeating a pattern that's slowly pulling you apart. The One Partner Reset shows you the pattern, and how one shift on your side can begin to change the whole thing, even if he never changes. ₹${CHECKOUT_CONFIG.basePriceRupees}, 14-day money-back guarantee.`,
+  title: {
+    default: 'The Love Legacy Masterclass | Sonali Badani',
+    template: '%s',
+  },
+  description: DESCRIPTION,
   openGraph: {
     type: 'website',
-    title: 'The One Partner Reset | Sonali Badani',
-    description: `Stop surviving your marriage. Start designing your Love Legacy. One shift on your side can begin to change the whole thing. ₹${CHECKOUT_CONFIG.basePriceRupees}.`,
+    title: 'The Love Legacy Masterclass | Sonali Badani',
+    description: DESCRIPTION,
     siteName: 'Sonali Badani · The Soul Space',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'The One Partner Reset | Sonali Badani',
+    title: 'The Love Legacy Masterclass | Sonali Badani',
+    description: DESCRIPTION,
   },
   robots: { index: true, follow: true },
 };
@@ -45,6 +51,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  // Lets the page paint edge to edge behind the notch on iOS, which matters
+  // because the sticky CTA sits in the home-indicator zone.
+  viewportFit: 'cover',
   themeColor: '#203F5C',
 };
 
@@ -77,9 +86,6 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
         </Script>
 
         {children}
-
-        {/* Razorpay checkout — lazy-loaded so it never blocks first paint. */}
-        <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       </body>
     </html>
   );

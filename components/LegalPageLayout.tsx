@@ -21,11 +21,11 @@ export default function LegalPageLayout({
     <>
       <header className="border-b border-navy/10">
         <div className="container-page flex h-16 items-center justify-between">
-          <Link href="/" aria-label="Sonali Badani, home" className="flex items-center">
+          <Link href="/masterclass" aria-label="Sonali Badani, home" className="flex items-center">
             <Logo height={36} />
           </Link>
           <Link
-            href="/"
+            href="/masterclass"
             className="flex items-center gap-1.5 font-body text-[14px] font-semibold text-navy/70 hover:text-navy"
           >
             <ArrowLeft className="h-4 w-4" /> Back to home

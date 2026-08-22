@@ -353,8 +353,14 @@
   animation: play-breathe 2.4s ease-in-out infinite;
 }
 
-/* Infinite testimonial marquee (mobile). Two copies of the track translate
-   -50% so the loop is seamless. No pause on hover, by request. */
+/* Infinite testimonial marquee (mobile). The track holds two identical copies
+   of the testimonials and slides exactly -50%, which lands on the duplicate of
+   the first card, so the loop is seamless and never rewinds.
+
+   Constant linear motion on purpose: a timed step-and-settle carousel reads as
+   a jerk every few seconds. This runs on a single compositor-driven transform,
+   so it never touches layout and stays smooth while the page is scrolling.
+   Paused while a finger or cursor is on it, so a card can actually be read. */
 @keyframes marquee {
   from {
     transform: translateX(0);
@@ -365,6 +371,35 @@
 }
 .marquee-track {
   animation: marquee 34s linear infinite;
+  will-change: transform;
+}
+.testimonial-marquee {
+  width: max-content;
+  animation: marquee 46s linear infinite;
+  will-change: transform;
+  /* Own layer, so the slide never repaints the section behind it. */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+.testimonial-marquee:hover,
+.testimonial-marquee:active,
+.testimonial-marquee:focus-within {
+  animation-play-state: paused;
+}
+/* Desktop is a static grid, not a marquee. */
+@media (min-width: 1024px) {
+  .testimonial-marquee {
+    width: auto;
+    animation: none;
+    transform: none;
+    will-change: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .testimonial-marquee {
+    animation: none;
+    width: auto;
+  }
 }
 
 /* ── Success confirmation mark (thank-you / welcome) ───────────────────────── */
@@ -441,4 +476,76 @@ html.lenis body {
 }
 .lenis.lenis-stopped {
   overflow: hidden;
+}
+
+/* ── Registration modal ───────────────────────────────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes sheet-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes step-in {
+  from { opacity: 0; transform: translateX(14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* The panel rises from the bottom edge on phones. From `sm` up it is a centred
+   dialog, so it scales in place instead of sliding. */
+.reg-panel {
+  animation: sheet-up 380ms var(--ease-out-expo) both;
+  /* Momentum scrolling inside the sheet on iOS, and no scroll chaining to the
+     page behind it. */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+@media (min-width: 640px) {
+  @keyframes sheet-up {
+    from { opacity: 0; transform: scale(0.96) translateY(12px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+}
+
+/* Each step slides in from the right as she advances. */
+.reg-step {
+  animation: step-in 340ms var(--ease-out-expo) both;
+}
+
+/* ── OTO progress bar: fills to 70% once, on load ─────────────────────────── */
+@keyframes progress-70 {
+  from { width: 0%; }
+  to   { width: 70%; }
+}
+.upgrade-progress {
+  width: 70%;
+  animation: progress-70 1.1s var(--ease-out-expo) 0.2s both;
+}
+
+/* ── Comparison table: never let it push the page sideways on a phone ─────── */
+table {
+  table-layout: fixed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reg-panel,
+  .reg-step,
+  .upgrade-progress {
+    animation: none !important;
+  }
+  .upgrade-progress {
+    width: 70%;
+  }
+}
+
+/* ── Horizontal carousels: hide the scrollbar, keep the scrolling ──────────── */
+.hide-scrollbar {
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* old Edge */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain; /* no scroll chaining to the page */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;                  /* Safari + Chrome */
 }
