@@ -1,10 +1,17 @@
 'use client';
 
 import { CalendarPlus } from 'lucide-react';
-import { calendarWindow, WEBINAR, TIME_IST } from '@/lib/webinar-config';
+import {
+  calendarWindow,
+  WEBINAR,
+  TIME_IST,
+  MASTERCLASS_NAME,
+  MASTERCLASS_NAME_BARE,
+  MASTERCLASS_SLUG,
+} from '@/lib/webinar-config';
 import { trackCustom } from '@/lib/events';
 
-const TITLE = 'The Love Legacy Masterclass with Sonali Badani';
+const TITLE = `${MASTERCLASS_NAME} with Sonali Badani`;
 const DETAILS = `Live on Zoom. ${WEBINAR.date}, ${TIME_IST}. Your Zoom link comes to your WhatsApp from the group.`;
 const LOCATION = 'Live on Zoom';
 
@@ -44,11 +51,11 @@ function downloadIcs(start: Date, end: Date) {
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//The Soul Space//Love Legacy Masterclass//EN',
+    `PRODID:-//The Soul Space//${MASTERCLASS_NAME_BARE}//EN`,
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     'BEGIN:VEVENT',
-    `UID:love-legacy-masterclass-${utcBasic(start)}@sonalibadani.com`,
+    `UID:${MASTERCLASS_SLUG}-${utcBasic(start)}@sonalibadani.com`,
     `DTSTAMP:${utcBasic(new Date())}`,
     `DTSTART:${utcBasic(start)}`,
     `DTEND:${utcBasic(end)}`,
@@ -58,7 +65,7 @@ function downloadIcs(start: Date, end: Date) {
     'BEGIN:VALARM',
     'TRIGGER:-PT30M',
     'ACTION:DISPLAY',
-    'DESCRIPTION:The Love Legacy Masterclass starts in 30 minutes',
+    `DESCRIPTION:${MASTERCLASS_NAME} starts in 30 minutes`,
     'END:VALARM',
     'END:VEVENT',
     'END:VCALENDAR',
@@ -68,7 +75,7 @@ function downloadIcs(start: Date, end: Date) {
   const href = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = href;
-  a.download = 'love-legacy-masterclass.ics';
+  a.download = `${MASTERCLASS_SLUG}.ics`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

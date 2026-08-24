@@ -4,6 +4,7 @@ import Script from 'next/script';
 import SmoothScroll from '@/components/SmoothScroll';
 import MetaPixel from '@/components/MetaPixel';
 import './globals.css';
+import { MASTERCLASS_NAME } from '@/lib/webinar-config';
 
 /**
  * Two fonts, per brand: a serif for the wordmark + display headlines, and a
@@ -25,24 +26,24 @@ const sans = Mulish({
 });
 
 const DESCRIPTION =
-  'A live 90 minute session for married women. See the pattern quietly ruining your marriage, and the first shift you can make from your side alone.';
+  'A free live masterclass for married women. Stop surviving your marriage and start designing it. Discover the hidden pattern keeping it stuck, and the first shift you can make without waiting for him to change.';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sonalibadani.com'),
   title: {
-    default: 'The Love Legacy Masterclass | Sonali Badani',
+    default: `${MASTERCLASS_NAME} | Sonali Badani`,
     template: '%s',
   },
   description: DESCRIPTION,
   openGraph: {
     type: 'website',
-    title: 'The Love Legacy Masterclass | Sonali Badani',
+    title: `${MASTERCLASS_NAME} | Sonali Badani`,
     description: DESCRIPTION,
     siteName: 'Sonali Badani · The Soul Space',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'The Love Legacy Masterclass | Sonali Badani',
+    title: `${MASTERCLASS_NAME} | Sonali Badani`,
     description: DESCRIPTION,
   },
   robots: { index: true, follow: true },

@@ -11,9 +11,10 @@ import StepCard from '@/components/webinar/StepCard';
 import AddToCalendar from '@/components/webinar/AddToCalendar';
 import WhatsAppButton from '@/components/webinar/WhatsAppButton';
 import { WELCOME } from '@/lib/webinar-content';
+import { MASTERCLASS_NAME } from '@/lib/webinar-config';
 
 export const metadata: Metadata = {
-  title: 'Your seat is saved | The Love Legacy Masterclass',
+  title: `Your seat is saved | ${MASTERCLASS_NAME}`,
   robots: { index: false, follow: false },
 };
 

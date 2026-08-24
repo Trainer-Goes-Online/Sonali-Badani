@@ -1,3 +1,4 @@
+import { MASTERCLASS_NAME } from './webinar-config';
 /**
  * Funnel analytics events, in one place.
  *
@@ -62,13 +63,13 @@ export function trackCustom(name: string, params: Params = {}) {
 
 /** P1 load, after a 3 second dwell. */
 export const trackViewContent = () =>
-  trackStandard('ViewContent', { content_name: 'Love Legacy Masterclass registration' });
+  trackStandard('ViewContent', { content_name: `${MASTERCLASS_NAME} registration` });
 
 /** Registration succeeded. This is the campaign optimisation event. */
 export const trackLead = (eventId?: string) =>
   trackStandard(
     'Lead',
-    { content_name: 'Love Legacy Masterclass registration', currency: 'INR', value: 0 },
+    { content_name: `${MASTERCLASS_NAME} registration`, currency: 'INR', value: 0 },
     eventId
   );
 

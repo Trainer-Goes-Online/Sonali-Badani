@@ -13,6 +13,7 @@
  * thank-you pages and the terms page.
  *
  * Also configurable:
+ *   NEXT_PUBLIC_MASTERCLASS_NAME  "The Love Legacy Masterclass"
  *   NEXT_PUBLIC_WEBINAR_DURATION  "90 minutes"
  *   NEXT_PUBLIC_WEBINAR_SEATS     "300"
  *   NEXT_PUBLIC_WHATSAPP_COMMUNITY_URL
@@ -165,6 +166,69 @@ export const WEBINAR = {
    */
   whatsappResetUrl: env(process.env.NEXT_PUBLIC_WHATSAPP_RESET_COMMUNITY_URL, ''),
 } as const;
+
+/**
+ * The name of the masterclass, everywhere it is said.
+ *
+ * Set NEXT_PUBLIC_MASTERCLASS_NAME and it changes across the whole site: page
+ * titles and social cards, the hero lockup, the comparison panel, the legal
+ * pages, the footer disclaimer, the calendar invite, and the Meta/GA event
+ * names.
+ *
+ * Careful when renaming: this is the EVENT only. "The Love Legacy Manifesto",
+ * "The Love Legacy Visualization" and "The Private Love Legacy Community" are
+ * separate products that happen to share the words, and they are deliberately
+ * not wired to this value.
+ */
+export const MASTERCLASS_NAME = env(
+  process.env.NEXT_PUBLIC_MASTERCLASS_NAME,
+  'The Love Legacy Masterclass'
+);
+
+/**
+ * The same name without a leading "The", for the places where an article reads
+ * wrong: mid sentence after another article, and technical identifiers such as
+ * the calendar PRODID.
+ */
+export const MASTERCLASS_NAME_BARE = MASTERCLASS_NAME.replace(/^the\s+/i, '');
+
+/**
+ * URL and filename safe form, e.g. "love-legacy-masterclass". Used for the
+ * calendar invite's UID and the .ics filename, so a rename produces a sensible
+ * download rather than a stale slug from a previous event.
+ */
+export const MASTERCLASS_SLUG =
+  MASTERCLASS_NAME_BARE.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'masterclass';
+
+/**
+ * The brand sub-heading, shown wherever the masterclass name is shown.
+ *
+ * Set NEXT_PUBLIC_MASTERCLASS_TAGLINE and it changes with the name: the hero
+ * lockup, the brand anchor under the hero, the OTO header, the final close and
+ * the footer.
+ */
+export const MASTERCLASS_TAGLINE = env(
+  process.env.NEXT_PUBLIC_MASTERCLASS_TAGLINE,
+  'Stop Surviving. Start Designing.'
+);
+
+/**
+ * The tagline split at its first sentence break, for the places that set it on
+ * two lines with the halves styled differently.
+ *
+ * "Stop Surviving. Start Designing." -> ["Stop Surviving.", "Start Designing."]
+ *
+ * Falls back to the whole string in the first slot if there is no sentence
+ * break, so a one-clause tagline still renders rather than half-disappearing.
+ */
+export const MASTERCLASS_TAGLINE_PARTS: readonly [string, string] = (() => {
+  const match = MASTERCLASS_TAGLINE.trim().match(/^(.*?[.!?])\s+(.+)$/);
+  return match
+    ? ([match[1].trim(), match[2].trim()] as const)
+    : ([MASTERCLASS_TAGLINE.trim(), ''] as const);
+})();
 
 /** "8:00 PM IST" */
 export const TIME_IST = `${WEBINAR.time} IST`;

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import LegalPageLayout from '@/components/LegalPageLayout';
 import { COURSE_PRICE_LABEL, VISUALIZATION_PRICE_LABEL } from '@/lib/pricing';
-import { WEBINAR, DATE_AT_TIME_IST } from '@/lib/webinar-config';
+import { WEBINAR, DATE_AT_TIME_IST, MASTERCLASS_NAME } from '@/lib/webinar-config';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions | Sonali Badani',
@@ -12,13 +12,13 @@ export default function TermsPage() {
   return (
     <LegalPageLayout title="Terms & Conditions" updated="August 2026">
       <p>
-        By registering for The Love Legacy Masterclass, or by purchasing The One Partner Reset, you
+        By registering for {MASTERCLASS_NAME}, or by purchasing The One Partner Reset, you
         agree to these terms. Please read them carefully.
       </p>
 
       <h2>The masterclass</h2>
       <p>
-        The Love Legacy Masterclass is a live coaching session hosted by Sonali Badani on Zoom, on{' '}
+        {MASTERCLASS_NAME} is a live coaching session hosted by Sonali Badani on Zoom, on{' '}
         {DATE_AT_TIME_IST}, running approximately {WEBINAR.duration} plus live questions.
         It is free to attend. Seats in the live room are limited and registration closes when the
         room fills.

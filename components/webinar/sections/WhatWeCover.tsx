@@ -2,8 +2,8 @@ import { MessageCircleHeart } from 'lucide-react';
 
 import Reveal from '@/components/ui/Reveal';
 import Sparkle from '@/components/ui/Sparkle';
-import SaveSeatButton from '@/components/webinar/SaveSeatButton';
-import { WHAT_WE_COVER } from '@/lib/webinar-content';
+import SaveSeatButton, { CtaReassurance } from '@/components/webinar/SaveSeatButton';
+import { WHAT_WE_COVER, CTA } from '@/lib/webinar-content';
 
 /**
  * Five step cards mirroring the running order of the webinar, so whichever
@@ -76,25 +76,51 @@ export default function WhatWeCover() {
           </p>
         </Reveal>
 
-        {/* The concrete promise, pulled forward so it is visible before the CTA */}
-        <Reveal delay={90} className="mx-auto mt-8 max-w-[760px] rounded-3xl border-2 border-coral/40 bg-white p-5 sm:p-6">
-          <p className="text-center font-body text-[11px] font-bold uppercase tracking-[0.16em] text-coral-dark sm:text-[12px]">
-            {WHAT_WE_COVER.takeaway.label}
-          </p>
-          <div className="mt-4 grid gap-2.5 sm:grid-cols-3 sm:gap-3">
-            {WHAT_WE_COVER.takeaway.items.map((item) => (
-              <p
-                key={item}
-                className="rounded-2xl bg-coral/[0.1] px-4 py-3 text-center font-serif text-[16px] font-semibold leading-snug text-navy sm:text-[17px]"
+        {/*
+          The outcome, living inside this section rather than in one of its own.
+          It used to be stated three times on the page: a takeaway strip here, a
+          Clarity / Control / Plan section below, and again at the close. Once,
+          immediately after the five teaching points, is enough.
+        */}
+        <div className="mx-auto mt-12 max-w-[760px] sm:mt-16">
+          <Reveal className="flex items-center justify-center gap-2">
+            <Sparkle twinkle className="h-3 w-3 text-gold" />
+            <span className="eyebrow">{WHAT_WE_COVER.outcome.eyebrow}</span>
+          </Reveal>
+
+          <Reveal delay={70}>
+            <h3 className="mt-4 text-center font-serif text-[25px] font-semibold leading-[1.16] text-navy sm:text-[33px] lg:text-[37px]">
+              {WHAT_WE_COVER.outcome.heading}
+            </h3>
+          </Reveal>
+
+          <div className="mt-8 grid gap-3.5 sm:mt-10 sm:gap-4 lg:grid-cols-3">
+            {WHAT_WE_COVER.outcome.items.map((item, i) => (
+              <Reveal
+                key={item.n}
+                delay={i * 80}
+                className="h-full rounded-3xl border-2 border-coral/35 bg-white p-5 shadow-[0_2px_12px_rgba(32,63,92,0.06)] sm:p-6"
               >
-                {item}
-              </p>
+                <span className="font-serif text-[12.5px] font-semibold tracking-[0.18em] text-coral-dark">
+                  {item.n}
+                </span>
+                <h4 className="mt-2 font-serif text-[22px] font-semibold uppercase leading-none text-navy sm:text-[26px]">
+                  {item.title}
+                </h4>
+                <p className="mt-3 font-body text-[14px] leading-[1.65] text-navy/75 sm:text-[15px]">
+                  {item.body}
+                </p>
+              </Reveal>
             ))}
           </div>
-        </Reveal>
+        </div>
 
-        <Reveal delay={120} className="mx-auto mt-8 max-w-[520px]">
-          <SaveSeatButton className="w-full" />
+        <Reveal delay={120} className="mx-auto mt-10 max-w-[560px]">
+          <SaveSeatButton
+            label={CTA.labels.afterOutcome}
+            className="w-full !px-5 text-[14.5px] leading-tight sm:text-[16px]"
+          />
+          <CtaReassurance className="mt-3 font-body text-[11.5px] text-navy/50 sm:text-[12.5px]" />
         </Reveal>
       </div>
     </section>
