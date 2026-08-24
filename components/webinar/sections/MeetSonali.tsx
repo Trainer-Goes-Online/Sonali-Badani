@@ -65,15 +65,31 @@ export default function MeetSonali() {
                 ))}
               </div>
 
-              {/* Credential pills */}
-              <Reveal delay={80} className="mt-7 flex flex-wrap gap-2">
-                {MEET_SONALI.pills.map((pill) => (
-                  <span
-                    key={pill}
-                    className="rounded-pill bg-coral/[0.16] px-3.5 py-2 font-body text-[10.5px] font-bold uppercase tracking-[0.1em] text-navy transition-colors duration-300 hover:bg-coral/25 sm:text-[11.5px]"
+              {/* Credential block. Deliberately short: four lines, no more.
+                  Extra credentials dilute the ones that actually matter here. */}
+              <Reveal
+                delay={80}
+                className="mt-8 rounded-2xl border-l-2 border-coral bg-coral/[0.08] py-4 pl-5 pr-4"
+              >
+                <p className="font-serif text-[18px] font-semibold text-navy sm:text-[20px]">
+                  {MEET_SONALI.credential.name}
+                </p>
+                {MEET_SONALI.credential.lines.map((line) => (
+                  <p
+                    key={line.join()}
+                    className="mt-1.5 font-body text-[11.5px] font-bold uppercase tracking-[0.1em] text-navy/65 sm:text-[12.5px]"
                   >
-                    {pill}
-                  </span>
+                    {line.map((part, i) => (
+                      <span key={part}>
+                        {i > 0 && (
+                          <span aria-hidden="true" className="mx-2 text-coral">
+                            ·
+                          </span>
+                        )}
+                        {part}
+                      </span>
+                    ))}
+                  </p>
                 ))}
               </Reveal>
             </div>

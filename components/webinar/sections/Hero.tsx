@@ -5,8 +5,9 @@ import Logo from '@/components/ui/Logo';
 import Reveal from '@/components/ui/Reveal';
 import Sparkle from '@/components/ui/Sparkle';
 import Countdown from '@/components/webinar/Countdown';
-import SaveSeatButton from '@/components/webinar/SaveSeatButton';
-import { HERO } from '@/lib/webinar-content';
+import SaveSeatButton, { CtaDetails, CtaReassurance } from '@/components/webinar/SaveSeatButton';
+import { HERO, CTA } from '@/lib/webinar-content';
+import { MASTERCLASS_NAME } from '@/lib/webinar-config';
 
 const TILE_ICONS = [CalendarDays, Clock, Video, Users];
 
@@ -104,7 +105,7 @@ export default function Hero() {
                 <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[16/9] lg:aspect-auto lg:min-h-[260px] lg:flex-1">
                   <Image
                     src="/Hero-Image/sonali-main-hero-image.JPG"
-                    alt="Sonali Badani, host of The Love Legacy Masterclass"
+                    alt={`Sonali Badani, host of ${MASTERCLASS_NAME}`}
                     fill
                     priority
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 560px, 46vw"
@@ -159,59 +160,33 @@ export default function Hero() {
             </Reveal>
           </div>
 
-          {/* ── 3 · Price, the button, and the trust row ──────────────────── */}
+          {/* ── 3 · The free badge, the button, and the reassurance ───────── */}
           <div className="order-3 mt-8 text-center lg:col-start-1 lg:row-start-2 lg:mt-5 lg:text-left">
             <Reveal>
-              <div className="flex items-center justify-center gap-3 lg:justify-start">
-                <span className="font-body text-[17px] text-white/35 line-through decoration-white/30 sm:text-[19px]">
-                  {HERO.price.struck}
-                </span>
-                <span className="rounded-pill bg-coral px-4 py-1.5 font-body text-[12.5px] font-bold uppercase tracking-[0.1em] text-navy sm:px-5 sm:text-[13.5px]">
+              <div className="flex items-center justify-center lg:justify-start">
+                <span className="rounded-pill bg-coral px-5 py-2 font-body text-[12.5px] font-bold uppercase tracking-[0.12em] text-navy sm:text-[13.5px]">
                   {HERO.price.pill}
                 </span>
               </div>
 
-              <div className="mx-auto mt-4 max-w-[560px] lg:mx-0 lg:mt-3.5 lg:max-w-[380px]">
-                <SaveSeatButton className="w-full text-[16px] sm:text-[17px]" />
+              <div className="mx-auto mt-4 max-w-[560px] lg:mx-0 lg:mt-3.5 lg:max-w-[440px]">
+                <SaveSeatButton
+                  label={CTA.labels.hero}
+                  className="w-full !px-5 text-[14.5px] leading-tight sm:text-[16px]"
+                />
               </div>
 
-              <ul className="mt-4 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 lg:mt-3 lg:justify-start">
-                {HERO.trust.map((item, i) => (
-                  <li key={item} className="flex items-center gap-2.5">
-                    {i > 0 && (
-                      <span aria-hidden="true" className="text-white/25">
-                        ·
-                      </span>
-                    )}
-                    <span className="font-body text-[11px] text-white/60 sm:text-[12px]">
-                      {item}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <CtaDetails className="mt-3.5 font-body text-[11.5px] text-white/70 sm:text-[12.5px] lg:justify-start" />
+              <CtaReassurance className="mt-1.5 font-body text-[11px] text-white/45 sm:text-[12px] lg:justify-start" />
             </Reveal>
           </div>
 
-          {/* ── 4 · The recognition lines, the bridge, and who is hosting ── */}
-          <div className="order-4 mt-9 text-center lg:col-start-1 lg:row-start-3 lg:mt-6 lg:text-left">
-            <Reveal className="mx-auto max-w-[520px] space-y-2.5 lg:mx-0 lg:max-w-none">
-              {HERO.lines.map((line) => (
-                <p
-                  key={line}
-                  className="border-l-2 border-coral py-0.5 pl-3.5 text-left font-body text-[14.5px] italic leading-relaxed text-white/90 sm:text-[15.5px] lg:text-[14.5px]"
-                >
-                  {line}
-                </p>
-              ))}
-            </Reveal>
-
-            <Reveal delay={80}>
-              <p className="mt-5 font-body text-[13.5px] leading-relaxed text-white/55 sm:text-[14.5px] lg:mt-4 lg:text-[13.5px]">
-                {HERO.bridge}
-              </p>
-            </Reveal>
-
-            <Reveal delay={140} className="mt-8 lg:mt-5">
+          {/* ── 4 · Who is hosting ──────────────────────────────────────────
+              The three recognition lines that used to sit here now open the
+              pain section instead. Said once, they land harder, and the hero
+              stays a promise rather than a second list of symptoms. */}
+          <div className="order-4 mt-8 text-center lg:col-start-1 lg:row-start-3 lg:mt-6 lg:text-left">
+            <Reveal className="mt-2">
               <span
                 aria-hidden="true"
                 className="mx-auto block h-px w-16 bg-coral/50 lg:mx-0"

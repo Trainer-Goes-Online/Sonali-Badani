@@ -1,15 +1,15 @@
 import Reveal from '@/components/ui/Reveal';
 import Sparkle from '@/components/ui/Sparkle';
-import { METHOD, PHILOSOPHY } from '@/lib/webinar-content';
+import SaveSeatButton, { CtaReassurance } from '@/components/webinar/SaveSeatButton';
+import { METHOD, CTA } from '@/lib/webinar-content';
 
 /**
  * The named framework, plus the brand philosophy underneath it.
  *
  * Reset, Rewire, Redesign was already the spine of the session. Giving it a
  * name and a numbered three step layout is what turns it from three good words
- * into something she can recognise, remember and ask for later. The philosophy
- * block below states the deeper promise once, plainly: the hero headline sells
- * saving the marriage, this says what that actually means.
+ * into something she can recognise, remember and ask for later. The brand line
+ * it serves is stated once under the hero and once at the close, never here.
  */
 export default function Method() {
   return (
@@ -66,26 +66,12 @@ export default function Method() {
             ))}
           </div>
 
-          {/* Philosophy */}
-          <Reveal delay={120} className="mt-12 text-center sm:mt-16">
-            <span aria-hidden="true" className="mx-auto block h-px w-20 bg-coral/50" />
-            <h3 className="mt-8 font-serif text-[24px] font-semibold leading-[1.2] text-white sm:text-[32px] lg:text-[38px]">
-              <span className="block text-white/60">{PHILOSOPHY.heading.line1}</span>
-              <span className="mt-1 block">
-                <span className="hl">{PHILOSOPHY.heading.line2}</span>
-              </span>
-            </h3>
-
-            <div className="mx-auto mt-7 max-w-[440px] space-y-1.5">
-              {PHILOSOPHY.lines.map((line) => (
-                <p
-                  key={line}
-                  className="font-body text-[14px] leading-relaxed text-white/65 sm:text-[15.5px]"
-                >
-                  {line}
-                </p>
-              ))}
-            </div>
+          <Reveal delay={140} className="mx-auto mt-10 max-w-[520px] sm:mt-12">
+            <SaveSeatButton
+              label={CTA.labels.afterMethod}
+              className="w-full !px-5 text-[14px] leading-tight sm:text-[15.5px]"
+            />
+            <CtaReassurance className="mt-3 font-body text-[11.5px] text-white/45 sm:text-[12.5px]" />
           </Reveal>
         </div>
       </div>

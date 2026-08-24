@@ -45,6 +45,15 @@ export const OTO_CONFIG = {
     addonRupees: VISUALIZATION_PRICE_RUPEES,
   },
   images: {
+    /**
+     * The header creative on /masterclass/upgrade: Sonali with the full
+     * product suite and the price badge.
+     *
+     * Served as the WebP built by scripts/optimize-image.js, not the 2.1 MB
+     * PNG export it came from. The page loads this one eagerly, so its weight
+     * is felt directly. Re-run that script if the artwork is ever replaced.
+     */
+    hero: '/Section-Images/sonali-new-oto-image.webp',
     product: '/Section-Images/section-image9.png',
     addon: '/Solani Bonuses/visualization.jpeg',
   },

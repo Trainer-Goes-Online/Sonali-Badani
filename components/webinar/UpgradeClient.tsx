@@ -188,38 +188,73 @@ export default function UpgradeClient() {
 
       <main>
         <div className="container-page pt-7 sm:pt-10">
-          <div className="mx-auto max-w-[720px]">
-            {/* Progress */}
-            <Reveal>
-              <p className="font-body text-[10.5px] font-bold uppercase tracking-[0.16em] text-navy/50 sm:text-[11.5px]">
-                {UPGRADE.progressLabel}
-              </p>
-              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-navy/10">
-                <div className="upgrade-progress h-full rounded-full bg-gradient-to-r from-coral-dark to-coral" />
+          {/*
+            Two column header on desktop: the copy on the left, the product
+            suite on the right. On mobile the grid collapses and the image
+            falls in DOM order, which puts it directly above the One Partner
+            Reset card, so she sees what she is being offered immediately
+            before the offer itself.
+          */}
+          <div className="mx-auto max-w-[1060px] lg:grid lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:gap-x-12 xl:gap-x-16">
+            <div className="lg:col-start-1">
+              {/* Progress */}
+              <Reveal>
+                <p className="font-body text-[10.5px] font-bold uppercase tracking-[0.16em] text-navy/50 sm:text-[11.5px]">
+                  {UPGRADE.progressLabel}
+                </p>
+                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-navy/10">
+                  <div className="upgrade-progress h-full rounded-full bg-gradient-to-r from-coral-dark to-coral" />
+                </div>
+              </Reveal>
+
+              {/* Header */}
+              <Reveal delay={80}>
+                <p className="mt-7 font-body text-[10.5px] font-bold uppercase tracking-[0.18em] text-coral-dark sm:text-[11.5px]">
+                  {UPGRADE.brandLine}
+                </p>
+                <h1 className="mt-3 font-serif text-[27px] font-semibold leading-[1.16] text-navy sm:text-[34px] lg:text-[36px]">
+                  {UPGRADE.heading}
+                </h1>
+              </Reveal>
+              <Reveal delay={130}>
+                <p className="lede mt-4">{UPGRADE.deck}</p>
+              </Reveal>
+              <div className="mt-4 space-y-3.5">
+                {UPGRADE.body.map((para, i) => (
+                  <Reveal
+                    key={para}
+                    delay={170 + i * 40}
+                    as="p"
+                    className="font-body text-[15px] leading-[1.7] text-navy/80 sm:text-[16px]"
+                  >
+                    {para}
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+
+            {/* The product suite */}
+            <Reveal
+              delay={120}
+              variant="scale"
+              className="mt-8 lg:col-start-2 lg:mt-0"
+            >
+              {/*
+                A fixed 3:2 frame with `fill` rather than intrinsic width and
+                height, so the artwork can be swapped for a file of any
+                dimensions without the layout shifting or needing a code change.
+              */}
+              <div className="relative aspect-[3/2] w-full overflow-hidden rounded-3xl bg-cream shadow-card ring-1 ring-navy/[0.08]">
+                <Image
+                  src={OTO_CONFIG.images.hero}
+                  alt="The One Partner Reset and its five bonuses, from Sonali Badani"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 92vw, 520px"
+                  className="object-cover object-center"
+                />
               </div>
             </Reveal>
-
-            {/* Header */}
-            <Reveal delay={80}>
-              <h1 className="mt-7 font-serif text-[27px] font-semibold leading-[1.16] text-navy sm:text-[34px] lg:text-[38px]">
-                {UPGRADE.heading}
-              </h1>
-            </Reveal>
-            <Reveal delay={130}>
-              <p className="lede mt-4">{UPGRADE.deck}</p>
-            </Reveal>
-            <div className="mt-4 space-y-3.5">
-              {UPGRADE.body.map((para, i) => (
-                <Reveal
-                  key={para}
-                  delay={170 + i * 40}
-                  as="p"
-                  className="font-body text-[15px] leading-[1.7] text-navy/80 sm:text-[16px]"
-                >
-                  {para}
-                </Reveal>
-              ))}
-            </div>
           </div>
 
           {/* Offer card */}

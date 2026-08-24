@@ -1,12 +1,12 @@
 import Reveal from '@/components/ui/Reveal';
 import Sparkle from '@/components/ui/Sparkle';
-import SaveSeatButton from '@/components/webinar/SaveSeatButton';
-import { WHO_FOR } from '@/lib/webinar-content';
+import SaveSeatButton, { CtaReassurance } from '@/components/webinar/SaveSeatButton';
+import { WHO_FOR, CTA } from '@/lib/webinar-content';
 
 /**
  * Four persona cards. She only needs to recognise one, so each card is
  * self-contained: four symptoms then the line that reframes them. The
- * disqualifier block and the identity pills close the section by turning
+ * identity pills close the section by turning
  * recognition into a decision.
  */
 export default function WhoThisIsFor() {
@@ -23,8 +23,27 @@ export default function WhoThisIsFor() {
               {WHO_FOR.heading}
             </h2>
           </Reveal>
-          <Reveal delay={140}>
-            <p className="lede mx-auto mt-5 max-w-[520px]">{WHO_FOR.sub}</p>
+          {/*
+            The recognition lines. They used to have a section of their own
+            under the hero, and the hero said the same thing again in different
+            words. Once, here, opening the pain section, they land harder.
+          */}
+          <Reveal delay={140} className="mx-auto mt-7 max-w-[560px]">
+            {WHO_FOR.recognition.lines.map((line) => (
+              <p
+                key={line}
+                className="font-serif text-[19px] leading-snug text-navy/55 sm:text-[24px]"
+              >
+                {line}
+              </p>
+            ))}
+            <p className="mt-1.5 font-serif text-[21px] font-semibold leading-snug text-navy sm:text-[27px]">
+              <span className="mark">{WHO_FOR.recognition.emphasis}</span>
+            </p>
+          </Reveal>
+
+          <Reveal delay={200}>
+            <p className="lede mx-auto mt-7 max-w-[520px]">{WHO_FOR.sub}</p>
           </Reveal>
         </div>
 
@@ -62,16 +81,6 @@ export default function WhoThisIsFor() {
           ))}
         </div>
 
-        {/* Disqualifier */}
-        <Reveal
-          delay={80}
-          className="mx-auto mt-8 max-w-[720px] rounded-3xl bg-navy p-6 sm:mt-10 sm:p-8"
-        >
-          <p className="font-body text-[14.5px] leading-[1.65] text-white/85 sm:text-[16px]">
-            {WHO_FOR.disqualifier}
-          </p>
-        </Reveal>
-
         {/* Transition */}
         <Reveal delay={120}>
           <p className="mx-auto mt-8 max-w-[620px] text-center font-serif text-[17px] italic leading-relaxed text-navy/75 sm:mt-10 sm:text-[19px]">
@@ -96,7 +105,8 @@ export default function WhoThisIsFor() {
         </div>
 
         <Reveal delay={120} className="mx-auto mt-8 max-w-[520px]">
-          <SaveSeatButton className="w-full" />
+          <SaveSeatButton label={CTA.labels.afterPain} className="w-full" />
+          <CtaReassurance className="mt-3 font-body text-[11.5px] text-navy/50 sm:text-[12.5px]" />
         </Reveal>
       </div>
     </section>

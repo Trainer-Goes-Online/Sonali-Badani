@@ -3,7 +3,8 @@ import { ShieldCheck } from 'lucide-react';
 import Reveal from '@/components/ui/Reveal';
 import Sparkle from '@/components/ui/Sparkle';
 import Testimonials from '@/components/webinar/Testimonials';
-import { PROOF } from '@/lib/webinar-content';
+import SaveSeatButton, { CtaReassurance } from '@/components/webinar/SaveSeatButton';
+import { PROOF, CTA } from '@/lib/webinar-content';
 
 /**
  * Real client messages, in their original screenshots.
@@ -60,6 +61,14 @@ export default function Proof() {
             <p className="font-serif text-[15.5px] italic leading-[1.7] text-navy/85 sm:text-[17.5px]">
               {PROOF.privacy}
             </p>
+          </Reveal>
+
+          <Reveal delay={140} className="mx-auto mt-9 max-w-[520px]">
+            <SaveSeatButton
+              label={CTA.labels.afterProof}
+              className="w-full !px-5 text-[14.5px] leading-tight sm:text-[16px]"
+            />
+            <CtaReassurance className="mt-3 font-body text-[11.5px] text-navy/50 sm:text-[12.5px]" />
           </Reveal>
         </div>
       </div>

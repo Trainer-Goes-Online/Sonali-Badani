@@ -5,9 +5,10 @@ import Logo from '@/components/ui/Logo';
 import Footer from '@/components/Footer';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import UpgradeClient from '@/components/webinar/UpgradeClient';
+import { MASTERCLASS_NAME } from '@/lib/webinar-config';
 
 export const metadata: Metadata = {
-  title: 'One small decision | The Love Legacy Masterclass',
+  title: `One small decision | ${MASTERCLASS_NAME}`,
   // Never indexed: this page is only meaningful straight after a registration.
   robots: { index: false, follow: false },
 };

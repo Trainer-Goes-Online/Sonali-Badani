@@ -15,7 +15,15 @@ import {
   VISUALIZATION_PRICE_LABEL,
   ANCHOR_PRICE_LABEL,
 } from './pricing';
-import { WEBINAR, TIME_IST, DAY_TIME_IST, DATE_TIME_IST } from './webinar-config';
+import {
+  WEBINAR,
+  TIME_IST,
+  DAY_TIME_IST,
+  DATE_TIME_IST,
+  MASTERCLASS_NAME,
+  MASTERCLASS_TAGLINE,
+  MASTERCLASS_TAGLINE_PARTS,
+} from './webinar-config';
 
 /* ────────────────────────────────────────────────────────────────────────────
  * P1 · REGISTRATION LANDING PAGE  ·  /masterclass
@@ -25,38 +33,26 @@ export const ANNOUNCEMENT = ['Live on Zoom', 'Seats are limited', 'Free to atten
 
 export const HERO = {
   eyebrow: 'For married women who have tried everything and nothing has changed',
-  // The highlighted span renders coral. The line break is intentional on mobile.
+  /**
+   * The brand promise. "Stop surviving" rather than "save your marriage":
+   * the page is honest that nothing changes overnight and that she cannot fix
+   * him, so the headline must promise the thing she can actually have.
+   */
   headline: {
     before: "You don't need ",
     highlight: 'his permission',
-    after: ' to save your marriage',
+    after: ' to stop surviving your marriage',
   },
-  /**
-   * Carries the problem, the mechanism, the hope and the agency in one line,
-   * and stops short of promising she can single-handedly fix him or the
-   * marriage. The headline above it is locked; this is the line that turns the
-   * promise into something she can picture leaving with.
-   *
-   * The approved wording used an em dash. House rule bans them in visible copy,
-   * so it is a comma here. Nothing else changed.
-   */
-  deck: 'In 90 minutes, discover the hidden pattern keeping your marriage stuck, and learn the first shift you can make without waiting for him to change.',
-  lines: [
-    "You're doing everything right and it's still not working.",
-    "You haven't stopped loving him. You've stopped feeling seen by him.",
-    "You're not sure if you want to leave. You're not sure you can stay.",
-  ],
-  bridge: 'If you read one of those twice, this session was built for you.',
+  deck: 'In 90 minutes, discover the hidden pattern keeping your marriage stuck, and the first shift you can make without waiting for him to change.',
   credential: [
     'Hosted by Sonali Badani, Marriage Architect and founder of The Soul Space.',
-    'Over 2,000 private sessions with married women since 2023.',
   ],
   countdownLabel: 'The room opens in',
   countdownClosed: 'Registration closes today',
   lockup: {
-    chip: 'Free live session',
-    title: 'The Love Legacy Masterclass',
-    sub: 'Live on Zoom with Sonali Badani',
+    chip: 'Free live masterclass',
+    title: MASTERCLASS_NAME,
+    sub: MASTERCLASS_TAGLINE,
   },
   tiles: [
     { label: 'Date', value: WEBINAR.date },
@@ -64,24 +60,70 @@ export const HERO = {
     { label: 'Where', value: 'Live on Zoom, from anywhere' },
     { label: "Who it's for", value: 'Married women, 25 to 65' },
   ],
-  price: { struck: '₹999', pill: 'Today: Free' },
+  /**
+   * No struck-through anchor price. Nobody has ever been charged for this
+   * masterclass, so showing "₹999" crossed out would imply a former price that
+   * never existed. "Free live masterclass" is the honest version of the same
+   * message and reads more confidently.
+   */
+  price: { pill: 'Free live masterclass' },
   cta: 'Save my seat',
-  trust: ['Zoom link on WhatsApp instantly', 'Camera stays off', 'Nothing to download'],
   scarcity: `Only ${WEBINAR.seats} seats in the live room. Registration closes when it fills.`,
 };
 
 /**
- * The recognition line, immediately under the hero.
+ * The brand narrative, given its own anchor immediately under the hero.
  *
- * Its only job is to make her think "this is exactly me" before she decides
- * whether to keep reading. It names the woman who is neither leaving nor
- * staying happily, which is the state most of this audience is actually in and
- * which generic relationship copy never says out loud.
+ * "Stop surviving, start designing" is the thread the whole site hangs on, so
+ * it gets stated once, at scale, before anything else competes for attention.
+ * The three step strip underneath names the mechanism in one line each; the
+ * full explanation lives in the Method section further down and is not repeated
+ * here.
  */
-export const RECOGNITION = {
-  lines: ["You don't hate him.", "You don't necessarily want to leave."],
-  emphasis: "You just don't know how to keep living like this.",
-  closer: 'If that landed somewhere, keep reading. This session was built for exactly that place.',
+export const SURVIVING_TO_DESIGNING = {
+  eyebrow: 'The shift',
+  /** Both halves of the tagline, set on two lines. */
+  from: MASTERCLASS_TAGLINE_PARTS[0],
+  to: MASTERCLASS_TAGLINE_PARTS[1],
+  body: [
+    'You do not need to wait for him to change.',
+    'You need to understand the pattern, rewire your response, and start creating your relationship by choice.',
+  ],
+  stripLabel: 'How that happens',
+  steps: [
+    { n: '01', title: 'Reset', body: 'See the pattern you have been living inside.' },
+    { n: '02', title: 'Rewire', body: 'Change the reaction that keeps repeating.' },
+    {
+      n: '03',
+      title: 'Redesign',
+      body: 'Start creating your marriage consciously instead of by default.',
+    },
+  ],
+};
+
+/**
+ * Copy shared by every call to action.
+ *
+ * `labels` vary the microcopy by placement so six buttons never read as the
+ * same button six times, while all of them open the same registration modal.
+ * `reassurance` sits under each one and answers the three objections this
+ * audience actually has: being seen, being exposed, and needing him to agree.
+ */
+export const CTA = {
+  primary: 'Yes, I want to stop surviving my marriage',
+  /** Shorter forms, so the promise still fits on a narrow phone. */
+  primaryShort: 'Yes, I want to stop surviving',
+  primaryTiny: 'Stop surviving. Start designing.',
+  labels: {
+    hero: 'Yes, I want to stop surviving my marriage',
+    afterPain: 'Yes, show me the pattern',
+    afterMethod: 'Yes, show me how to redesign my marriage',
+    afterOutcome: 'Save my seat for the masterclass',
+    afterProof: 'Yes, I want this for my marriage',
+    final: 'Yes, I want to stop surviving my marriage',
+  },
+  details: ['Free', 'Live on Zoom', WEBINAR.duration, 'Camera off'],
+  reassurance: ['Private', 'Camera off', "Husband doesn't need to attend"],
 };
 
 /**
@@ -99,8 +141,16 @@ export const CREDIBILITY = {
 
 export const WHO_FOR = {
   eyebrow: 'Who this is for',
-  // "Tired" is more emotionally immediate than "has stopped waiting".
-  heading: 'This is for the woman who is tired of waiting for him to change',
+  heading: "You're doing everything right. So why does your marriage still feel wrong?",
+  /**
+   * The recognition lines used to sit in their own section under the hero and
+   * again, in different words, in the hero itself. Said once, here, at the top
+   * of the pain section, they land harder and the page is shorter for it.
+   */
+  recognition: {
+    lines: ["You don't hate him.", "You don't necessarily want to leave."],
+    emphasis: "You just don't know how to keep living like this.",
+  },
   sub: 'Four different houses. The same silence. Read the one that sounds like yours.',
   cards: [
     {
@@ -109,7 +159,6 @@ export const WHO_FOR = {
         'You run the house, the children, the calendar, the in laws, and most of the emotional weight',
         'You have read the books, watched the videos, tried the date nights',
         'You have explained the same thing so many times you have stopped hearing yourself say it',
-        'You are not asking for much. You are asking to be noticed',
       ],
       pull: 'You do not need to try harder. You need to try somewhere else.',
     },
@@ -119,7 +168,6 @@ export const WHO_FOR = {
         'The fights stopped, and somehow that felt worse',
         'You share a house, a bed, a bank account, and almost nothing else',
         'You edit yourself before you speak, just to keep the evening calm',
-        'You are the only one who notices the distance, which makes you wonder if you are imagining it',
       ],
       pull: 'Walking on eggshells is not peace. It is a pattern.',
     },
@@ -129,7 +177,6 @@ export const WHO_FOR = {
         'Some nights you plan the whole thing out in your head',
         'The next morning you make his tea anyway',
         'You have 99 reasons to leave. You are still looking for the 1 reason to stay',
-        'You want to know you tried everything before you decide anything',
       ],
       pull: 'You deserve to make that decision from clarity, not exhaustion.',
     },
@@ -144,13 +191,10 @@ export const WHO_FOR = {
         'They read the room before they walk into it',
         'They are quietly learning what love is supposed to feel like',
         'They will carry your rhythm into their own homes one day',
-        'What changes in you changes what they learn',
       ],
       pull: 'Your children are learning what love feels like by watching you. And you have the power to change what they learn.',
     },
   ],
-  disqualifier:
-    'Please do not register if you are looking for a way to control him, a script to hand him so he finally understands, or a promise that everything changes overnight. This session is none of those things.',
   transition: 'But if some part of you still believes there is something here worth rebuilding...',
   // Rendered uppercase by the component, so they are written in sentence case here.
   identities: [
@@ -199,7 +243,7 @@ export const REAL_PROBLEM = {
       body: 'Tips for talking to him. Advice that only works if he cooperates. A promise that things improve once he finally understands.',
     },
     ours: {
-      label: 'The Love Legacy Masterclass',
+      label: MASTERCLASS_NAME,
       body: 'The pattern underneath the fights, named out loud, and the first move you can make tonight without telling him you are making it.',
     },
   },
@@ -241,7 +285,7 @@ export const METHOD = {
 
 export const WHAT_WE_COVER = {
   eyebrow: 'What we cover',
-  heading: 'The Love Legacy Masterclass, live in 90 minutes',
+  heading: `${MASTERCLASS_NAME}, live in ${WEBINAR.duration}`,
   sub: 'Every part is something you can use the same night. You leave with a plan, not notes.',
   steps: [
     {
@@ -265,41 +309,37 @@ export const WHAT_WE_COVER = {
       body: 'You leave with one pattern named, one move to make this week, and a simple map for the next thirty days. Written down, not remembered.',
     },
   ],
-  /** Pulled forward so the concrete takeaway is visible before the CTA. */
-  takeaway: {
-    label: 'You leave with',
-    items: ['One pattern named', 'One move to make this week', 'One 30 day map'],
+  /**
+   * The outcome, folded into this section rather than repeated in one of its
+   * own. It used to be said three times on the page: a takeaway strip here, a
+   * Clarity / Control / Plan section below, and again in the final close.
+   * Once, here, immediately after the five teaching points.
+   */
+  outcome: {
+    eyebrow: 'The outcome',
+    heading: 'In 90 minutes, you will leave with',
+    items: [
+      {
+        n: '01',
+        title: 'Clarity',
+        body: 'The pattern underneath your recurring conflict, named out loud for the first time.',
+      },
+      {
+        n: '02',
+        title: 'A shift',
+        body: 'One change you can make without waiting for him, and without a conversation about it.',
+      },
+      {
+        n: '03',
+        title: 'A 30 day map',
+        body: 'A simple first plan to start changing the dynamic, written down rather than remembered.',
+      },
+    ],
   },
   qa: {
     title: 'Bring your hardest moment',
     body: 'In the last part of the session, bring the situation you keep replaying. The one you have never said out loud. Type it in the chat and we work through it live, with the room. No names shown. No judgement.',
   },
-};
-
-/**
- * The core transformation promise, not a list of takeaways. Clarity, control
- * and a plan are what she is actually buying with 90 minutes of her evening.
- */
-export const AFTER_NINETY = {
-  eyebrow: 'The outcome',
-  heading: 'In 90 minutes, you will leave with',
-  items: [
-    {
-      n: '01',
-      title: 'Clarity',
-      body: 'The pattern underneath your recurring conflict, named out loud for the first time.',
-    },
-    {
-      n: '02',
-      title: 'Control',
-      body: 'One shift you can make without waiting for him, and without a single conversation about it.',
-    },
-    {
-      n: '03',
-      title: 'A plan',
-      body: 'Your first thirty days of changing the dynamic, written down rather than remembered.',
-    },
-  ],
 };
 
 /**
@@ -336,41 +376,30 @@ export const NOT_THIS = {
 };
 
 /**
- * The brand philosophy, stated plainly once. The hero headline stays as it is;
- * this is the deeper promise underneath it, and it is what moves the positioning
- * from "another coach who fixes husbands" to "the architect of her own home".
+ * Shortened from seven paragraphs to four.
+ *
+ * This section is not a biography. It answers two questions: why Sonali cares
+ * about this, and why she can be trusted with a marriage. The grandparents,
+ * the loss, the question it raised and the mission that followed are the whole
+ * emotional core, so everything around them has been cut.
  */
-export const PHILOSOPHY = {
-  heading: {
-    line1: 'Stop surviving your marriage.',
-    line2: 'Start redesigning it.',
-  },
-  lines: [
-    'You do not need to wait for him to change.',
-    'You need to understand the pattern.',
-    'Rewire your response.',
-    'And redesign the relationship you are creating together.',
-  ],
-};
-
 export const MEET_SONALI = {
   eyebrow: 'Meet your host',
   heading: 'The woman behind the Love Legacy',
   body: [
-    'I did not set out to become a relationship coach.',
-    'I learned what love looked like by watching my grandparents. They had a love marriage in a generation where that was rare. What made them extraordinary was not that they fell in love. It was that they kept choosing each other, every single day.',
-    'During Covid they both fell ill. I was at a family wedding, telling myself I would see them soon. I never got to say goodbye. They passed away two days apart. After a lifetime together, they could not bear to stay apart for long.',
+    'I learned what love looked like by watching my grandparents. A love marriage in a generation where that was rare. What made them extraordinary was not that they fell in love. It was that they kept choosing each other, every single day.',
+    'During Covid they both fell ill. I never got to say goodbye. They passed away two days apart, because after a lifetime together they could not bear to stay apart for long.',
     'Standing in that grief I asked one question. If that kind of love exists, why are so many marriages quietly falling apart?',
-    'I have spent the years since answering it. Over 2,000 private sessions with married women. Not one of them started with the husband in the room.',
-    'And the women whose marriages changed all had one thing in common. They stopped asking when will he change, and started asking who do I need to become.',
-    'That question is the whole session. I would like you to be in the room for it.',
+    'I have spent the years since answering it, in private sessions with married women. Not one of them started with the husband in the room. And the women whose marriages changed all stopped asking when will he change, and started asking who do I need to become.',
   ],
-  pills: [
-    'Marriage Architect',
-    'Founder, The Soul Space',
-    'Certified NLP Practitioner',
-    '2,000+ private sessions',
-  ],
+  /** Kept deliberately short. Unrelated credentials dilute the ones that matter. */
+  credential: {
+    name: 'Sonali Badani',
+    lines: [
+      ['Marriage Architect', 'Founder, The Soul Space'],
+      ['Certified NLP Practitioner', '2,000+ private sessions'],
+    ],
+  },
 };
 
 /**
@@ -403,6 +432,8 @@ export const PROOF = {
       width: 559,
       height: 1000,
       attribution: 'Private coaching client · after twelve sessions',
+      before: 'Negative mindset, stuck in the same patterns',
+      after: 'Marriage stronger than ever',
       pull: 'Today, my marriage is stronger than ever.',
       summary:
         'Her twelve coaching sessions completely transformed her life. She learned to understand herself better, manage her emotions, and approach her relationship with a new perspective. Today her marriage is stronger than ever, and she has rediscovered love and appreciation for both her husband and her life. The negative mindset that once controlled her has been replaced with hope, gratitude and positivity.',
@@ -414,6 +445,8 @@ export const PROOF = {
       width: 950,
       height: 1000,
       attribution: 'Private coaching client · marriage was close to ending',
+      before: 'Marriage close to breaking down, thinking about divorce',
+      after: 'Came through the hardest phase',
       pull: 'My marriage was on the verge of breaking down.',
       summary:
         'She is deeply grateful to Sonali Badani for helping her through one of the most challenging phases of her life. When she started, she was struggling in her relationship, her marriage was on the verge of breaking down, and she was overwhelmed with negativity and constantly thinking about divorce.',
@@ -425,6 +458,8 @@ export const PROOF = {
       width: 951,
       height: 981,
       attribution: 'Private coaching client · on rebuilding the relationship',
+      before: 'Confidence gone, relationship coming apart',
+      after: 'Rebuilt connection, confidence back',
       pull: 'The transformation I experienced has been life changing.',
       summary:
         'The transformation she experienced has been life changing. She cannot thank Sonali enough for helping her rebuild her relationship, regain her confidence, and create a happier, healthier life, and she wholeheartedly recommends her to anyone seeking positive change and personal growth.',
@@ -436,6 +471,8 @@ export const PROOF = {
       width: 894,
       height: 1000,
       attribution: 'Private coaching client · after one session',
+      before: 'Struggling to connect for a long time',
+      after: 'A shift in behaviour and energy',
       pull: 'I could see a shift after just one session.',
       summary:
         'She thanks Sonali for the cord connect process, which worked wonders in helping her connect with her partner after struggling for a long time. She could see a shift in behaviour and energy after just one session, and it made her believe in the power of these processes.',
@@ -476,14 +513,19 @@ export const FAQ = {
 };
 
 export const FINAL_CLOSE = {
+  /** The brand line, closing the page on the same words it opened with. */
+  heading: {
+    line1: MASTERCLASS_TAGLINE_PARTS[0],
+    line2: MASTERCLASS_TAGLINE_PARTS[1],
+  },
   quote:
-    "The relationship didn't break overnight. And it won't be fixed overnight. But it can be fixed from your side first.",
+    "The relationship didn't break overnight. And it won't change overnight. But it can start changing from your side first.",
   signature: 'Sonali Badani',
   fine: `${DATE_TIME_IST} · Live on Zoom · Free`,
 };
 
 export const STICKY = {
-  title: 'Free live session',
+  title: 'Free live masterclass',
   sub: DAY_TIME_IST,
   cta: 'Save my seat',
 };
@@ -545,6 +587,8 @@ export const UPGRADE = {
   progressLabel: 'Registration 70% complete',
   heading: 'Before you join the WhatsApp group, one small decision.',
   deck: 'The women who get the most out of this masterclass are not the ones who show up. They are the ones who walk in already knowing their pattern.',
+  /** The same brand line the landing page opens and closes on. */
+  brandLine: MASTERCLASS_TAGLINE,
   body: [
     `On ${WEBINAR.date} I am going to name the pattern ruining your marriage. Ninety minutes is enough to see it. It is not always enough to sit with it.`,
     'So I want to give you a head start. Something you can begin tonight, on your own, before the room even opens.',

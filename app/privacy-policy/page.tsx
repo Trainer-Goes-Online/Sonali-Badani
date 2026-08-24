@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import LegalPageLayout from '@/components/LegalPageLayout';
 import { COURSE_PRICE_LABEL, VISUALIZATION_PRICE_LABEL } from '@/lib/pricing';
+import { MASTERCLASS_NAME } from '@/lib/webinar-config';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Sonali Badani',
@@ -13,7 +14,7 @@ export default function PrivacyPolicyPage() {
       <p>
         This Privacy Policy explains how Sonali Badani and The Soul Space (&ldquo;we&rdquo;,
         &ldquo;us&rdquo;) collect, use, and protect your information when you visit this website,
-        register for The Love Legacy Masterclass, or purchase The One Partner Reset.
+        register for {MASTERCLASS_NAME}, or purchase The One Partner Reset.
       </p>
 
       <h2>Information we collect</h2>

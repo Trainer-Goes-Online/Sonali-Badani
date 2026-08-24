@@ -1,11 +1,15 @@
 import Reveal from '@/components/ui/Reveal';
 import Sparkle from '@/components/ui/Sparkle';
-import SaveSeatButton from '@/components/webinar/SaveSeatButton';
-import { FINAL_CLOSE } from '@/lib/webinar-content';
+import SaveSeatButton, { CtaReassurance } from '@/components/webinar/SaveSeatButton';
+import { FINAL_CLOSE, CTA } from '@/lib/webinar-content';
 
 /**
- * The last word before the footer. Sonali's line, her signature, the button,
- * and the event details in fine print.
+ * The last word before the footer.
+ *
+ * Closes on the same line the page opened with, so the brand narrative is the
+ * first and last thing she reads. The event details are repeated here on
+ * purpose: by this point she has scrolled a long way from the hero, and the
+ * date is the one fact she needs before she commits.
  */
 export default function FinalClose() {
   return (
@@ -20,26 +24,41 @@ export default function FinalClose() {
           <Sparkle twinkle className="h-5 w-5 text-gold" />
         </Reveal>
 
-        <Reveal delay={80}>
-          <p className="mx-auto mt-6 max-w-[620px] font-serif text-[22px] font-medium leading-[1.3] text-white sm:text-[30px] lg:text-[34px]">
+        {/* The brand line, one last time */}
+        <Reveal delay={70}>
+          <h2 className="mx-auto mt-6 max-w-[680px] font-serif text-[27px] font-semibold uppercase leading-[1.14] text-white sm:text-[38px] lg:text-[44px]">
+            <span className="block text-white/55">{FINAL_CLOSE.heading.line1}</span>
+            <span className="mt-2 block">
+              <span className="hl">{FINAL_CLOSE.heading.line2}</span>
+            </span>
+          </h2>
+        </Reveal>
+
+        <Reveal delay={140}>
+          <p className="mx-auto mt-7 max-w-[560px] font-serif text-[17px] italic leading-[1.45] text-white/70 sm:text-[20px]">
             {FINAL_CLOSE.quote}
           </p>
         </Reveal>
 
-        <Reveal delay={140}>
-          <p className="mt-5 font-serif text-[15px] italic text-coral sm:text-[16px]">
+        <Reveal delay={190}>
+          <p className="mt-4 font-serif text-[15px] italic text-coral sm:text-[16px]">
             {FINAL_CLOSE.signature}
           </p>
         </Reveal>
 
-        <Reveal delay={200} className="mx-auto mt-9 max-w-[440px]">
-          <SaveSeatButton className="w-full text-[16px] sm:text-[17px]" />
-        </Reveal>
-
-        <Reveal delay={250}>
-          <p className="mt-4 font-body text-[12px] text-white/50 sm:text-[13px]">
+        {/* The event details, repeated where she is deciding */}
+        <Reveal delay={240}>
+          <p className="mx-auto mt-9 inline-block rounded-pill border border-white/15 bg-white/[0.06] px-5 py-2.5 font-body text-[12px] font-semibold text-white/85 sm:text-[13.5px]">
             {FINAL_CLOSE.fine}
           </p>
+        </Reveal>
+
+        <Reveal delay={290} className="mx-auto mt-6 max-w-[520px]">
+          <SaveSeatButton
+            label={CTA.labels.final}
+            className="w-full !px-5 text-[14.5px] leading-tight sm:text-[16px]"
+          />
+          <CtaReassurance className="mt-3.5 font-body text-[11.5px] text-white/45 sm:text-[12.5px]" />
         </Reveal>
       </div>
     </section>

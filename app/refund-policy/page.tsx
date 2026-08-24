@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import LegalPageLayout from '@/components/LegalPageLayout';
 import { COURSE_PRICE_LABEL, VISUALIZATION_PRICE_LABEL } from '@/lib/pricing';
+import { MASTERCLASS_NAME } from '@/lib/webinar-config';
 
 export const metadata: Metadata = {
   title: 'Refund Policy | Sonali Badani',
@@ -12,7 +13,7 @@ export default function RefundPolicyPage() {
     <LegalPageLayout title="Refund Policy" updated="August 2026">
       <h2>The masterclass is free</h2>
       <p>
-        There is nothing to pay to attend The Love Legacy Masterclass, so there is nothing to refund.
+        There is nothing to pay to attend {MASTERCLASS_NAME}, so there is nothing to refund.
         If you cannot make the live session, simply do not attend. You are welcome to leave the
         WhatsApp group at any time.
       </p>
