@@ -21,7 +21,13 @@ import { UPGRADE } from '@/lib/webinar-content';
 import { OTO_CONFIG, otoTotalRupees } from '@/lib/oto-config';
 import { readCachedLead, mergeCachedLead, REGISTERED_FLAG_KEY } from '@/lib/tracking';
 import { flushRegistrationRetries } from '@/lib/registration';
-import { trackAddToCart, trackOtoDecline } from '@/lib/events';
+import {
+  trackOtoAddonAdded,
+  trackOtoDecline,
+  trackOtoResetCta,
+  trackOtoResetPlusCta,
+} from '@/lib/events';
+import { ensurePurchaseEventId } from '@/lib/purchase';
 import { useStickyOffset } from './useStickyOffset';
 
 /**
@@ -101,7 +107,8 @@ export default function UpgradeClient() {
       if (lead.email) url.searchParams.set(k.email, lead.email);
       if (lead.country_code) url.searchParams.set(k.countryCode, lead.country_code);
       if (lead.phone) url.searchParams.set(k.phone, lead.phone);
-      if (lead.city) url.searchParams.set(k.city, lead.city);
+      // No city: TagMango's City box is a custom field and no custom field can
+      // be prefilled from the URL. See docs/TAGMANGO-ATTRIBUTION-AUDIT.md.
     }
     return url.toString();
   };
@@ -110,15 +117,40 @@ export default function UpgradeClient() {
     if (leaving.current) return;
     leaving.current = true;
 
-    // Record what she chose, so the post-purchase webhook reports the right
-    // amount even though TagMango does not send it back.
+    // Record what she chose, so the post-purchase page reports the right amount
+    // even though TagMango does not send it back. Minting the purchase id HERE
+    // is what makes the Meta event_id survive the checkout round trip, so a
+    // reload of the thank-you page can never double count the sale.
     mergeCachedLead({ amount: String(total) });
-    trackAddToCart(total, added);
+    ensurePurchaseEventId();
+
+    // Two distinct events, because the price on the button differs and Sonali
+    // needs to see which offer actually pulls.
+    if (added) trackOtoResetPlusCta(total);
+    else trackOtoResetCta(total);
 
     window.location.href = buildCheckoutUrl(
       added ? OTO_CONFIG.links.productPlusAddon : OTO_CONFIG.links.productOnly
     );
   };
+
+  /**
+   * The add-on state, in one place. Only switching ON is an event: switching
+   * off is not "adding the Visualization" and reporting it would double count
+   * every woman who toggles while she decides.
+   *
+   * Both add-on controls on the page (the card button and the checkbox in the
+   * summary) route through here, so neither can drift out of sync with the other
+   * or quietly stop reporting.
+   */
+  const setAddonChecked = (next: boolean) => {
+    setAdded((prev) => {
+      if (next && !prev) trackOtoAddonAdded(otoTotalRupees(true));
+      return next;
+    });
+  };
+
+  const handleToggleAddon = () => setAddonChecked(!added);
 
   const handleDecline = () => {
     if (leaving.current) return;
@@ -437,7 +469,7 @@ export default function UpgradeClient() {
               {/* Toggle */}
               <button
                 type="button"
-                onClick={() => setAdded((v) => !v)}
+                onClick={handleToggleAddon}
                 aria-pressed={added}
                 className={`mt-3 flex w-full items-center gap-3 border-t px-5 py-4 text-left transition-colors ${
                   added ? 'border-coral/30 bg-coral/[0.08]' : 'border-navy/10 bg-white hover:bg-navy/[0.02]'
@@ -622,7 +654,7 @@ export default function UpgradeClient() {
             <input
               type="checkbox"
               checked={added}
-              onChange={(e) => setAdded(e.target.checked)}
+              onChange={(e) => setAddonChecked(e.target.checked)}
               className="sr-only"
             />
             <span

@@ -9,9 +9,10 @@ import SuccessMark from '@/components/ui/SuccessMark';
 import StepCard from '@/components/webinar/StepCard';
 import AddToCalendar from '@/components/webinar/AddToCalendar';
 import WhatsAppButton from '@/components/webinar/WhatsAppButton';
-import FunnelWebhook from '@/components/welcome/FunnelWebhook';
+import PurchaseDispatcher from '@/components/webinar/PurchaseDispatcher';
 import { OTO_CONFIG } from '@/lib/oto-config';
 import { WEBINAR } from '@/lib/webinar-config';
+import { COURSE_PRICE_RUPEES, BUNDLE_PRICE_RUPEES } from '@/lib/pricing';
 import { WELCOME_RESET, WELCOME_RESET_PLUS, UPGRADE } from '@/lib/webinar-content';
 
 /**
@@ -25,7 +26,8 @@ import { WELCOME_RESET, WELCOME_RESET_PLUS, UPGRADE } from '@/lib/webinar-conten
  * block is identical, so both routes render this one component and the copy
  * stays in a single place.
  *
- * FunnelWebhook fires the existing purchase webhook on both, unchanged.
+ * PurchaseDispatcher fires Meta Purchase + sales and the purchase webhook on
+ * both, with the amount decided by which page rendered.
  */
 export default function WelcomeResetContent({ withAddon = false }: { withAddon?: boolean }) {
   const heading = withAddon ? WELCOME_RESET_PLUS.heading : WELCOME_RESET.heading;
@@ -38,7 +40,9 @@ export default function WelcomeResetContent({ withAddon = false }: { withAddon?:
 
   return (
     <>
-      <FunnelWebhook />
+      <PurchaseDispatcher
+        amount={withAddon ? BUNDLE_PRICE_RUPEES : COURSE_PRICE_RUPEES}
+      />
 
       <header className="border-b border-navy/10 bg-cream">
         <div className="container-page flex h-14 items-center justify-center sm:h-16">

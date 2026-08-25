@@ -9,7 +9,7 @@ import Sparkle from '@/components/ui/Sparkle';
 import { FORM } from '@/lib/webinar-content';
 import { DAY_TIME_IST } from '@/lib/webinar-config';
 import { submitRegistration } from '@/lib/registration';
-import { trackLead, trackRegistrationStep } from '@/lib/events';
+import { trackRegistration, trackRegistrationStep } from '@/lib/events';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -207,7 +207,9 @@ export default function RegistrationModal({
       // Deliberately swallowed. She is never blocked on our infrastructure.
     }
 
-    trackLead(leadId || undefined);
+    // CompleteRegistration + Lead, both server side. Fired AFTER the lead is
+    // cached, so the CAPI call has her email, phone and city to match on.
+    trackRegistration(leadId || undefined);
     // Straight to the OTO. No interstitial: this is the single most common
     // build error on this funnel and it is what kills the one time offer.
     router.push('/masterclass/upgrade');

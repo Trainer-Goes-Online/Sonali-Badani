@@ -59,9 +59,13 @@ export const OTO_CONFIG = {
   },
   /**
    * Prefill the TagMango checkout from the details captured at registration, so
-   * the buyer never retypes them. `keys` are the query-param names TagMango's
-   * checkout reads. Verify against a real TagMango checkout and adjust here if
-   * the fields do not populate (only this block needs changing).
+   * the buyer never retypes them.
+   *
+   * Only `name`, `email` and `phone` work. Verified against the live checkout:
+   * TagMango reads exactly those three from the URL. There is deliberately no
+   * `city` key, because City is one of TagMango's CUSTOM fields, and no custom
+   * field is prefillable from a query string by any spelling. See
+   * docs/TAGMANGO-ATTRIBUTION-AUDIT.md. She types City at the checkout instead.
    */
   prefill: {
     enabled: true,
@@ -70,7 +74,6 @@ export const OTO_CONFIG = {
       email: 'email',
       phone: 'phone',
       countryCode: 'country_code',
-      city: 'city',
     },
   },
 } as const;

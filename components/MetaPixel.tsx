@@ -5,13 +5,19 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 /**
- * Meta Pixel — browser-side PageView only (per the funnel's CAPI design: the
- * Purchase + sales conversions fire server-side from the CRM Apps Script).
+ * Meta Pixel — browser-side PageView ONLY.
+ *
+ * Every other Meta event on this funnel fires server-side through /api/capi.
+ * Do not add fbq('track', ...) calls here or anywhere else: a browser event and
+ * a server event for the same thing would double count unless they share an
+ * event_id, and the whole point of the CAPI design is that an ad blocker on the
+ * pixel cannot cost us a conversion.
  *
  * Loading the pixel is what sets the first-party `_fbp` cookie (and `_fbc` when
  * the landing URL carries `fbclid`). Those cookies ride along through the funnel
- * and are read back into the Pabbly payload on /welcome (see FunnelWebhook), so
- * the server events land with high Event Match Quality.
+ * and are read back into every CAPI call (see lib/events.ts currentUserData) and
+ * into the purchase webhook payload, so the server events land with high Event
+ * Match Quality.
  *
  * The pixel id comes from NEXT_PUBLIC_META_PIXEL_ID (set in .env / Vercel) — it
  * is never hardcoded. If the env var is unset, the component renders nothing.
