@@ -121,11 +121,9 @@ export default function Hero() {
                   </span>
 
                   <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+                    {/* The name stands alone. There is no sub-heading under it. */}
                     <p className="font-serif text-[17px] font-semibold uppercase leading-tight tracking-[0.01em] text-white sm:text-[20px]">
                       {HERO.lockup.title}
-                    </p>
-                    <p className="mt-1 font-body text-[12px] text-white/70 sm:text-[13px]">
-                      {HERO.lockup.sub}
                     </p>
                   </div>
                 </div>

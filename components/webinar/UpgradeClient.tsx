@@ -90,6 +90,37 @@ export default function UpgradeClient() {
     void flushRegistrationRetries();
   }, [router]);
 
+  /**
+   * Re-arm the buttons whenever this page becomes visible again.
+   *
+   * `leaving` latches true on a CTA click so a double tap cannot fire two
+   * checkout hops. The bug that fixed was real, but the latch was never
+   * released: coming back from TagMango with the browser Back button restores
+   * this page from the bfcache WITHOUT remounting, so the latch survived and
+   * every subsequent click was silently swallowed. She could add the
+   * Visualization, tap the button, and nothing at all would happen. Only a hard
+   * reload cleared it, because that is the one path that remounts.
+   *
+   * `pageshow` fires on a bfcache restore (persisted === true) as well as a
+   * normal load, and `visibilitychange` catches the tab-switch case where no
+   * navigation ever happened. Either one means she is looking at this page
+   * again, so the guard has done its job and must let go.
+   */
+  useEffect(() => {
+    const rearm = () => {
+      leaving.current = false;
+    };
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') rearm();
+    };
+    window.addEventListener('pageshow', rearm);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.removeEventListener('pageshow', rearm);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, []);
+
   /* ── Actions ──────────────────────────────────────────────────────────── */
 
   const buildCheckoutUrl = (base: string) => {

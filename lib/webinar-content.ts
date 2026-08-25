@@ -1,5 +1,5 @@
 /**
- * The Love Legacy Masterclass — all funnel copy (P1, P2, P3A, P3B).
+ * Stop Surviving. Start Designing. — all funnel copy (P1, P2, P3A, P3B).
  *
  * Copy is verbatim from the approved TGO build spec v1.0. House rule, locked:
  * NO em dashes and NO en dashes anywhere in visible copy. Use periods, commas,
@@ -21,8 +21,8 @@ import {
   DAY_TIME_IST,
   DATE_TIME_IST,
   MASTERCLASS_NAME,
-  MASTERCLASS_TAGLINE,
-  MASTERCLASS_TAGLINE_PARTS,
+  MASTERCLASS_NAME_PARTS,
+  MASTERCLASS_PROSE_CAP,
 } from './webinar-config';
 
 /* ────────────────────────────────────────────────────────────────────────────
@@ -52,7 +52,6 @@ export const HERO = {
   lockup: {
     chip: 'Free live masterclass',
     title: MASTERCLASS_NAME,
-    sub: MASTERCLASS_TAGLINE,
   },
   tiles: [
     { label: 'Date', value: WEBINAR.date },
@@ -83,8 +82,8 @@ export const HERO = {
 export const SURVIVING_TO_DESIGNING = {
   eyebrow: 'The shift',
   /** Both halves of the tagline, set on two lines. */
-  from: MASTERCLASS_TAGLINE_PARTS[0],
-  to: MASTERCLASS_TAGLINE_PARTS[1],
+  from: MASTERCLASS_NAME_PARTS[0],
+  to: MASTERCLASS_NAME_PARTS[1],
   body: [
     'You do not need to wait for him to change.',
     'You need to understand the pattern, rewire your response, and start creating your relationship by choice.',
@@ -285,7 +284,7 @@ export const METHOD = {
 
 export const WHAT_WE_COVER = {
   eyebrow: 'What we cover',
-  heading: `${MASTERCLASS_NAME}, live in ${WEBINAR.duration}`,
+  heading: `${MASTERCLASS_PROSE_CAP}, live in ${WEBINAR.duration}`,
   sub: 'Every part is something you can use the same night. You leave with a plan, not notes.',
   steps: [
     {
@@ -515,8 +514,8 @@ export const FAQ = {
 export const FINAL_CLOSE = {
   /** The brand line, closing the page on the same words it opened with. */
   heading: {
-    line1: MASTERCLASS_TAGLINE_PARTS[0],
-    line2: MASTERCLASS_TAGLINE_PARTS[1],
+    line1: MASTERCLASS_NAME_PARTS[0],
+    line2: MASTERCLASS_NAME_PARTS[1],
   },
   quote:
     "The relationship didn't break overnight. And it won't change overnight. But it can start changing from your side first.",
@@ -588,7 +587,7 @@ export const UPGRADE = {
   heading: 'Before you join the WhatsApp group, one small decision.',
   deck: 'The women who get the most out of this masterclass are not the ones who show up. They are the ones who walk in already knowing their pattern.',
   /** The same brand line the landing page opens and closes on. */
-  brandLine: MASTERCLASS_TAGLINE,
+  brandLine: MASTERCLASS_NAME,
   body: [
     `On ${WEBINAR.date} I am going to name the pattern ruining your marriage. Ninety minutes is enough to see it. It is not always enough to sit with it.`,
     'So I want to give you a head start. Something you can begin tonight, on your own, before the room even opens.',

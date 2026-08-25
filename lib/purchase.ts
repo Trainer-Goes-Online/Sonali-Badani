@@ -1,5 +1,6 @@
 import { buildHashedFields } from './meta-capi';
 import { toMeta, currentUserData } from './events';
+import { isProductionBrowser } from './production-gate';
 import {
   emptyLead,
   readCachedLead,
@@ -88,7 +89,7 @@ export function ensurePurchaseEventId(): string {
 
 export type PurchaseResult =
   | { fired: true; purchaseEventId: string; webhookOk: boolean }
-  | { fired: false; reason: 'no-lead' | 'already-fired' | 'no-window' };
+  | { fired: false; reason: 'no-lead' | 'already-fired' | 'no-window' | 'not-production' };
 
 /**
  * Fire Purchase and sales to Meta, then POST the full row to Pabbly.
@@ -102,6 +103,10 @@ export type PurchaseResult =
  */
 export async function dispatchPurchase(amount: number): Promise<PurchaseResult> {
   if (typeof window === 'undefined') return { fired: false, reason: 'no-window' };
+
+  // Production only, and checked BEFORE the localStorage claim so a preview
+  // build cannot burn the claim and leave the real site unable to fire.
+  if (!isProductionBrowser()) return { fired: false, reason: 'not-production' };
 
   const lead = readCachedLead();
 

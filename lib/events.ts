@@ -1,5 +1,6 @@
 import { MASTERCLASS_NAME } from './webinar-config';
 import { readCachedLead, resolveFbIdentifiers, newLeadId } from './tracking';
+import { isProductionBrowser } from './production-gate';
 
 /**
  * Funnel analytics, in one place.
@@ -93,6 +94,9 @@ export function toMeta(
   customData: Params = {}
 ): Promise<void> {
   if (typeof window === 'undefined') return Promise.resolve();
+  // Production only. A preview build or a developer clicking through must never
+  // report a conversion that did not happen; Meta cannot un-learn one.
+  if (!isProductionBrowser()) return Promise.resolve();
   return fetch('/api/capi', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

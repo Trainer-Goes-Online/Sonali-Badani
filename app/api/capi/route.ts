@@ -6,6 +6,7 @@ import {
   clientIpFrom,
   type RawUserData,
 } from '@/lib/meta-capi-server';
+import { isProductionHost } from '@/lib/production-gate';
 
 /**
  * The single entry point for every Meta event on this funnel except `PageView`.
@@ -34,6 +35,14 @@ type Body = {
 };
 
 export async function POST(request: NextRequest) {
+  // Production only, enforced here as well as in the browser. The client check
+  // stops the request being made at all; this one means a preview deployment
+  // cannot report a conversion even if something calls the route directly.
+  const host = request.headers.get('host');
+  if (!isProductionHost(host)) {
+    return NextResponse.json({ ok: false, skipped: 'not-production' });
+  }
+
   if (!capiConfigured()) {
     // Local dev without a token, or the env var is not set yet. Not an error:
     // the funnel keeps working and nothing is silently retried forever.

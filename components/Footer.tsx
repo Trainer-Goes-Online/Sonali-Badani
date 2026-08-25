@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Logo from './ui/Logo';
-import { MASTERCLASS_NAME, MASTERCLASS_TAGLINE } from '@/lib/webinar-config';
+import { MASTERCLASS_NAME, MASTERCLASS_PROSE_CAP } from '@/lib/webinar-config';
 
 /**
  * Footer on navy. White logo card (the coral accents stay warm on dark), a
@@ -26,16 +26,14 @@ export default function Footer() {
           </span>
         </div>
 
-        {/* The brand lockup: the name and its sub-heading, on every page. */}
+        {/* The brand lockup, on every page. The name stands alone: there is no
+            sub-heading under it any more. */}
         <p className="mt-6 font-serif text-[15px] font-semibold uppercase tracking-[0.04em] text-white sm:text-[16.5px]">
           {MASTERCLASS_NAME}
         </p>
-        <p className="mt-1.5 font-body text-[10.5px] font-bold uppercase tracking-[0.18em] text-coral sm:text-[11.5px]">
-          {MASTERCLASS_TAGLINE}
-        </p>
 
         <p className="mx-auto mt-6 max-w-reading font-body text-[13px] leading-relaxed text-white/65">
-          {MASTERCLASS_NAME} is a live coaching session from Sonali Badani and The Soul
+          {MASTERCLASS_PROSE_CAP} is a live coaching session from Sonali Badani and The Soul
           Space. It is not therapy, medical advice, or a substitute for professional care, and
           individual results vary. If your situation feels unsafe, please reach out to someone who
           can help you directly. You deserve real support, and this is not a substitute for it.

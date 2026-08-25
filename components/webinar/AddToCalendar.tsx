@@ -7,11 +7,14 @@ import {
   TIME_IST,
   MASTERCLASS_NAME,
   MASTERCLASS_NAME_BARE,
+  MASTERCLASS_PROSE_CAP,
   MASTERCLASS_SLUG,
 } from '@/lib/webinar-config';
 import { trackCustom } from '@/lib/events';
 
-const TITLE = `${MASTERCLASS_NAME} with Sonali Badani`;
+// The event name is two full sentences, so `${NAME} with Sonali Badani` reads
+// as a run-on in a calendar chip. The name leads, the host follows a separator.
+const TITLE = `${MASTERCLASS_NAME} · Masterclass with Sonali Badani`;
 const DETAILS = `Live on Zoom. ${WEBINAR.date}, ${TIME_IST}. Your Zoom link comes to your WhatsApp from the group.`;
 const LOCATION = 'Live on Zoom';
 
@@ -65,7 +68,7 @@ function downloadIcs(start: Date, end: Date) {
     'BEGIN:VALARM',
     'TRIGGER:-PT30M',
     'ACTION:DISPLAY',
-    `DESCRIPTION:${MASTERCLASS_NAME} starts in 30 minutes`,
+    `DESCRIPTION:${MASTERCLASS_PROSE_CAP} starts in 30 minutes`,
     'END:VALARM',
     'END:VEVENT',
     'END:VCALENDAR',

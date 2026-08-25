@@ -15,6 +15,7 @@
  * are queued in localStorage and retried on the next page load.
  */
 import { buildHashedFields } from './meta-capi';
+import { isProductionBrowser } from './production-gate';
 import {
   emptyLead,
   mergeCachedLead,
@@ -115,6 +116,8 @@ function queueForRetry(payload: unknown) {
 
 async function post(payload: unknown): Promise<boolean> {
   if (!REGISTRATION_WEBHOOK_URL) return false;
+  // Production only, so a preview build never writes a junk lead into the CRM.
+  if (!isProductionBrowser()) return false;
   try {
     const res = await fetch(REGISTRATION_WEBHOOK_URL, {
       method: 'POST',
