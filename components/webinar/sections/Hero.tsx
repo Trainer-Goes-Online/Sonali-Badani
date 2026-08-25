@@ -92,24 +92,51 @@ export default function Hero() {
               details arrive before any supporting copy. On desktop it is the
               whole right column. */}
           <div className="order-2 mt-8 sm:mt-10 lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:mt-0">
-            <Reveal variant="scale" className="mx-auto max-w-[560px] lg:h-full lg:max-w-none">
-              <div className="overflow-hidden rounded-[26px] border border-white/12 bg-white/[0.05] shadow-card backdrop-blur-sm lg:flex lg:h-full lg:flex-col">
+            {/*
+              No `lg:h-full` any more. It existed so the image could flex to
+              make this column match the copy beside it, but with the image
+              locked to 16:9 nothing can absorb the extra height, so stretching
+              the card would only open a gap under the countdown. The card now
+              sizes to its content and the grid aligns it at the top.
+            */}
+            <Reveal variant="scale" className="mx-auto max-w-[560px] lg:max-w-none">
+              <div className="overflow-hidden rounded-[26px] border border-white/12 bg-white/[0.05] shadow-card backdrop-blur-sm">
                 {/*
-                  The frame adapts rather than forcing one crop: 4:3 on phones,
-                  16:9 on tablets. On desktop it drops the fixed aspect entirely
-                  and flexes, so the photo grows or shrinks to make this column
-                  exactly as tall as the copy beside it. The min-height is the
-                  floor that stops it collapsing to a letterbox if the copy ever
-                  gets short. Swap in a true 16:9 warm-grade shot when one exists.
+                  ONE aspect at every width, and it is the artwork's own 16:9.
+
+                  This frame used to adapt (4:3 on phones, 16:9 on tablets, free
+                  flex on desktop) because the source was a 4:5 photograph of
+                  Sonali, where cropping the edges cost nothing. The creative
+                  that replaced it carries baked-in text, so any crop slices
+                  words: at 390px the 4:3 frame cut "Zoom" to "oom" and "bring"
+                  to "g" down the left edge, and the desktop flex trimmed about
+                  5% off the sides.
+
+                  Matching the frame to the image means object-cover fits exactly
+                  and nothing is ever cropped, on any device. If the artwork is
+                  ever replaced with a different ratio, change this to match it.
                 */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[16/9] lg:aspect-auto lg:min-h-[260px] lg:flex-1">
+                <div className="relative aspect-[16/9] w-full overflow-hidden">
+                  {/*
+                    The true 16:9 shot this frame was built for: 1672x941 native,
+                    so at the `sm` breakpoint it fills the frame with no crop at
+                    all. Centred rather than pulled to the top, because the old
+                    `object-[center_12%]` existed only to keep a face in view when
+                    the source was a 4:5 portrait being cropped hard.
+
+                    Served as the 130kb WebP from scripts/optimize-image.js, not
+                    the 2.1 MB PNG export it came from. This is the LCP image on
+                    P1 and it is marked `priority`, so its weight is felt on the
+                    first paint of every ad click. Re-run that script if the
+                    artwork is ever replaced.
+                  */}
                   <Image
-                    src="/Hero-Image/sonali-main-hero-image.JPG"
+                    src="/Hero-Image/new-hero-image.webp"
                     alt={`Sonali Badani, host of ${MASTERCLASS_NAME}`}
                     fill
                     priority
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 560px, 46vw"
-                    className="object-cover object-[center_12%] lg:object-[center_18%]"
+                    className="object-cover object-center"
                   />
                   <span
                     aria-hidden="true"
