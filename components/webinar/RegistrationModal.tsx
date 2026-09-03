@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, ArrowRight, Check, Lock, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Lock, MessageCircle, X } from 'lucide-react';
 
 import PhoneField from '@/components/checkout/PhoneField';
 import Sparkle from '@/components/ui/Sparkle';
@@ -487,6 +487,38 @@ export default function RegistrationModal({
                     </dd>
                   </div>
                 </dl>
+
+                {/*
+                  The most important block on this form. Eight registrants in
+                  ten were never reaching the group, so this is deliberately the
+                  last thing she reads before the button: coral border, warm
+                  ground, and the compulsory line carrying its own weight.
+                */}
+                <div className="mt-4 rounded-2xl border-2 border-coral/45 bg-warm p-4">
+                  <p className="flex items-center gap-2 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-coral-dark">
+                    <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2.4} />
+                    {FORM.finalNotice.title}
+                  </p>
+                  <ul className="mt-3 space-y-2.5">
+                    {FORM.finalNotice.points.map((point, i) => (
+                      <li
+                        key={point}
+                        className="flex items-start gap-2.5 font-body text-[13px] leading-relaxed text-navy/85"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="mt-[3px] grid h-[18px] w-[18px] shrink-0 place-items-center rounded-full bg-coral/20 font-body text-[10px] font-bold text-coral-dark"
+                        >
+                          {i + 1}
+                        </span>
+                        {/* The compulsory line is the one that has to land. */}
+                        <span className={i === 2 ? 'font-semibold text-navy' : undefined}>
+                          {point}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             )}
           </div>

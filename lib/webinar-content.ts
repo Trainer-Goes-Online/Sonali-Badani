@@ -535,10 +535,21 @@ export const STICKY = {
 
 export const FORM = {
   heading: 'Save your seat',
-  sub: `${DAY_TIME_IST}. The Zoom link comes to your WhatsApp straight away.`,
+  /**
+   * This line used to promise "The Zoom link comes to your WhatsApp straight
+   * away", which is why only two registrants in ten were joining the group:
+   * she believed the link was coming to her privately, so the group looked
+   * optional. It is not. The link is posted in the group and nowhere else, and
+   * the form now says so from the first screen.
+   */
+  sub: `${DAY_TIME_IST}. The Zoom link is posted in the WhatsApp group, so joining it is how you get in.`,
   steps: [
     { key: 'name', label: 'Your name', hint: 'So Sonali knows who is in the room.' },
-    { key: 'contact', label: 'Where to send it', hint: 'The Zoom link goes here.' },
+    {
+      key: 'contact',
+      label: 'Where to send it',
+      hint: 'For your reminders. The Zoom link itself comes in the WhatsApp group.',
+    },
     { key: 'city', label: 'Where you are', hint: 'It helps us plan the timing of the room.' },
     {
       key: 'duration',
@@ -570,11 +581,30 @@ export const FORM = {
     city: 'Please enter your city.',
     duration: 'Please choose one so we know where to begin.',
   },
+  /**
+   * Shown on the last step, immediately above the button.
+   *
+   * Registration was never the problem: eight in ten women were registering and
+   * then never arriving in the group, so they never got the Zoom link. Two
+   * things caused it. She thought the link would come to her privately, and she
+   * closed the tab at the offer page without realising the group link was one
+   * screen further on. This block says both things out loud at the last moment
+   * she is still paying attention.
+   */
+  finalNotice: {
+    title: 'Please read this before you finish',
+    points: [
+      'After you save your seat you will see one short offer page. Take it or skip it, either is completely fine.',
+      'Keep going until you reach the page with the WhatsApp group button. Do not close this window before you get there.',
+      'Joining the WhatsApp group is compulsory. Your Zoom link is posted there and nowhere else.',
+      'Every reminder and every update comes in that group. We do not send the link to anyone individually.',
+    ],
+  },
   next: 'Continue',
   back: 'Back',
   submit: 'Save my seat',
-  submitting: 'Saving your seat...',
-  privacy: 'We will only message you about this session. No spam, ever.',
+  submitting: 'Saving your seat, please wait...',
+  privacy: 'We will only contact you about this session. No spam, ever.',
 };
 
 /* ────────────────────────────────────────────────────────────────────────────
