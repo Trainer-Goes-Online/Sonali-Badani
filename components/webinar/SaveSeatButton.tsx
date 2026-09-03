@@ -75,7 +75,7 @@ export function CtaReassurance({ className }: { className?: string }) {
   );
 }
 
-/** Free · Live on Zoom · 90 minutes · Camera off */
+/** Free · Live on Zoom · 90 minutes · Camera on */
 export function CtaDetails({ className }: { className?: string }) {
   return (
     <ul

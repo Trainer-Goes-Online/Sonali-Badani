@@ -29,7 +29,9 @@ export default function TermsPage() {
         room fills.
       </p>
       <p>
-        Cameras stay off for attendees and only your first name is visible to the room. If you cannot
+        Attendees are asked to keep their cameras on, so the session can be a face to face
+        conversation rather than a broadcast. Other attendees can see and hear you, and you are
+        identified to the room by your first name only. If you cannot
         attend live, we will send a replay for a limited window, though the live question and answer
         portion is only available in the room.
       </p>

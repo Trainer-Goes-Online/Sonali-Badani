@@ -105,8 +105,13 @@ export const SURVIVING_TO_DESIGNING = {
  *
  * `labels` vary the microcopy by placement so six buttons never read as the
  * same button six times, while all of them open the same registration modal.
- * `reassurance` sits under each one and answers the three objections this
- * audience actually has: being seen, being exposed, and needing him to agree.
+ * `reassurance` sits under each one and answers the objections this audience
+ * actually has: being exposed, and needing him to agree.
+ *
+ * "Camera on" is stated here, at the CTA, on purpose. Sonali wants a room she
+ * can speak to face to face rather than a wall of black squares, and a woman
+ * who only discovers that after she has registered feels ambushed. Said up
+ * front it is an invitation; said late it is a bait and switch.
  */
 export const CTA = {
   primary: 'Yes, I want to stop surviving my marriage',
@@ -121,8 +126,21 @@ export const CTA = {
     afterProof: 'Yes, I want this for my marriage',
     final: 'Yes, I want to stop surviving my marriage',
   },
-  details: ['Free', 'Live on Zoom', WEBINAR.duration, 'Camera off'],
-  reassurance: ['Private', 'Camera off', "Husband doesn't need to attend"],
+  details: ['Free', 'Live on Zoom', WEBINAR.duration, 'Camera on'],
+  /**
+   * Deliberately does NOT repeat "Camera on" from the details row directly
+   * above it. It sits there once, and this row answers what follows from it.
+   *
+   * Not "a private room": with her camera on, in a room of other women, that
+   * is simply not true, and a promise she can see through at the door costs
+   * more than it buys. The honest reassurance is that everyone in there is in
+   * the same position she is, and that nobody will make her speak.
+   */
+  reassurance: [
+    'A room of women like you',
+    'Nobody is put on the spot',
+    "Husband doesn't need to attend",
+  ],
 };
 
 /**
@@ -494,7 +512,7 @@ export const FAQ = {
     },
     {
       q: 'Will anyone see me or hear me?',
-      a: 'No. Cameras stay off and only your first name shows. You can sit in complete privacy.',
+      a: 'Sonali asks you to keep your camera on, so she is speaking to you face to face rather than to a screen of black squares. Everyone in that room is a married woman in the same place you are, and you will never be put on the spot or asked to say anything you do not want to say. You can listen the whole way through if that is what you need.',
     },
     {
       q: 'Is this therapy or counselling?',
@@ -832,7 +850,7 @@ export const WELCOME_RESET_PLUS = {
 
 export const WELCOME = {
   heading: 'Your seat is saved.',
-  sub: `${DAY_TIME_IST}. Two things to do now, and they take a minute.`,
+  sub: `${DAY_TIME_IST}. Three things to do now, and they take a minute.`,
   steps: [
     {
       n: '01',
@@ -844,6 +862,11 @@ export const WELCOME = {
       n: '02',
       title: 'Add it to your calendar',
       body: `${DAY_TIME_IST}. Ninety minutes. Block it like you would block anything that matters.`,
+    },
+    {
+      n: '03',
+      title: 'Come with your camera on',
+      body: 'Sonali runs this face to face, not to a screen of black squares. Everyone in the room is a married woman in the same place you are, and nobody is put on the spot. Find somewhere quiet, and use headphones if the house is busy.',
     },
   ],
   secondChance: {
