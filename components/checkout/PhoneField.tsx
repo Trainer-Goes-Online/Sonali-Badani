@@ -131,7 +131,9 @@ export default function PhoneField({
               className="w-full bg-transparent font-body text-[14px] text-navy outline-none placeholder:text-navy/40"
             />
           </div>
-          <ul className="max-h-64 overflow-y-auto py-1">
+          {/* Lenis swallows the wheel site wide; without this the country list
+              cannot be scrolled with a mouse. See RegistrationModal. */}
+          <ul data-lenis-prevent className="max-h-64 overflow-y-auto py-1">
             {filtered.map((c) => {
               const F = flags[c.code];
               const sel = c.code === country;

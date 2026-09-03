@@ -599,6 +599,15 @@ export const FORM = {
       'Joining the WhatsApp group is compulsory. Your Zoom link is posted there and nowhere else.',
       'Every reminder and every update comes in that group. We do not send the link to anyone individually.',
     ],
+    /**
+     * A required tick, not a decorative one. Reading the four points above is
+     * passive; ticking this is the woman saying it back to herself, and it is
+     * the last chance to convert a passive registrant into someone who knows
+     * she has to do one more thing.
+     */
+    confirm:
+      'I understand I need to join the WhatsApp group to get my Zoom link and all other updates.',
+    confirmError: 'Please tick this so we know you have seen where your Zoom link goes.',
   },
   next: 'Continue',
   back: 'Back',

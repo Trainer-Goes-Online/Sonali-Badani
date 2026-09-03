@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { X } from 'lucide-react';
 
 import type { Testimonial } from './TestimonialCard';
+import { pauseSmoothScroll, resumeSmoothScroll } from '@/lib/smooth-scroll';
 
 /**
  * The full, uncropped client message.
@@ -39,16 +40,24 @@ export default function TestimonialModal({
     document.addEventListener('keydown', onKey);
 
     // Lock the page behind the modal, compensating for the scrollbar so the
-    // layout underneath does not shift on desktop.
+    // layout underneath does not shift on desktop. The overflow lock alone is
+    // not enough: Lenis moves the page itself, so it has to be stopped too.
+    pauseSmoothScroll();
     const { overflow, paddingRight } = document.body.style;
+    const rootOverflow = document.documentElement.style.overflow;
     const gap = window.innerWidth - document.documentElement.clientWidth;
+    // Both elements, not just body: html is the scrolling element here, so
+    // locking body alone left the page free to move behind the overlay.
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     if (gap > 0) document.body.style.paddingRight = `${gap}px`;
 
     return () => {
       document.removeEventListener('keydown', onKey);
+      document.documentElement.style.overflow = rootOverflow;
       document.body.style.overflow = overflow;
       document.body.style.paddingRight = paddingRight;
+      resumeSmoothScroll();
     };
   }, [item, onClose]);
 

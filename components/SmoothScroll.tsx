@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Lenis from 'lenis';
+import { registerLenis } from '@/lib/smooth-scroll';
 
 /**
  * Site-wide smooth (inertial) scrolling via Lenis — the single biggest "feels
@@ -19,6 +20,10 @@ export default function SmoothScroll() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
 
+    // Published so overlays can stop it. See lib/smooth-scroll.ts for why a
+    // body overflow lock is not enough on its own.
+    registerLenis(lenis);
+
     let raf = requestAnimationFrame(function loop(time: number) {
       lenis.raf(time);
       raf = requestAnimationFrame(loop);
@@ -26,6 +31,7 @@ export default function SmoothScroll() {
 
     return () => {
       cancelAnimationFrame(raf);
+      registerLenis(null);
       lenis.destroy();
     };
   }, []);

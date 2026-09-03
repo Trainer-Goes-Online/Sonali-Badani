@@ -10,6 +10,7 @@ import { FORM } from '@/lib/webinar-content';
 import { DAY_TIME_IST } from '@/lib/webinar-config';
 import { submitRegistration } from '@/lib/registration';
 import { trackRegistration, trackRegistrationStep } from '@/lib/events';
+import { pauseSmoothScroll, resumeSmoothScroll } from '@/lib/smooth-scroll';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -68,6 +69,13 @@ export default function RegistrationModal({
 }) {
   const router = useRouter();
   const [step, setStep] = useState(0);
+  /**
+   * The step 4 acknowledgement. Kept out of `values` on purpose: it is not a
+   * field we send anywhere, it is a gate on this device only, so it has no
+   * business in the payload or the lead cache.
+   */
+  const [acknowledged, setAcknowledged] = useState(false);
+  const [ackError, setAckError] = useState<string | undefined>();
   const [values, setValues] = useState<Values>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -83,14 +91,25 @@ export default function RegistrationModal({
 
   useEffect(() => {
     if (!open) return;
+
+    // Lenis moves the page itself, so an overflow lock alone leaves it
+    // scrolling behind the overlay and swallows the wheel inside it.
+    pauseSmoothScroll();
+
     const { overflow, paddingRight } = document.body.style;
+    const rootOverflow = document.documentElement.style.overflow;
     // Compensate for the scrollbar so the page behind does not shift on desktop.
     const gap = window.innerWidth - document.documentElement.clientWidth;
+    // Both elements, not just body: html is the scrolling element here, so
+    // locking body alone left the page free to move behind the overlay.
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     if (gap > 0) document.body.style.paddingRight = `${gap}px`;
     return () => {
+      document.documentElement.style.overflow = rootOverflow;
       document.body.style.overflow = overflow;
       document.body.style.paddingRight = paddingRight;
+      resumeSmoothScroll();
     };
   }, [open]);
 
@@ -167,10 +186,28 @@ export default function RegistrationModal({
 
   const goNext = async () => {
     const found = validateStep(step, values);
-    if (Object.keys(found).length > 0) {
+
+    /**
+     * On the last step BOTH the question and the tick are required, and both
+     * are checked in the same pass on purpose. Validating them one at a time
+     * would make her tap the button, fix the question, tap again, and only then
+     * discover the tick: two rejections for one submit. She sees everything
+     * that is missing at once.
+     */
+    const needsAck = step === LAST_STEP && !acknowledged;
+    const hasFieldError = Object.keys(found).length > 0;
+
+    if (hasFieldError || needsAck) {
       setErrors((prev) => ({ ...prev, ...found }));
+      setAckError(needsAck ? FORM.finalNotice.confirmError : undefined);
+      // Scroll to the tick only when it is the one thing missing; otherwise the
+      // question is higher up the step and should keep the focus.
+      if (needsAck && !hasFieldError) {
+        document.getElementById('reg-ack')?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }
       return;
     }
+
     if (step < LAST_STEP) {
       const next = step + 1;
       setStep(next);
@@ -178,6 +215,7 @@ export default function RegistrationModal({
       panelRef.current?.scrollTo({ top: 0 });
       return;
     }
+
     await handleSubmit();
   };
 
@@ -263,6 +301,21 @@ export default function RegistrationModal({
       {/* Panel — bottom sheet on phones, centred dialog from sm up */}
       <div
         ref={panelRef}
+        /*
+          Lenis runs site wide and captures the wheel globally, scrolling its own
+          virtual page rather than whatever container sits under the cursor. That
+          made step 4 unscrollable with a mouse on desktop: the panel genuinely
+          overflowed, but every wheel tick was swallowed before it arrived. Touch
+          was unaffected, which is why it only showed up on desktop, and a
+          programmatic scrollTop still worked, which is why measuring the panel
+          made it look healthy.
+
+          `data-lenis-prevent` is Lenis's documented opt out for nested scroll
+          areas. The body overflow lock below stops the page moving behind the
+          modal; it does nothing about the wheel, because Lenis never lets the
+          event reach the DOM in the first place.
+        */
+        data-lenis-prevent
         className="reg-panel relative flex max-h-[92dvh] w-full max-w-[520px] flex-col overflow-y-auto rounded-t-[28px] bg-cream shadow-[0_-20px_60px_-20px_rgba(32,63,92,0.5)] sm:max-h-[90dvh] sm:rounded-[28px] sm:shadow-card"
       >
         {/* Header */}
@@ -426,11 +479,55 @@ export default function RegistrationModal({
 
             {step === 3 && (
               <div>
-                <p className={labelCls}>{FORM.fields.duration.label}</p>
+                {/*
+                  ORDER MATTERS HERE, and it is the order she reads in:
+
+                  1. The notice, so she learns the group is compulsory BEFORE
+                     she is asked for anything.
+                  2. The question, which is the only thing Sonali needs.
+                  3. The tick, last, so the final act on this form is her
+                     agreeing to the one thing that decides whether she ever
+                     gets a Zoom link.
+
+                  The details recap was removed from this step. It repeated
+                  three fields she had typed seconds earlier and, with the
+                  notice added, pushed the button off a desktop screen.
+                */}
+                <div className="rounded-2xl border-2 border-coral/45 bg-warm p-3.5">
+                  <p className="flex items-center gap-2 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-coral-dark">
+                    <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2.4} />
+                    {FORM.finalNotice.title}
+                  </p>
+                  <ul className="mt-2.5 space-y-2">
+                    {FORM.finalNotice.points.map((point, i) => (
+                      <li
+                        key={point}
+                        className="flex items-start gap-2.5 font-body text-[12.5px] leading-relaxed text-navy/85"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="mt-[3px] grid h-[18px] w-[18px] shrink-0 place-items-center rounded-full bg-coral/20 font-body text-[10px] font-bold text-coral-dark"
+                        >
+                          {i + 1}
+                        </span>
+                        {/* The compulsory line is the one that has to land. */}
+                        <span className={i === 2 ? 'font-semibold text-navy' : undefined}>
+                          {point}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <p className={`${labelCls} mt-5`}>{FORM.fields.duration.label}</p>
                 {/* Tap targets rather than a native select: a select on a phone
                     opens an OS wheel that hides the question, and this is the
                     last thing between her and the seat. */}
-                <div className="mt-1 grid gap-2">
+                {/* One column on a phone, two from `sm` up. The four options were
+                    the tallest thing on this step and stacking them was what
+                    pushed the tick below the fold on a laptop. No tap target
+                    shrinks: they get shorter only by sitting side by side. */}
+                <div className="mt-1 grid gap-2 sm:grid-cols-2">
                   {FORM.fields.duration.options.map((option) => {
                     const chosen = values.duration === option;
                     return (
@@ -460,65 +557,45 @@ export default function RegistrationModal({
                 </div>
                 <ErrorLine msg={errors.duration} />
 
-                {/* A quiet recap, so the last step feels like an ending */}
-                <dl className="mt-5 space-y-2 rounded-2xl border border-navy/[0.08] bg-white/70 p-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <dt className="font-body text-[12px] uppercase tracking-[0.12em] text-navy/45">
-                      Name
-                    </dt>
-                    <dd className="text-right font-body text-[13.5px] font-semibold text-navy">
-                      {values.firstName} {values.lastName}
-                    </dd>
-                  </div>
-                  <div className="flex items-start justify-between gap-4">
-                    <dt className="font-body text-[12px] uppercase tracking-[0.12em] text-navy/45">
-                      Email
-                    </dt>
-                    <dd className="break-all text-right font-body text-[13.5px] font-semibold text-navy">
-                      {values.email}
-                    </dd>
-                  </div>
-                  <div className="flex items-start justify-between gap-4">
-                    <dt className="font-body text-[12px] uppercase tracking-[0.12em] text-navy/45">
-                      WhatsApp
-                    </dt>
-                    <dd className="text-right font-body text-[13.5px] font-semibold text-navy">
-                      {dialCode} {values.phone}
-                    </dd>
-                  </div>
-                </dl>
-
                 {/*
-                  The most important block on this form. Eight registrants in
-                  ten were never reaching the group, so this is deliberately the
-                  last thing she reads before the button: coral border, warm
-                  ground, and the compulsory line carrying its own weight.
+                  A real label wrapping a real checkbox, so the whole row is the
+                  tap target and screen readers announce it correctly. The input
+                  is visually replaced by the box beside it but stays in the
+                  tree, which is what keeps keyboard focus working.
                 */}
-                <div className="mt-4 rounded-2xl border-2 border-coral/45 bg-warm p-4">
-                  <p className="flex items-center gap-2 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-coral-dark">
-                    <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2.4} />
-                    {FORM.finalNotice.title}
-                  </p>
-                  <ul className="mt-3 space-y-2.5">
-                    {FORM.finalNotice.points.map((point, i) => (
-                      <li
-                        key={point}
-                        className="flex items-start gap-2.5 font-body text-[13px] leading-relaxed text-navy/85"
-                      >
-                        <span
-                          aria-hidden="true"
-                          className="mt-[3px] grid h-[18px] w-[18px] shrink-0 place-items-center rounded-full bg-coral/20 font-body text-[10px] font-bold text-coral-dark"
-                        >
-                          {i + 1}
-                        </span>
-                        {/* The compulsory line is the one that has to land. */}
-                        <span className={i === 2 ? 'font-semibold text-navy' : undefined}>
-                          {point}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <label
+                  id="reg-ack"
+                  className={`mt-4 flex min-h-[52px] cursor-pointer items-start gap-3 rounded-xl border-2 p-3.5 transition-colors ${
+                    ackError
+                      ? 'border-coral-dark bg-white'
+                      : acknowledged
+                        ? 'border-coral bg-coral/[0.08]'
+                        : 'border-navy/20 bg-white hover:border-coral/50'
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={acknowledged}
+                    aria-invalid={!!ackError}
+                    onChange={(e) => {
+                      setAcknowledged(e.target.checked);
+                      if (e.target.checked) setAckError(undefined);
+                    }}
+                    className="sr-only"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className={`mt-[1px] grid h-5 w-5 shrink-0 place-items-center rounded-[6px] border-2 transition-colors ${
+                      acknowledged ? 'border-coral bg-coral text-white' : 'border-navy/30 bg-white'
+                    }`}
+                  >
+                    {acknowledged && <Check className="h-3.5 w-3.5" strokeWidth={3.5} />}
+                  </span>
+                  <span className="font-body text-[13px] font-semibold leading-relaxed text-navy">
+                    {FORM.finalNotice.confirm}
+                  </span>
+                </label>
+                <ErrorLine msg={ackError} />
               </div>
             )}
           </div>
