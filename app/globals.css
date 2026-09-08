@@ -402,6 +402,34 @@
   }
 }
 
+/* ── Wrong password nudge (/bonus) ─────────────────────────────────────────────
+   A short horizontal shake on the four letter boxes. Small on purpose: this is
+   a woman who sat through the whole session and mistyped a letter, so it should
+   read as "not that one" and never as a buzzer. The coral border does the
+   telling; this only draws the eye back to the field. */
+@keyframes letter-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-5px);
+  }
+  40%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+.shake {
+  animation: letter-shake 0.42s ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .shake {
+    animation: none;
+  }
+}
+
 /* ── Success confirmation mark (thank-you / welcome) ───────────────────────── */
 @keyframes success-pop {
   from {
