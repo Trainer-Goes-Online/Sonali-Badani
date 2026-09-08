@@ -23,6 +23,7 @@ import {
   MASTERCLASS_NAME,
   MASTERCLASS_NAME_PARTS,
   MASTERCLASS_PROSE_CAP,
+  BONUS_CODE_LENGTH_WORD,
 } from './webinar-config';
 
 /* ────────────────────────────────────────────────────────────────────────────
@@ -876,3 +877,96 @@ export const WELCOME = {
   },
   closing: `See you on ${WEBINAR.day}. Come as you are.`,
 };
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * /bonus  ·  the locked page from the deck
+ *
+ * Sonali tells the room the page is locked and needs a four letter word, then
+ * hands out L, O, V and E one letter at a time across the session, with the
+ * last one arriving right at the end. The lock is the reason she stays to the
+ * end, so it is a real gate, not decoration.
+ *
+ * It is deliberately gentle: no attempt limit, no lockout, no scolding. A woman
+ * who was in the room and mistyped a letter must never feel shut out of
+ * something she was promised for free.
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+export const BONUS = {
+  gate: {
+    eyebrow: 'There is one catch',
+    heading: 'This page is locked.',
+    // The length is read off the code itself, so changing NEXT_PUBLIC_BONUS_CODE
+    // can never leave the page asking for the wrong number of letters.
+    sub: `You need the ${BONUS_CODE_LENGTH_WORD} letter word from the masterclass. It came one letter at a time, and the last one arrived right at the end.`,
+    label: `Enter the ${BONUS_CODE_LENGTH_WORD} letter word`,
+    hint: `${BONUS_CODE_LENGTH_WORD.charAt(0).toUpperCase() + BONUS_CODE_LENGTH_WORD.slice(1)} letters. Capitals do not matter.`,
+    error: 'Not that one. Check your notebook and try again.',
+    button: 'Unlock my bonuses',
+    footnote:
+      'If you were in the room, you wrote it down. If you missed a letter, ask in the WhatsApp group and someone will tell you.',
+  },
+
+  eyebrow: 'Yours today, free',
+  heading: 'Three things I am giving you',
+  sub: 'You did the work in the room. These are the pages that keep it going once the room closes. Print all three. They are built to be written on by hand.',
+
+  /** Deck slide 3, with the real subtitle line from inside each PDF. */
+  items: [
+    {
+      n: '01',
+      name: 'The Marriage Pattern Score',
+      tm: true,
+      pull: 'Eight statements. One number. Done again every month.',
+      body: 'The sheet you filled in during the masterclass, as a printable page you can come back to. Do it again on the same date next month. The number on its own means very little. The number moving means everything.',
+      value: '999',
+      file: '/Bonuses/3. Bonus 1 - The Marriage Pattern Score.pdf',
+      download: 'The Marriage Pattern Score.pdf',
+    },
+    {
+      n: '02',
+      name: 'The Trigger Card',
+      tm: true,
+      pull: 'One page. Three lines. For the three seconds before you say the thing you always say.',
+      body: 'Print it, cut it out, and stick it where only you will see it. Inside a cupboard door, not on the fridge. You will use it late for the first two weeks. That is normal, and it still counts.',
+      value: '999',
+      file: '/Bonuses/4. Bonus 2 - The Trigger Card.pdf',
+      download: 'The Trigger Card.pdf',
+    },
+    {
+      n: '03',
+      name: 'The First Seven Nights',
+      tm: true,
+      pull: 'Ten minutes a night. Seven nights. Nothing your husband needs to know about.',
+      body: 'The smallest honest way to begin, built for a woman with very little left at the end of the day. Nothing this week asks you to fix your marriage. The only job is to see it clearly.',
+      value: '999',
+      file: '/Bonuses/5. Bonus 3 - The First Seven Nights.pdf',
+      download: 'The First Seven Nights.pdf',
+    },
+  ],
+
+  /** Deck slide 3 puts a value on each one. Three times 999. */
+  stack: {
+    label: 'Total value',
+    total: '2,997',
+    note: 'Yours for nothing, because you stayed to the end.',
+  },
+
+  howTo: {
+    heading: 'How to actually use these',
+    steps: [
+      'Print them. All three are made for paper, and you saw in the room what happens when you write by hand instead of typing.',
+      'Do the Pattern Score first, in one sitting, for an ordinary week. Not the worst week you have had.',
+      'Start The First Seven Nights tonight. Ten minutes means ten. Set a timer.',
+    ],
+  },
+
+  /** Carried over from the deck's one boundary, and from inside bonus three. */
+  safety:
+    "If your situation involves violence, threats, or being controlled, this is not the right place to start, and none of this comes first. Your safety does. In India you can call 181, the women's helpline, at any hour.",
+
+  close: {
+    heading: 'Surviving is automatic. Designing is conscious.',
+    body: 'You do not need his permission to begin. You can start with you, tonight, with a pen and one of these pages.',
+    cta: 'Join the WhatsApp group',
+  },
+} as const;

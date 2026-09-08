@@ -239,6 +239,41 @@ export const MASTERCLASS_NAME_PARTS: readonly [string, string] = (() => {
     : ([MASTERCLASS_NAME.trim(), ''] as const);
 })();
 
+/**
+ * The word that unlocks /bonus.
+ *
+ * Sonali spells it out across the session, one letter at a time, with the last
+ * letter arriving right at the end. That is the whole reason the page is locked,
+ * so the word has to be changeable per cohort without a code change:
+ *
+ *   NEXT_PUBLIC_BONUS_CODE="LOVE"
+ *
+ * Normalised to capitals here, and the gate uppercases every keystroke, so what
+ * she types is compared in caps against a value already in caps. Case can never
+ * be the reason a woman who sat through 90 minutes is kept out.
+ *
+ * Letters and digits only. Anything else is stripped, because the gate's inputs
+ * refuse it too and a code containing a character she cannot type would lock the
+ * page for everybody.
+ */
+export const BONUS_CODE =
+  env(process.env.NEXT_PUBLIC_BONUS_CODE, 'LOVE')
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, '') || 'LOVE';
+
+/** How many boxes the gate renders. */
+export const BONUS_CODE_LENGTH = BONUS_CODE.length;
+
+/**
+ * The length as a word, for the copy that says "the four letter word".
+ * Spelled out to nine, then falls back to the digit, so changing the code can
+ * never leave the page promising the wrong number of letters.
+ */
+export const BONUS_CODE_LENGTH_WORD =
+  ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'][
+    BONUS_CODE_LENGTH
+  ] ?? String(BONUS_CODE_LENGTH);
+
 /** "8:00 PM IST" */
 export const TIME_IST = `${WEBINAR.time} IST`;
 /** "Sunday, 8:00 PM IST" */
