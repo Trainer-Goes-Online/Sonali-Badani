@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { trackAddToCart } from '@/lib/events';
 import {
   createContext,
   useCallback,
@@ -40,7 +41,17 @@ export default function RegistrationProvider({ children }: { children: ReactNode
   // than re-mounting (and refetching) the chunk each time.
   const [mounted, setMounted] = useState(false);
 
+  /**
+   * Every way of opening the form fires Meta AddToCart, here and only here.
+   *
+   * It used to be fired by SaveSeatButton alone, so the sticky "Save my seat"
+   * bar, which calls this directly, opened the form silently. That bar is on
+   * screen for most of the page, so a real share of registrations produced no
+   * AddToCart and CompleteRegistration could exceed it. Tracking in the one
+   * place every opener passes through means a new CTA cannot repeat that gap.
+   */
   const open = useCallback(() => {
+    trackAddToCart();
     setMounted(true);
     setIsOpen(true);
   }, []);

@@ -4,7 +4,6 @@ import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useRegistration } from './RegistrationProvider';
 import { CTA } from '@/lib/webinar-content';
-import { trackAddToCart } from '@/lib/events';
 
 /**
  * The one CTA on the landing page. Every instance opens the same stepwise
@@ -33,15 +32,10 @@ export default function SaveSeatButton({
   const full = label ?? CTA.primary;
   const short = shortLabel ?? (label ? label : CTA.primaryShort);
 
-  // Meta AddToCart the moment she commits to the form, before it opens. Fired
-  // through the Conversions API, so an ad blocker on the pixel does not lose it.
-  const handleClick = () => {
-    trackAddToCart();
-    open();
-  };
-
+  // AddToCart is fired inside open() itself (RegistrationProvider), so every
+  // opener is tracked exactly once. Do not add a second call here.
   return (
-    <button type="button" onClick={handleClick} className={cn('btn-primary', className)}>
+    <button type="button" onClick={open} className={cn('btn-primary', className)}>
       <span className="relative z-[3] sm:hidden">{short}</span>
       <span className="relative z-[3] hidden sm:inline">{full}</span>
       {showArrow && <ArrowRight className="relative z-[3] h-5 w-5 shrink-0" />}
