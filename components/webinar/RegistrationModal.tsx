@@ -375,9 +375,9 @@ export default function RegistrationModal({
     // passed. All server side, and fired AFTER the lead is cached so the CAPI
     // calls have her email, phone, name and city to match on.
     trackRegistration(leadId || undefined, qualified);
-    // Straight to the OTO. No interstitial: this is the single most common
-    // build error on this funnel and it is what kills the one time offer.
-    router.push('/masterclass/upgrade');
+    // Straight to the welcome page, where the WhatsApp step comes first and the
+    // gift bar leads on to the one time offer.
+    router.push('/welcome');
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {

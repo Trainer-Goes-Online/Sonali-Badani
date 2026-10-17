@@ -666,8 +666,8 @@ export const FORM = {
   finalNotice: {
     title: 'Please read this before you finish',
     points: [
-      'After you save your seat you will see one short offer page. Take it or skip it, either is completely fine.',
-      'Keep going until you reach the page with the WhatsApp group button. Do not close this window before you get there.',
+      'After you save your seat, the very next page has the WhatsApp group button. Tap it first, before anything else.',
+      'Do not close this window until you have joined the group. There is a small gift waiting for you on that page too.',
       'Joining the WhatsApp group is compulsory. Your Zoom link is posted there and nowhere else.',
       'Every reminder and every update comes in that group. We do not send the link to anyone individually.',
     ],
@@ -693,7 +693,7 @@ export const FORM = {
  * ────────────────────────────────────────────────────────────────────────── */
 
 export const UPGRADE = {
-  alert: 'Wait. Your seat is saved, but you are not done yet.',
+  alert: 'Your gift is unlocked. A head start at a price you will only see on this page.',
   progressLabel: 'Registration 70% complete',
   heading: 'Before you join the WhatsApp group, one small decision.',
   deck: 'The women who get the most out of this masterclass are not the ones who show up. They are the ones who walk in already knowing their pattern.',
@@ -812,8 +812,8 @@ export const WELCOME_RESET = {
     },
     {
       n: '02',
-      title: 'Check your email',
-      body: 'Your login for The One Partner Reset is in your inbox already. If it is not there in five minutes, check promotions and spam, then write to us.',
+      title: 'Check your email and WhatsApp',
+      body: 'Your login for The One Partner Reset is on its way to your email and your WhatsApp. Look in your inbox and your spam folder too, it often lands there. Still nothing after five minutes? Check promotions as well, then write to us.',
     },
     {
       n: '03',
@@ -904,7 +904,7 @@ export const WELCOME_RESET_PLUS = {
 
 export const WELCOME = {
   heading: 'Your seat is saved.',
-  sub: `${DAY_TIME_IST}. Three things to do now, and they take a minute.`,
+  sub: `${DAY_TIME_IST}. One thing to do now, and it takes a minute.`,
   steps: [
     {
       n: '01',
@@ -912,23 +912,30 @@ export const WELCOME = {
       body: 'This is where your Zoom link goes, and where the reminders come from. If you skip this step you will probably miss the session.',
       cta: 'Join the WhatsApp group',
     },
-    {
-      n: '02',
-      title: 'Add it to your calendar',
-      body: `${DAY_TIME_IST}. Ninety minutes. Block it like you would block anything that matters.`,
-    },
-    {
-      n: '03',
-      title: 'Come with your camera on',
-      body: 'Sonali runs this face to face, not to a screen of black squares. Everyone in the room is a married woman in the same place you are, and nobody is put on the spot. Find somewhere quiet, and use headphones if the house is busy.',
-    },
   ],
-  secondChance: {
-    heading: 'Still want the head start?',
-    body: `The One Partner Reset is 45 minutes you can watch tonight, so you walk into the session already knowing your pattern. It stays at ${COURSE_PRICE_LABEL} until the room opens.`,
-    cta: 'Add The One Partner Reset',
+  /** The badge on the WhatsApp card. This page shows no step number. */
+  firstBadge: 'Do this important action first',
+  /**
+   * The gift section and the floating gift card. Both lead to
+   * /masterclass/upgrade.
+   */
+  gift: {
+    eyebrow: 'Before the room opens',
+    heading: 'We have a gift for you',
+    body: 'A head start you can begin tonight, before the room opens.',
+    detail:
+      'The women who get the most out of this masterclass are the ones who walk in already knowing their pattern. So Sonali has put together something you can begin tonight, on your own, in 45 minutes.',
+    points: [
+      'Begin tonight, on your own, in 45 minutes',
+      'Walk into the session already knowing your pattern',
+      'Shown on the next page only, at a price you will not see again',
+    ],
+    cta: 'Grab Your Gift Now!',
+    note: 'Your seat is already saved, whatever you decide.',
+    /** The small label above the heading on the floating card. */
+    floatLabel: 'Your gift is waiting',
+    trust: ['Start tonight', '45 minutes', 'Next page only'],
   },
-  closing: `See you on ${WEBINAR.day}. Come as you are.`,
 };
 
 /* ────────────────────────────────────────────────────────────────────────────

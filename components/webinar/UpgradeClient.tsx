@@ -8,8 +8,8 @@ import {
   ArrowRight,
   Check,
   ChevronDown,
+  Gift,
   Headphones,
-  Lock,
   Play,
   ShieldCheck,
   Sparkles,
@@ -23,7 +23,6 @@ import { readCachedLead, mergeCachedLead, REGISTERED_FLAG_KEY } from '@/lib/trac
 import { flushRegistrationRetries } from '@/lib/registration';
 import {
   trackOtoAddonAdded,
-  trackOtoDecline,
   trackOtoResetCta,
   trackOtoResetPlusCta,
 } from '@/lib/events';
@@ -33,15 +32,13 @@ import { useStickyOffset } from './useStickyOffset';
 /**
  * P2 · The one time offer.
  *
- * A single binary decision: take the seat alone, or add The One Partner Reset
- * (with an optional companion add-on) as a head start before the room opens.
+ * Reached from the gift bar on /welcome, after she has registered and seen the
+ * WhatsApp step. One offer: The One Partner Reset (with an optional companion
+ * add-on) as a head start before the room opens. There is no decline button:
+ * she only arrives here by choosing to, and leaving is the browser Back button.
  *
- * Two rules from the spec are load-bearing here:
- *  - The decline button is always clearly visible, never disguised, never
- *    shrunk below the fold. A woman who feels tricked at this price does not
- *    buy the programme six days later. Trust is the actual asset.
- *  - The page is reachable only after a registration. A direct visit is sent
- *    back to /masterclass.
+ * The page is reachable only after a registration. A direct visit is sent back
+ * to /masterclass.
  *
  * The checkout link is chosen purely by whether the add-on is kept, and the
  * details captured at registration prefill it so nothing is retyped.
@@ -183,13 +180,6 @@ export default function UpgradeClient() {
 
   const handleToggleAddon = () => setAddonChecked(!added);
 
-  const handleDecline = () => {
-    if (leaving.current) return;
-    leaving.current = true;
-    trackOtoDecline();
-    router.push('/welcome');
-  };
-
   /* ── Gate states ──────────────────────────────────────────────────────── */
 
   if (allowed === null) {
@@ -206,19 +196,9 @@ export default function UpgradeClient() {
   /* ── Shared pieces ────────────────────────────────────────────────────── */
 
   const yesButton = (
-    <button type="button" onClick={handleYes} className="btn-primary w-full !py-5 leading-tight">
+    <button type="button" onClick={handleYes} className="btn-primary w-full !whitespace-normal !px-5 !py-5 leading-tight sm:!px-8">
       <span className="relative z-[3]">{UPGRADE.cta.yes(totalLabel)}</span>
       <ArrowRight className="relative z-[3] h-5 w-5 shrink-0" />
-    </button>
-  );
-
-  const declineButton = (
-    <button
-      type="button"
-      onClick={handleDecline}
-      className="w-full rounded-pill border border-navy/35 bg-white px-6 py-4 font-body text-[15px] font-semibold text-navy transition-colors duration-200 hover:border-navy hover:bg-navy hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/20 sm:text-[16px]"
-    >
-      {UPGRADE.cta.decline}
     </button>
   );
 
@@ -226,7 +206,6 @@ export default function UpgradeClient() {
     <div className="space-y-3.5">
       {yesButton}
       <p className="text-center font-body text-[12px] text-navy/55">{UPGRADE.cta.note}</p>
-      {declineButton}
     </div>
   );
 
@@ -234,8 +213,9 @@ export default function UpgradeClient() {
     <>
       {/* Alert bar */}
       <div className="bg-coral">
-        <p className="container-page py-3.5 text-center font-body text-[14px] font-bold leading-snug text-navy sm:text-[15.5px]">
-          {UPGRADE.alert}
+        <p className="container-page flex items-center justify-center gap-2 py-3.5 text-center font-body text-[14px] font-bold leading-snug text-navy sm:gap-2.5 sm:text-[15.5px]">
+          <Gift className="gift-wiggle h-[18px] w-[18px] shrink-0" strokeWidth={2.3} />
+          <span>{UPGRADE.alert}</span>
         </p>
       </div>
 
@@ -252,79 +232,17 @@ export default function UpgradeClient() {
       <main>
         <div className="container-page pt-7 sm:pt-10">
           {/*
-            Two column header on desktop: the copy on the left, the product
-            suite on the right. On mobile the grid collapses and the image
-            falls in DOM order, which puts it directly above the One Partner
-            Reset card, so she sees what she is being offered immediately
-            before the offer itself.
+            The offer and the add-on. Stacked on a phone (unchanged), side by
+            side from `lg` up: the Reset on the left, the Visualization on the
+            right, stretched to the same height.
           */}
-          <div className="mx-auto max-w-[1060px] lg:grid lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:gap-x-12 xl:gap-x-16">
-            <div className="lg:col-start-1">
-              {/* Progress */}
-              <Reveal>
-                <p className="font-body text-[10.5px] font-bold uppercase tracking-[0.16em] text-navy/50 sm:text-[11.5px]">
-                  {UPGRADE.progressLabel}
-                </p>
-                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-navy/10">
-                  <div className="upgrade-progress h-full rounded-full bg-gradient-to-r from-coral-dark to-coral" />
-                </div>
-              </Reveal>
-
-              {/* Header */}
-              <Reveal delay={80}>
-                <p className="mt-7 font-body text-[10.5px] font-bold uppercase tracking-[0.18em] text-coral-dark sm:text-[11.5px]">
-                  {UPGRADE.brandLine}
-                </p>
-                <h1 className="mt-3 font-serif text-[27px] font-semibold leading-[1.16] text-navy sm:text-[34px] lg:text-[36px]">
-                  {UPGRADE.heading}
-                </h1>
-              </Reveal>
-              <Reveal delay={130}>
-                <p className="lede mt-4">{UPGRADE.deck}</p>
-              </Reveal>
-              <div className="mt-4 space-y-3.5">
-                {UPGRADE.body.map((para, i) => (
-                  <Reveal
-                    key={para}
-                    delay={170 + i * 40}
-                    as="p"
-                    className="font-body text-[15px] leading-[1.7] text-navy/80 sm:text-[16px]"
-                  >
-                    {para}
-                  </Reveal>
-                ))}
-              </div>
-            </div>
-
-            {/* The product suite */}
-            <Reveal
-              delay={120}
-              variant="scale"
-              className="mt-8 lg:col-start-2 lg:mt-0"
-            >
-              {/*
-                A fixed 3:2 frame with `fill` rather than intrinsic width and
-                height, so the artwork can be swapped for a file of any
-                dimensions without the layout shifting or needing a code change.
-              */}
-              <div className="relative aspect-[3/2] w-full overflow-hidden rounded-3xl bg-cream shadow-card ring-1 ring-navy/[0.08]">
-                <Image
-                  src={OTO_CONFIG.images.hero}
-                  alt="The One Partner Reset and its five bonuses, from Sonali Badani"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 92vw, 520px"
-                  className="object-cover object-center"
-                />
-              </div>
-            </Reveal>
-          </div>
-
+          <h1 className="sr-only">{UPGRADE.product.name}</h1>
+          <div className="mx-auto max-w-[720px] lg:grid lg:max-w-[1060px] lg:grid-cols-2 lg:items-stretch lg:gap-6">
           {/* Offer card */}
           <Reveal
             delay={60}
             variant="scale"
-            className="relative mx-auto mt-8 max-w-[720px] overflow-hidden rounded-[26px] bg-navy shadow-card sm:mt-10"
+            className="relative mx-auto max-w-[720px] overflow-hidden rounded-[26px] bg-navy shadow-card lg:max-w-none"
           >
             <span
               aria-hidden="true"
@@ -376,7 +294,7 @@ export default function UpgradeClient() {
           </Reveal>
 
           {/* Add-on */}
-          <Reveal delay={80} className="relative mx-auto mt-4 max-w-[720px]">
+          <Reveal delay={80} className="relative mx-auto mt-4 max-w-[720px] lg:mt-0 lg:max-w-none">
             <div
               aria-hidden="true"
               className={`halo pointer-events-none absolute -inset-2 -z-10 rounded-[2rem] bg-coral/15 blur-2xl transition-opacity duration-500 ${
@@ -384,16 +302,16 @@ export default function UpgradeClient() {
               }`}
             />
             <div
-              className={`overflow-hidden rounded-[26px] border-2 bg-white shadow-card transition-colors duration-300 ${
+              className={`overflow-hidden rounded-[26px] border-2 bg-white shadow-card transition-colors duration-300 lg:flex lg:h-full lg:flex-col ${
                 added ? 'border-coral ring-4 ring-coral/15' : 'border-coral/35'
               }`}
             >
-              {/* Header, tappable to expand */}
+              {/* Header, tappable to expand on a phone. Always open on desktop. */}
               <button
                 type="button"
                 onClick={() => setAddonOpen((o) => !o)}
                 aria-expanded={addonOpen}
-                className="block w-full text-left"
+                className="block w-full text-left lg:pointer-events-none lg:cursor-default"
               >
                 <div className="flex items-center justify-between gap-3 bg-coral/[0.1] px-5 py-2.5">
                   <span className="flex items-center gap-1.5 font-body text-[10.5px] font-bold uppercase tracking-[0.13em] text-coral-dark sm:text-[11.5px]">
@@ -401,7 +319,7 @@ export default function UpgradeClient() {
                     {UPGRADE.addon.flag}
                   </span>
                   <ChevronDown
-                    className={`h-4 w-4 shrink-0 text-coral-dark transition-transform duration-300 ${
+                    className={`h-4 w-4 shrink-0 text-coral-dark transition-transform duration-300 lg:hidden ${
                       addonOpen ? 'rotate-180' : ''
                     }`}
                   />
@@ -432,17 +350,17 @@ export default function UpgradeClient() {
               <div
                 className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   addonOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-                }`}
+                } lg:grid-rows-[1fr] lg:opacity-100`}
               >
                 <div className="overflow-hidden">
-                  <div className="px-5 pb-2">
-                    <div className="mt-4 grid grid-cols-[110px_1fr] items-start gap-4 sm:grid-cols-[130px_1fr]">
+                  <div className="px-5 pb-2 lg:px-6">
+                    <div className="mt-4 grid grid-cols-[110px_1fr] items-start gap-4 sm:grid-cols-[130px_1fr] lg:mt-5 lg:grid-cols-[170px_1fr] lg:gap-5">
                       <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-white/70 bg-cream shadow-soft ring-1 ring-gold/20">
                         <Image
                           src={OTO_CONFIG.images.addon}
                           alt="The Love Legacy Visualization guided meditation"
                           fill
-                          sizes="(max-width: 640px) 110px, 130px"
+                          sizes="(max-width: 640px) 110px, (max-width: 1024px) 130px, 170px"
                           className="object-cover object-center"
                         />
                         <span className="absolute inset-0 grid place-items-center">
@@ -470,7 +388,7 @@ export default function UpgradeClient() {
                       </div>
                     </div>
 
-                    <ul className="mt-4 space-y-1.5">
+                    <ul className="mt-4 space-y-1.5 lg:mt-6 lg:space-y-2.5">
                       {UPGRADE.addon.points.map((p) => (
                         <li
                           key={p}
@@ -484,7 +402,7 @@ export default function UpgradeClient() {
                       ))}
                     </ul>
 
-                    <figure className="relative mt-4 rounded-xl border border-gold/25 bg-warm px-4 py-3">
+                    <figure className="relative mt-4 lg:mt-6 rounded-xl border border-gold/25 bg-warm px-4 py-3">
                       <Sparkle className="absolute -left-1.5 -top-1.5 h-3.5 w-3.5 text-gold" />
                       <blockquote className="font-serif text-[14.5px] italic leading-snug text-navy/85 sm:text-[15.5px]">
                         {UPGRADE.addon.quote}
@@ -502,7 +420,7 @@ export default function UpgradeClient() {
                 type="button"
                 onClick={handleToggleAddon}
                 aria-pressed={added}
-                className={`mt-3 flex w-full items-center gap-3 border-t px-5 py-4 text-left transition-colors ${
+                className={`mt-3 flex w-full items-center gap-3 border-t px-5 py-4 text-left transition-colors lg:mt-auto ${
                   added ? 'border-coral/30 bg-coral/[0.08]' : 'border-navy/10 bg-white hover:bg-navy/[0.02]'
                 }`}
               >
@@ -519,9 +437,10 @@ export default function UpgradeClient() {
               </button>
             </div>
           </Reveal>
+          </div>
 
-          {/* Total + the two buttons */}
-          <Reveal delay={60} className="mx-auto mt-6 max-w-[720px]">
+          {/* Total + the button */}
+          <Reveal delay={60} className="mx-auto mt-6 max-w-[720px] lg:mt-8">
             <div className="mb-4 flex items-center justify-between rounded-2xl border border-navy/10 bg-white px-5 py-4">
               <span className="font-body text-[14px] font-bold text-navy sm:text-[15px]">
                 Total today
@@ -640,20 +559,9 @@ export default function UpgradeClient() {
             </p>
           </Reveal>
 
-          {/* Repeat buttons, same order */}
-          <Reveal delay={60} className="mx-auto mt-9 max-w-[720px] sm:mt-11">
+          {/* Repeat button */}
+          <Reveal delay={60} className="mx-auto mt-9 max-w-[720px] pb-10 sm:mt-11 sm:pb-14">
             {buttonPair}
-          </Reveal>
-
-          {/* Closing note */}
-          <Reveal
-            delay={80}
-            className="mx-auto mt-6 max-w-[720px] rounded-2xl border border-navy/12 bg-warm px-5 py-4"
-          >
-            <p className="flex items-start justify-center gap-2 text-center font-body text-[13px] leading-relaxed text-navy/70 sm:text-[14px]">
-              <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-coral-dark" />
-              {UPGRADE.closing}
-            </p>
           </Reveal>
         </div>
       </main>
@@ -717,23 +625,11 @@ export default function UpgradeClient() {
 
             <button
               type="button"
-              onClick={handleDecline}
-              className="min-h-[46px] shrink-0 rounded-pill border border-navy/30 bg-white px-3.5 font-body text-[12.5px] font-semibold leading-tight text-navy transition-colors duration-200 hover:border-navy hover:bg-navy hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/20 sm:min-h-[52px] sm:px-6 sm:text-[14px]"
-            >
-              <span className="lg:hidden">{UPGRADE.cta.declineShort}</span>
-              <span className="hidden lg:inline">{UPGRADE.cta.decline}</span>
-            </button>
-
-            <button
-              type="button"
               onClick={handleYes}
-              className="btn-primary min-h-[46px] flex-1 px-3 py-2 text-[12.5px] leading-tight sm:min-h-[52px] sm:px-6 sm:text-[15px]"
+              className="btn-primary min-h-[46px] flex-1 px-3 py-2 text-[13.5px] leading-tight sm:min-h-[52px] sm:px-6 sm:text-[15px]"
             >
-              {/* Three lengths of the same promise, so the price always fits. */}
-              <span className="relative z-[3] sm:hidden">{UPGRADE.cta.yesTiny(totalLabel)}</span>
-              <span className="relative z-[3] hidden sm:inline lg:hidden">
-                {UPGRADE.cta.yesShort(totalLabel)}
-              </span>
+              {/* Two lengths of the same promise, so the price always fits. */}
+              <span className="relative z-[3] lg:hidden">{UPGRADE.cta.yesShort(totalLabel)}</span>
               <span className="relative z-[3] hidden lg:inline">
                 {UPGRADE.cta.yes(totalLabel)}
               </span>

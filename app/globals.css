@@ -551,6 +551,236 @@ html.lenis body {
   animation: progress-70 1.1s var(--ease-out-expo) 0.2s both;
 }
 
+/* ── The gift on /welcome (and its icon on /masterclass/upgrade) ──────────────
+   Auto shine and a wobble on the CTA, a running light around the containers,
+   and a gift box whose lid pops open. */
+@keyframes gift-shine {
+  0%,
+  55% {
+    transform: translateX(-130%);
+  }
+  85%,
+  100% {
+    transform: translateX(130%);
+  }
+}
+.gift-cta::after {
+  animation: gift-shine 3.2s var(--ease-out-quart) infinite;
+}
+@keyframes gift-wiggle {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  66% {
+    transform: rotate(-14deg) scale(1.12);
+  }
+  72% {
+    transform: rotate(12deg) scale(1.12);
+  }
+  78% {
+    transform: rotate(-8deg) scale(1.06);
+  }
+  84% {
+    transform: rotate(5deg) scale(1);
+  }
+}
+.gift-wiggle {
+  animation: gift-wiggle 2.6s ease-in-out infinite;
+  transform-origin: 50% 70%;
+}
+/* The CTA wobble: a quick shake, then 1.3s of stillness, on repeat. Replaces
+   the breathing pulse from .btn-primary (both own `transform`), keeps the pan. */
+@keyframes cta-wobble {
+  0%,
+  35%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  5% {
+    transform: rotate(-2.5deg) scale(1.04);
+  }
+  10% {
+    transform: rotate(2.5deg) scale(1.04);
+  }
+  15% {
+    transform: rotate(-2deg) scale(1.03);
+  }
+  20% {
+    transform: rotate(1.5deg) scale(1.02);
+  }
+  25% {
+    transform: rotate(-1deg) scale(1.01);
+  }
+}
+.cta-wobble {
+  animation: cta-wobble 2s ease-in-out infinite, gradient-pan 6s ease-in-out infinite;
+}
+
+/* A running light around the gift containers: a conic gradient whose start
+   angle turns. Browsers without @property simply show it standing still. */
+@property --gift-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes gift-spin {
+  to {
+    --gift-angle: 360deg;
+  }
+}
+.gift-frame {
+  padding: 2px;
+  background: conic-gradient(
+    from var(--gift-angle),
+    rgba(245, 144, 117, 0.22) 0deg,
+    #f59075 70deg,
+    #c2a36b 110deg,
+    rgba(245, 144, 117, 0.22) 170deg,
+    rgba(245, 144, 117, 0.22) 360deg
+  );
+  animation: gift-spin 4.5s linear infinite;
+}
+
+/* Soft coral glow that breathes around the floating card. */
+@keyframes gift-glow {
+  0%,
+  100% {
+    box-shadow: 0 18px 44px -18px rgba(21, 41, 60, 0.7), 0 0 0 0 rgba(245, 144, 117, 0);
+  }
+  50% {
+    box-shadow: 0 18px 44px -18px rgba(21, 41, 60, 0.7), 0 0 34px 2px rgba(245, 144, 117, 0.45);
+  }
+}
+/* Always paired with .gift-frame, so it carries the border spin as well. */
+.gift-glow {
+  animation: gift-spin 4.5s linear infinite, gift-glow 2.6s ease-in-out infinite;
+}
+
+/* The gift box illustration: the lid pops up and tilts, light spills out,
+   then it settles and the box gives a small bounce. */
+@keyframes gift-lid {
+  0%,
+  45%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  58% {
+    transform: translateY(-13px) rotate(-9deg);
+  }
+  70% {
+    transform: translateY(-9px) rotate(-6deg);
+  }
+  82% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+.gift-lid {
+  transform-box: fill-box;
+  transform-origin: 20% 100%;
+  animation: gift-lid 3s var(--ease-out-quart) infinite;
+}
+@keyframes gift-light {
+  0%,
+  48%,
+  86%,
+  100% {
+    opacity: 0;
+    transform: scaleY(0.4);
+  }
+  62%,
+  72% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+.gift-light {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: gift-light 3s ease-out infinite;
+}
+@keyframes gift-bounce {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  86% {
+    transform: translateY(2px) scaleY(0.97);
+  }
+  92% {
+    transform: translateY(-2px);
+  }
+}
+.gift-box {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: gift-bounce 3s ease-out infinite;
+}
+
+/* The floating card slides away while the gift section itself is in view. */
+.gift-float {
+  transition: transform 500ms var(--ease-out-expo), opacity 400ms ease,
+    border-radius 500ms var(--ease-out-expo), padding 500ms var(--ease-out-expo);
+}
+.gift-float[data-hidden='true'] {
+  transform: translateY(calc(100% + 28px));
+  opacity: 0;
+  pointer-events: none;
+}
+/* Desktop only: the corner card and the docked bar are too far apart in size
+   and position to tween, so the swap rises in from just below instead. On a
+   phone the padding and radius transitions already make it seamless. */
+@keyframes gift-dock-in {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}
+@keyframes gift-undock {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}
+@media (min-width: 1024px) {
+  .gift-dock-in {
+    animation: gift-dock-in 520ms var(--ease-out-expo) both;
+  }
+  .gift-undock {
+    animation: gift-undock 520ms var(--ease-out-expo) both;
+  }
+}
+@keyframes gift-float-in {
+  from {
+    transform: translateY(calc(100% + 28px));
+    opacity: 0;
+  }
+}
+.gift-float-in {
+  animation: gift-float-in 650ms var(--ease-out-expo) 0.6s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gift-cta::after,
+  .gift-wiggle,
+  .cta-wobble,
+  .gift-frame,
+  .gift-glow,
+  .gift-lid,
+  .gift-light,
+  .gift-box,
+  .gift-float-in,
+  .gift-dock-in,
+  .gift-undock {
+    animation: none !important;
+  }
+  .gift-light {
+    opacity: 0;
+  }
+}
+
 /* ── Comparison table: never let it push the page sideways on a phone ─────── */
 table {
   table-layout: fixed;

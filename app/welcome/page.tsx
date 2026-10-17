@@ -1,15 +1,13 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
 
 import Logo from '@/components/ui/Logo';
 import Footer from '@/components/Footer';
 import Reveal from '@/components/ui/Reveal';
-import Sparkle from '@/components/ui/Sparkle';
 import SuccessMark from '@/components/ui/SuccessMark';
 import StepCard from '@/components/webinar/StepCard';
-import AddToCalendar from '@/components/webinar/AddToCalendar';
 import WhatsAppButton from '@/components/webinar/WhatsAppButton';
+import GiftStickyBar from '@/components/webinar/GiftStickyBar';
+import GiftSection from '@/components/webinar/GiftSection';
 import { WELCOME } from '@/lib/webinar-content';
 import { MASTERCLASS_NAME } from '@/lib/webinar-config';
 
@@ -19,14 +17,13 @@ export const metadata: Metadata = {
 };
 
 /**
- * P3B · /welcome  ·  registered, seat only.
+ * P3B · /welcome  ·  every registration lands here first.
  *
- * One job: get her into the WhatsApp group. That is where the Zoom link and the
- * reminders go, and show up rate is won there.
- *
- * The second chance card is deliberately quiet and sits last. It is a courtesy
- * for the woman who changed her mind, not a second pitch. No purchase webhook
- * fires here: this woman did not buy.
+ * Two jobs, in this order. Get her into the WhatsApp group, because that is
+ * where the Zoom link and the reminders go and show up rate is won there. Then
+ * the fixed gift bar, which leads on to the one time offer at
+ * /masterclass/upgrade. No purchase webhook fires here: this woman has not
+ * bought anything.
  */
 export default function WelcomePage() {
   return (
@@ -72,50 +69,23 @@ export default function WelcomePage() {
                 body={step.body}
                 delay={i * 90}
                 highlight={i === 0}
+                hideNumber
+                badge={WELCOME.firstBadge}
               >
                 {step.cta && (
                   <WhatsAppButton label={step.cta} page="welcome" className="mt-5" />
                 )}
-                {i === 1 && (
-                  <div className="mt-5">
-                    <AddToCalendar page="welcome" />
-                  </div>
-                )}
               </StepCard>
             ))}
 
-            {/* Second chance, deliberately quiet */}
-            <Reveal
-              delay={120}
-              className="rounded-3xl border border-dashed border-navy/25 bg-warm p-5 sm:p-6"
-            >
-              <h2 className="font-body text-[14px] font-bold text-navy sm:text-[15.5px]">
-                {WELCOME.secondChance.heading}
-              </h2>
-              <p className="mt-2.5 font-body text-[13.5px] leading-[1.65] text-navy/70 sm:text-[14.5px]">
-                {WELCOME.secondChance.body}
-              </p>
-              <Link
-                href="/masterclass/upgrade"
-                className="mt-4 flex min-h-[50px] w-full items-center justify-center gap-2 rounded-pill border border-navy/35 bg-transparent px-6 py-3 font-body text-[14px] font-semibold text-navy transition-colors duration-200 hover:border-navy hover:bg-navy hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/20 sm:text-[15px]"
-              >
-                {WELCOME.secondChance.cta}
-                <ArrowRight className="h-4 w-4 shrink-0" />
-              </Link>
-            </Reveal>
-
-            {/* Closing */}
-            <Reveal delay={150} className="pt-4 text-center">
-              <Sparkle twinkle className="mx-auto h-4 w-4 text-gold" />
-              <p className="mt-3 font-serif text-[16px] italic text-navy/75 sm:text-[18px]">
-                {WELCOME.closing}
-              </p>
-            </Reveal>
+            <GiftSection />
           </div>
         </div>
       </main>
 
       <Footer />
+
+      <GiftStickyBar />
     </>
   );
 }
