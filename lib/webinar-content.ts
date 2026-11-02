@@ -33,25 +33,24 @@ import {
 export const ANNOUNCEMENT = ['Live on Zoom', 'Seats are limited', 'Free to attend'];
 
 export const HERO = {
-  eyebrow: 'For married women who have tried everything and nothing has changed',
-  /**
-   * The brand promise. "Stop surviving" rather than "save your marriage":
-   * the page is honest that nothing changes overnight and that she cannot fix
-   * him, so the headline must promise the thing she can actually have.
-   */
+  eyebrow: "For married women who don't want to give up on their marriage",
   headline: {
-    before: "You don't need ",
-    highlight: 'his permission',
-    after: ' to stop surviving your marriage',
+    before: "You Don't Want to Leave Your Marriage. ",
+    highlight: "But You Can't Keep Living Like This.",
+    after: '',
   },
-  deck: 'In 90 minutes, discover the hidden pattern keeping your marriage stuck, and the first shift you can make without waiting for him to change.',
+  secondary: 'What If There Was a Third Choice?',
+  /** The three paths, said once. The last is the one the masterclass opens. */
+  choices: ['Survive', 'Leave', 'Transform'],
+  supporting:
+    'Not just adjusting. Not necessarily walking away. You can begin transforming your relationship from within.',
+  deck: "In this FREE 90-minute live masterclass, discover the hidden patterns keeping your marriage stuck and the first shifts you can make without waiting for your husband to change.",
   credential: [
     'Hosted by Sonali Badani, Marriage Architect and founder of The Soul Space.',
   ],
   countdownLabel: 'The room opens in',
   countdownClosed: 'Registration closes today',
   lockup: {
-    chip: 'Free live masterclass',
     title: MASTERCLASS_NAME,
   },
   tiles: [
@@ -115,17 +114,17 @@ export const SURVIVING_TO_DESIGNING = {
  * front it is an invitation; said late it is a bait and switch.
  */
 export const CTA = {
-  primary: 'Yes, I want to stop surviving my marriage',
+  primary: 'Yes, I Want to Transform My Marriage',
   /** Shorter forms, so the promise still fits on a narrow phone. */
-  primaryShort: 'Yes, I want to stop surviving',
+  primaryShort: 'Yes, I Want to Transform',
   primaryTiny: 'Stop surviving. Start designing.',
   labels: {
-    hero: 'Yes, I want to stop surviving my marriage',
-    afterPain: 'Yes, show me the pattern',
-    afterMethod: 'Yes, show me how to redesign my marriage',
-    afterOutcome: 'Save my seat for the masterclass',
-    afterProof: 'Yes, I want this for my marriage',
-    final: 'Yes, I want to stop surviving my marriage',
+    hero: 'Yes, I Want to Transform My Marriage',
+    afterPain: 'Yes, I Want to Transform My Marriage',
+    afterMethod: 'Yes, I Want to Transform My Marriage',
+    afterOutcome: 'Yes, I Want to Transform My Marriage',
+    afterProof: 'Yes, I Want to Transform My Marriage',
+    final: 'Yes, I Want to Transform My Marriage',
   },
   details: ['Free', 'Live on Zoom', WEBINAR.duration, 'Camera on'],
   /**
@@ -545,7 +544,7 @@ export const FINAL_CLOSE = {
 export const STICKY = {
   title: 'Free live masterclass',
   sub: DAY_TIME_IST,
-  cta: 'Save my seat',
+  cta: 'Yes, I Want to Transform My Marriage',
 };
 
 /* ────────────────────────────────────────────────────────────────────────────

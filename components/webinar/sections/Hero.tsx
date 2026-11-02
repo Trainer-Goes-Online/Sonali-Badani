@@ -73,15 +73,45 @@ export default function Hero() {
             </Reveal>
 
             <Reveal delay={90}>
-              <h1 className="mt-6 font-serif text-[34px] font-semibold uppercase leading-[1.08] tracking-[-0.015em] text-white sm:text-[46px] lg:mt-4 lg:text-[40px] xl:text-[46px]">
+              <h1 className="mt-6 font-serif text-[30px] font-semibold leading-[1.12] tracking-[-0.015em] text-white sm:text-[42px] lg:mt-4 lg:text-[38px] xl:text-[44px]">
                 {HERO.headline.before}
                 <span className="hl">{HERO.headline.highlight}</span>
                 {HERO.headline.after}
               </h1>
             </Reveal>
 
+            <Reveal delay={130}>
+              <p className="mt-4 font-serif text-[20px] font-semibold leading-snug text-white sm:text-[24px] lg:mt-3.5 lg:text-[22px]">
+                {HERO.secondary}
+              </p>
+            </Reveal>
+
+            {/* Plain words, not pills: nothing here should look pressable. */}
             <Reveal delay={150}>
+              <p
+                aria-label={HERO.choices.join(', ')}
+                className="mt-4 flex items-center justify-center gap-3 font-body text-[13px] font-bold uppercase tracking-[0.18em] text-white/55 sm:gap-4 sm:text-[14px] lg:mt-3.5 lg:justify-start"
+              >
+                {HERO.choices.map((choice, i) => (
+                  <span key={choice} className="flex items-center gap-3 sm:gap-4">
+                    {i > 0 && (
+                      <span aria-hidden="true" className="font-light text-white/30">
+                        |
+                      </span>
+                    )}
+                    <span className={i === HERO.choices.length - 1 ? 'text-coral' : undefined}>
+                      {choice}
+                    </span>
+                  </span>
+                ))}
+              </p>
+            </Reveal>
+
+            <Reveal delay={170}>
               <p className="mx-auto mt-5 max-w-[560px] font-body text-[15.5px] leading-[1.62] text-white/80 sm:text-[17px] lg:mx-0 lg:mt-3.5 lg:text-[15px] lg:leading-[1.58]">
+                {HERO.supporting}
+              </p>
+              <p className="mx-auto mt-3 max-w-[560px] font-body text-[15.5px] leading-[1.62] text-white/80 sm:text-[17px] lg:mx-0 lg:mt-2.5 lg:text-[15px] lg:leading-[1.58]">
                 {HERO.deck}
               </p>
             </Reveal>
@@ -143,10 +173,6 @@ export default function Hero() {
                     className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-navy-deep via-navy-deep/75 to-transparent lg:h-2/5"
                   />
 
-                  <span className="absolute left-3.5 top-3.5 rounded-pill bg-coral px-3 py-1.5 font-body text-[9.5px] font-bold uppercase tracking-[0.12em] text-navy shadow-soft sm:text-[10.5px]">
-                    {HERO.lockup.chip}
-                  </span>
-
                   <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
                     {/* The name stands alone. There is no sub-heading under it. */}
                     <p className="font-serif text-[17px] font-semibold uppercase leading-tight tracking-[0.01em] text-white sm:text-[20px]">
@@ -188,13 +214,7 @@ export default function Hero() {
           {/* ── 3 · The free badge, the button, and the reassurance ───────── */}
           <div className="order-3 mt-8 text-center lg:col-start-1 lg:row-start-2 lg:mt-5 lg:text-left">
             <Reveal>
-              <div className="flex items-center justify-center lg:justify-start">
-                <span className="rounded-pill bg-coral px-5 py-2 font-body text-[12.5px] font-bold uppercase tracking-[0.12em] text-navy sm:text-[13.5px]">
-                  {HERO.price.pill}
-                </span>
-              </div>
-
-              <div className="mx-auto mt-4 max-w-[560px] lg:mx-0 lg:mt-3.5 lg:max-w-[440px]">
+              <div className="mx-auto max-w-[560px] lg:mx-0 lg:mt-0 lg:max-w-[440px]">
                 <SaveSeatButton
                   label={CTA.labels.hero}
                   className="w-full !px-5 text-[14.5px] leading-tight sm:text-[16px]"

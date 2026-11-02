@@ -30,7 +30,7 @@ export default function StickyRegisterBar() {
       }`}
     >
       <div className="container-page flex items-center gap-3 py-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))]">
-        <div className="min-w-0 shrink leading-tight">
+        <div className="hidden min-w-0 shrink leading-tight sm:block">
           <p className="truncate font-body text-[13px] font-bold text-navy sm:text-[14px]">
             {STICKY.title}
           </p>
@@ -43,7 +43,7 @@ export default function StickyRegisterBar() {
           type="button"
           onClick={open}
           tabIndex={isOpen ? -1 : 0}
-          className="btn-primary ml-auto min-h-[48px] shrink-0 px-5 py-2.5 text-[14px] sm:px-7"
+          className="btn-primary min-h-[48px] w-full px-4 py-2.5 text-[14px] leading-tight sm:ml-auto sm:w-auto sm:shrink-0 sm:px-7"
         >
           <span className="relative z-[3]">{STICKY.cta}</span>
           <ArrowRight className="relative z-[3] h-4 w-4 shrink-0" />
