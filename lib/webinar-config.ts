@@ -289,6 +289,68 @@ export function deadlineMs(): number | null {
 }
 
 /**
+ * The recorded session at /live.
+ *
+ * A replay that plays as if it were live: one start moment for everybody, no
+ * progress bar, and a late joiner lands wherever the room already is.
+ *
+ *   NEXT_PUBLIC_REPLAY_DATETIME="11 November 2026 at 11:00 AM"   (IST, same format as above)
+ *   NEXT_PUBLIC_REPLAY_VIDEO_URL="https://cdn.example.com/masterclass/index.m3u8"
+ *
+ * The video link may be an HLS playlist (.m3u8, recommended) or a plain MP4.
+ * There is no duration setting: the room closes when the recording itself
+ * ends, so a longer or shorter cut needs no config change.
+ */
+const REPLAY_DATETIME_INPUT = env(process.env.NEXT_PUBLIC_REPLAY_DATETIME, '');
+
+const replayParsed: Date | null = (() => {
+  if (!REPLAY_DATETIME_INPUT) return null;
+  const human = parseHumanDateTime(REPLAY_DATETIME_INPUT);
+  if (human) return human;
+  const ms = Date.parse(REPLAY_DATETIME_INPUT);
+  return Number.isFinite(ms) ? new Date(ms) : null;
+})();
+
+function fmtReplay(options: Intl.DateTimeFormatOptions): string {
+  if (!replayParsed) return '';
+  return new Intl.DateTimeFormat('en-GB', { timeZone: IST, ...options }).format(replayParsed);
+}
+
+export const REPLAY = {
+  /** Epoch ms the room opens, or null when the value is missing or unreadable. */
+  startMs: replayParsed ? replayParsed.getTime() : null,
+  videoUrl: env(process.env.NEXT_PUBLIC_REPLAY_VIDEO_URL, ''),
+  /** "Wednesday, 11 November" */
+  date: (() => {
+    const weekday = fmtReplay({ weekday: 'long' });
+    const dayMonth = fmtReplay({ day: 'numeric', month: 'long' });
+    return weekday && dayMonth ? `${weekday}, ${dayMonth}` : '';
+  })(),
+  /** "11:00 AM" */
+  time: fmtReplay({ hour: 'numeric', minute: '2-digit', hour12: true }).replace(
+    /\s*(am|pm)$/i,
+    (_m, p: string) => ` ${p.toUpperCase()}`
+  ),
+} as const;
+
+/**
+ * The recorded session and the live masterclass are two different events and
+ * must never share a start moment. Both are set by their own variable
+ * (NEXT_PUBLIC_REPLAY_DATETIME and NEXT_PUBLIC_WEBINAR_DATETIME), and nothing on
+ * /live reads the live one, but a copy-pasted value would put both rooms on the
+ * same minute. True when that has happened, so it can be flagged loudly.
+ */
+export const REPLAY_CLASHES_WITH_LIVE =
+  REPLAY.startMs !== null && parsed !== null && REPLAY.startMs === parsed.getTime();
+
+if (REPLAY_CLASHES_WITH_LIVE) {
+  console.warn(
+    '[config] NEXT_PUBLIC_REPLAY_DATETIME is the same moment as NEXT_PUBLIC_WEBINAR_DATETIME. ' +
+      'The recorded session and the live masterclass must have different dates and times.'
+  );
+}
+
+/**
  * Calendar event window, derived from the same moment so the add-to-calendar
  * buttons never drift from the countdown. Duration is parsed out of
  * WEBINAR.duration ("90 minutes" -> 90), defaulting to 90.

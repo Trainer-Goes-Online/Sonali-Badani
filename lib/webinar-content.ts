@@ -1029,3 +1029,50 @@ export const BONUS = {
     cta: 'Join the WhatsApp group',
   },
 } as const;
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * /live  ·  the recorded session, played as if live
+ *
+ * Three moods on one page. A waiting room while the start is still far off,
+ * a quiet gold room for the last five minutes with nothing but the countdown,
+ * and then the session itself.
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+export const LIVE_ROOM = {
+  eyebrow: 'Waiting room',
+  /** "Starts Wednesday, 11 November · 11:00 AM IST" is composed in the page. */
+  startsPrefix: 'Starts',
+  countdownLabel: 'The session begins in',
+  finalLabel: 'We are about to begin',
+  startingNow: 'Starting now',
+  joining: 'Joining the session',
+  /** "52 attendees are waiting" / "78 attendees are watching" */
+  waiting: (n: number) => `${n} attendees are waiting`,
+  watching: (n: number) => `${n} attendees are watching`,
+  note: 'Keep this page open. The session starts here on its own, you do not need a link.',
+  /**
+   * Reads as an attendance check-in. Its real job is the tap: no browser will
+   * start a video with sound until the page has been tapped once.
+   */
+  soundCta: 'Mark my attendance so I am let in the moment we begin',
+  soundReady: 'You are checked in. We will let you in the moment we begin.',
+  /**
+   * Shown only if she reaches the start without having tapped the page once,
+   * because no browser will start a video with sound before a tap. The video
+   * waits; it is never played muted.
+   */
+  joinCta: 'Tap to join the session',
+  joinNote: 'Sonali is live right now. Come in, your seat is waiting.',
+  live: 'Live',
+  ended: {
+    heading: 'This session has ended.',
+    body: 'Thank you for being in the room. Everything that comes next is in the WhatsApp group.',
+  },
+  /** Shown to the team only (never on the production hosts). */
+  clashWarning:
+    'Setup check: NEXT_PUBLIC_REPLAY_DATETIME is the same as NEXT_PUBLIC_WEBINAR_DATETIME. The recorded session and the live masterclass need different dates and times.',
+  notScheduled: {
+    heading: 'The next session is being scheduled.',
+    body: 'The date will be shared in the WhatsApp group first.',
+  },
+} as const;

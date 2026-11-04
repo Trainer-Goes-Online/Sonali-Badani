@@ -3,6 +3,7 @@ import { MessageCircleHeart } from 'lucide-react';
 import Reveal from '@/components/ui/Reveal';
 import Sparkle from '@/components/ui/Sparkle';
 import SaveSeatButton, { CtaReassurance } from '@/components/webinar/SaveSeatButton';
+import { OutcomeBlock } from '@/components/webinar/sections/Outcome';
 import { WHAT_WE_COVER, CTA } from '@/lib/webinar-content';
 
 /**
@@ -82,38 +83,7 @@ export default function WhatWeCover() {
           Clarity / Control / Plan section below, and again at the close. Once,
           immediately after the five teaching points, is enough.
         */}
-        <div className="mx-auto mt-12 max-w-[760px] sm:mt-16">
-          <Reveal className="flex items-center justify-center gap-2">
-            <Sparkle twinkle className="h-3 w-3 text-gold" />
-            <span className="eyebrow">{WHAT_WE_COVER.outcome.eyebrow}</span>
-          </Reveal>
-
-          <Reveal delay={70}>
-            <h3 className="mt-4 text-center font-serif text-[25px] font-semibold leading-[1.16] text-navy sm:text-[33px] lg:text-[37px]">
-              {WHAT_WE_COVER.outcome.heading}
-            </h3>
-          </Reveal>
-
-          <div className="mt-8 grid gap-3.5 sm:mt-10 sm:gap-4 lg:grid-cols-3">
-            {WHAT_WE_COVER.outcome.items.map((item, i) => (
-              <Reveal
-                key={item.n}
-                delay={i * 80}
-                className="h-full rounded-3xl border-2 border-coral/35 bg-white p-5 shadow-[0_2px_12px_rgba(32,63,92,0.06)] sm:p-6"
-              >
-                <span className="font-serif text-[12.5px] font-semibold tracking-[0.18em] text-coral-dark">
-                  {item.n}
-                </span>
-                <h4 className="mt-2 font-serif text-[22px] font-semibold uppercase leading-none text-navy sm:text-[26px]">
-                  {item.title}
-                </h4>
-                <p className="mt-3 font-body text-[14px] leading-[1.65] text-navy/75 sm:text-[15px]">
-                  {item.body}
-                </p>
-              </Reveal>
-            ))}
-          </div>
-        </div>
+        <OutcomeBlock className="mt-12 sm:mt-16" />
 
         <Reveal delay={120} className="mx-auto mt-10 max-w-[560px]">
           <SaveSeatButton
