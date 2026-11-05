@@ -798,6 +798,32 @@ table {
 }
 
 /* ── Horizontal carousels: hide the scrollbar, keep the scrolling ──────────── */
+/* ── Themed scrollbars for modals and dropdowns ───────────────────────────────
+   Thin, no track, a soft coral thumb that firms up on hover. The browser's own
+   grey bar with arrow buttons looks foreign inside a cream panel. */
+.themed-scroll {
+  scrollbar-width: thin;                              /* Firefox */
+  scrollbar-color: rgba(245, 144, 117, 0.55) transparent;
+}
+.themed-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.themed-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.themed-scroll::-webkit-scrollbar-thumb {
+  background: rgba(245, 144, 117, 0.5);
+  border-radius: 9999px;
+}
+.themed-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(229, 121, 92, 0.85);
+}
+.themed-scroll::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+}
+
 .hide-scrollbar {
   scrollbar-width: none;          /* Firefox */
   -ms-overflow-style: none;       /* old Edge */

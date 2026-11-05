@@ -451,7 +451,7 @@ export default function RegistrationModal({
           event reach the DOM in the first place.
         */
         data-lenis-prevent
-        className="reg-panel relative flex max-h-[92dvh] w-full max-w-[520px] flex-col overflow-y-auto rounded-t-[28px] bg-cream shadow-[0_-20px_60px_-20px_rgba(32,63,92,0.5)] sm:max-h-[90dvh] sm:rounded-[28px] sm:shadow-card"
+        className="reg-panel themed-scroll relative flex max-h-[92dvh] w-full max-w-[520px] flex-col overflow-y-auto rounded-t-[28px] bg-cream shadow-[0_-20px_60px_-20px_rgba(32,63,92,0.5)] sm:max-h-[90dvh] sm:rounded-[28px] sm:shadow-card"
       >
         {/* Header */}
         <div className="sticky top-0 z-10 rounded-t-[28px] border-b border-navy/[0.08] bg-cream/95 px-5 pb-3 pt-4 backdrop-blur sm:px-7 sm:pt-5">

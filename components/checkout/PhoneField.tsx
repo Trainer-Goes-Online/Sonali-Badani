@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { ChevronDown, Check, Search } from 'lucide-react';
 import { getCountries, getCountryCallingCode, AsYouType, type CountryCode } from 'libphonenumber-js';
 import flags from 'react-phone-number-input/flags';
@@ -46,17 +47,65 @@ export default function PhoneField({
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const wrapRef = useRef<HTMLDivElement | null>(null);
+  const popRef = useRef<HTMLDivElement | null>(null);
   const searchRef = useRef<HTMLInputElement | null>(null);
+  const [pos, setPos] = useState<{ left: number; width: number; top?: number; bottom?: number; maxList: number } | null>(null);
 
   useEffect(() => {
     const onDoc = (e: MouseEvent) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false);
+      const t = e.target as Node;
+      if (wrapRef.current?.contains(t) || popRef.current?.contains(t)) return;
+      setOpen(false);
     };
     document.addEventListener('mousedown', onDoc);
     return () => document.removeEventListener('mousedown', onDoc);
   }, []);
   useEffect(() => {
-    if (open) searchRef.current?.focus();
+    if (open) searchRef.current?.focus({ preventScroll: true });
+  }, [open]);
+
+  /**
+   * The list floats on its own layer, pinned to the field, rather than sitting
+   * inside the form. Inside a scrolling modal an in-flow list makes the modal
+   * itself grow and scroll; on its own layer it simply overlays. It opens below
+   * the field, or above it when there is more room there.
+   */
+  useLayoutEffect(() => {
+    if (!open) {
+      setPos(null);
+      return;
+    }
+    const place = () => {
+      const field = wrapRef.current;
+      if (!field) return;
+      const r = field.getBoundingClientRect();
+      const vh = window.visualViewport?.height ?? window.innerHeight;
+      const gap = 8;
+      const chrome = 52; // the search row
+      const below = vh - r.bottom - gap - 12;
+      const above = r.top - gap - 12;
+      const up = below < 220 && above > below;
+      const room = up ? above : below;
+      const width = Math.max(r.width, 250);
+      const left = Math.min(r.left, window.innerWidth - width - 8);
+      setPos({
+        left: Math.max(8, left),
+        width,
+        maxList: Math.max(120, Math.min(256, room - chrome)),
+        ...(up ? { bottom: vh - r.top + gap } : { top: r.bottom + gap }),
+      });
+    };
+    place();
+    // Keep it pinned while anything scrolls (the modal, the page) or resizes
+    // (a phone keyboard opening for the search box).
+    window.addEventListener('resize', place);
+    window.addEventListener('scroll', place, true);
+    window.visualViewport?.addEventListener('resize', place);
+    return () => {
+      window.removeEventListener('resize', place);
+      window.removeEventListener('scroll', place, true);
+      window.visualViewport?.removeEventListener('resize', place);
+    };
   }, [open]);
 
   const emit = (c: CountryCode, n: string) => {
@@ -119,8 +168,12 @@ export default function PhoneField({
         />
       </div>
 
-      {open && (
-        <div className="absolute left-0 z-30 mt-2 w-full min-w-[250px] overflow-hidden rounded-xl border border-navy/12 bg-white shadow-card">
+      {open && pos && createPortal(
+        <div
+          ref={popRef}
+          style={{ position: 'fixed', left: pos.left, width: pos.width, top: pos.top, bottom: pos.bottom }}
+          className="z-[90] overflow-hidden rounded-xl border border-navy/12 bg-white shadow-[0_18px_50px_-12px_rgba(21,41,60,0.45)]"
+        >
           <div className="flex items-center gap-2 border-b border-navy/10 px-3 py-2.5">
             <Search className="h-4 w-4 shrink-0 text-navy/40" />
             <input
@@ -133,7 +186,11 @@ export default function PhoneField({
           </div>
           {/* Lenis swallows the wheel site wide; without this the country list
               cannot be scrolled with a mouse. See RegistrationModal. */}
-          <ul data-lenis-prevent className="max-h-64 overflow-y-auto py-1">
+          <ul
+            data-lenis-prevent
+            style={{ maxHeight: pos.maxList }}
+            className="themed-scroll overflow-y-auto overscroll-contain py-1"
+          >
             {filtered.map((c) => {
               const F = flags[c.code];
               const sel = c.code === country;
@@ -159,7 +216,8 @@ export default function PhoneField({
               <li className="px-3 py-4 text-center font-body text-[13px] text-navy/50">No match</li>
             )}
           </ul>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

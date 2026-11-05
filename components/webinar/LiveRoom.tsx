@@ -4,7 +4,9 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { CircleCheck, DoorOpen, Maximize, UserCheck } from 'lucide-react';
 
 import Logo from '@/components/ui/Logo';
+import dynamic from 'next/dynamic';
 import ReplayPlayer, { type ReplayPlayerHandle } from '@/components/webinar/ReplayPlayer';
+import { flushOptinRetry, hasOptedIn } from '@/lib/recorded-optin';
 import { LIVE_ROOM } from '@/lib/webinar-content';
 import { MASTERCLASS_NAME_PARTS, REPLAY, REPLAY_CLASHES_WITH_LIVE } from '@/lib/webinar-config';
 import { isProductionBrowser } from '@/lib/production-gate';
@@ -30,6 +32,10 @@ import {
  * checked on the server (/api/live-preview), so it never appears in the page's
  * code; without the right key, `preview` is ignored and the real clock is used.
  */
+
+// The opt-in pulls in the phone number library and the flag set, so it loads
+// on its own, only for a woman who has not opted in yet.
+const LiveOptin = dynamic(() => import('@/components/webinar/LiveOptin'), { ssr: false });
 
 const PAD = (n: number) => String(n).padStart(2, '0');
 
@@ -164,6 +170,9 @@ export default function LiveRoom({ sections, footer }: { sections: ReactNode; fo
   const [soundArmed, setSoundArmed] = useState(false);
   const [canFullscreen, setCanFullscreen] = useState(false);
   const [showClash, setShowClash] = useState(false);
+  // Null until read from this browser's cookie, so the form never flashes up
+  // for a woman who has already opted in.
+  const [optedIn, setOptedIn] = useState<boolean | null>(null);
 
   const playerRef = useRef<ReplayPlayerHandle | null>(null);
   const frameRef = useRef<HTMLDivElement | null>(null);
@@ -175,6 +184,8 @@ export default function LiveRoom({ sections, footer }: { sections: ReactNode; fo
     setCanFullscreen(Boolean(document.fullscreenEnabled));
     // The team sees a misconfigured date; visitors on the real site never do.
     setShowClash(REPLAY_CLASHES_WITH_LIVE && !isProductionBrowser());
+    setOptedIn(hasOptedIn());
+    void flushOptinRetry();
   }, []);
 
   // One tick a second drives the countdown, the head count and the phase.
@@ -381,12 +392,30 @@ export default function LiveRoom({ sections, footer }: { sections: ReactNode; fo
     </div>
   ) : null;
 
+  // The mandatory opt-in, over every phase where she can still get into the
+  // room. Submitting it is also the tap that lets the video start with sound.
+  const optinModal =
+    optedIn === false && phase !== 'ended' ? (
+      <LiveOptin
+        nowMs={nowMs as number}
+        startMs={startMs}
+        live={isLive}
+        onDone={() => {
+          setOptedIn(true);
+          setSoundArmed(true);
+          // Already live: the tap that submitted the form starts the picture.
+          if (isLive) playerRef.current?.join();
+        }}
+      />
+    ) : null;
+
   // Theatre mode, from the last five minutes on: the player takes the largest
   // 16:9 the screen allows (edge to edge on a phone), on the gold room.
   if (phase !== 'waiting') {
     return (
       <>
         {clashBanner}
+        {optinModal}
         <main className="flex min-h-[100svh] items-center justify-center bg-[#C2A36B] sm:p-4">
           <div className="w-full sm:w-[min(100%,calc((100svh-2rem)*16/9))]">{frame}</div>
         </main>
@@ -401,6 +430,7 @@ export default function LiveRoom({ sections, footer }: { sections: ReactNode; fo
   return (
     <>
       {clashBanner}
+      {optinModal}
       <header className="border-b border-navy/10 bg-cream">
         <div className="container-page flex h-14 items-center justify-center sm:h-16">
           <Logo height={32} />
