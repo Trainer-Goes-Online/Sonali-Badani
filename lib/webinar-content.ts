@@ -1068,6 +1068,35 @@ export const LIVE_ROOM = {
     heading: 'This session has ended.',
     body: 'Thank you for being in the room. Everything that comes next is in the WhatsApp group.',
   },
+  /**
+   * The opt-in that opens over /live. It cannot be closed: entering the room
+   * means saying who you are. Asked once per browser, per session.
+   */
+  optin: {
+    eyebrow: 'Your seat in the room',
+    heading: 'Confirm your seat to enter',
+    sub: 'Tell us who is joining, so we can welcome you in.',
+    startsIn: 'Starts in',
+    liveNow: 'Sonali is live right now',
+    host: {
+      role: 'Your guide for the session',
+      line: 'Marriage Architect · 2,000+ private sessions with married women',
+    },
+    fields: {
+      name: { label: 'Your name', placeholder: 'Full name' },
+      email: { label: 'Email address', placeholder: 'you@example.com' },
+      phone: { label: 'WhatsApp number' },
+    },
+    errors: {
+      name: 'Please enter your name.',
+      email: 'Please enter a valid email address.',
+      phone: 'Please enter your WhatsApp number.',
+    },
+    submit: 'Enter the room',
+    submitLive: 'Join the session now',
+    submitting: 'Saving your seat...',
+    privacy: 'We will only contact you about this session. No spam, ever.',
+  },
   /** Shown to the team only (never on the production hosts). */
   clashWarning:
     'Setup check: NEXT_PUBLIC_REPLAY_DATETIME is the same as NEXT_PUBLIC_WEBINAR_DATETIME. The recorded session and the live masterclass need different dates and times.',
