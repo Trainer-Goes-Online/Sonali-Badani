@@ -375,9 +375,8 @@ export default function RegistrationModal({
     // passed. All server side, and fired AFTER the lead is cached so the CAPI
     // calls have her email, phone, name and city to match on.
     trackRegistration(leadId || undefined, qualified);
-    // Straight to the welcome page, where the WhatsApp step comes first and the
-    // gift bar leads on to the one time offer.
-    router.push('/welcome');
+    // Straight to the one time offer. No interstitial.
+    router.push('/masterclass/upgrade');
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
