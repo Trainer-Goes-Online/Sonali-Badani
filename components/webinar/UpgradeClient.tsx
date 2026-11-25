@@ -8,7 +8,7 @@ import {
   ArrowRight,
   Check,
   ChevronDown,
-  Gift,
+  Lock,
   Headphones,
   Play,
   ShieldCheck,
@@ -19,10 +19,11 @@ import Reveal from '@/components/ui/Reveal';
 import Sparkle from '@/components/ui/Sparkle';
 import { UPGRADE } from '@/lib/webinar-content';
 import { OTO_CONFIG, otoTotalRupees } from '@/lib/oto-config';
-import { readCachedLead, mergeCachedLead, REGISTERED_FLAG_KEY } from '@/lib/tracking';
+import { readCachedLead, mergeCachedLead } from '@/lib/tracking';
 import { flushRegistrationRetries } from '@/lib/registration';
 import {
   trackOtoAddonAdded,
+  trackOtoDecline,
   trackOtoResetCta,
   trackOtoResetPlusCta,
 } from '@/lib/events';
@@ -32,13 +33,15 @@ import { useStickyOffset } from './useStickyOffset';
 /**
  * P2 · The one time offer.
  *
- * Reached from the gift bar on /welcome, after she has registered and seen the
- * WhatsApp step. One offer: The One Partner Reset (with an optional companion
- * add-on) as a head start before the room opens. There is no decline button:
- * she only arrives here by choosing to, and leaving is the browser Back button.
+ * Straight after registration. A single binary decision: take the seat alone,
+ * or add The One Partner Reset (with an optional companion add-on) as a head
+ * start before the room opens.
  *
- * The page is reachable only after a registration. A direct visit is sent back
- * to /masterclass.
+ * The decline button is always clearly visible, never disguised, never shrunk
+ * below the fold. A woman who feels tricked at this price does not buy the
+ * programme six days later. Trust is the actual asset.
+ *
+ * The page is open to anyone; there is no registration check.
  *
  * The checkout link is chosen purely by whether the add-on is kept, and the
  * details captured at registration prefill it so nothing is retyped.
@@ -48,7 +51,6 @@ export default function UpgradeClient() {
   const searchParams = useSearchParams();
   const retry = searchParams.get('retry') === '1';
 
-  const [allowed, setAllowed] = useState<boolean | null>(null);
   const [added, setAdded] = useState<boolean>(OTO_CONFIG.addonDefaultSelected);
   const [addonOpen, setAddonOpen] = useState(false);
   const leaving = useRef(false);
@@ -60,32 +62,13 @@ export default function UpgradeClient() {
   // Keeps the footer clear of the fixed bar (see useStickyOffset).
   const stickyRef = useStickyOffset<HTMLDivElement>();
 
-  /* ── Access gate ──────────────────────────────────────────────────────── */
+  /* ── Registration retries ─────────────────────────────────────────────── */
 
+  // Open to anyone, registered or not. A registration whose webhook failed on
+  // submit is retried from here.
   useEffect(() => {
-    let registered = false;
-    try {
-      registered = sessionStorage.getItem(REGISTERED_FLAG_KEY) === '1';
-    } catch {
-      registered = false;
-    }
-
-    // A returning visitor whose session flag expired but whose lead is still
-    // cached (email present) counts as registered, so a refresh or a hop back
-    // from a failed payment never dumps her out of the funnel.
-    if (!registered) {
-      const lead = readCachedLead();
-      registered = Boolean(lead.email);
-    }
-
-    if (!registered) {
-      router.replace('/masterclass');
-      return;
-    }
-
-    setAllowed(true);
     void flushRegistrationRetries();
-  }, [router]);
+  }, []);
 
   /**
    * Re-arm the buttons whenever this page becomes visible again.
@@ -180,18 +163,12 @@ export default function UpgradeClient() {
 
   const handleToggleAddon = () => setAddonChecked(!added);
 
-  /* ── Gate states ──────────────────────────────────────────────────────── */
-
-  if (allowed === null) {
-    return (
-      <div className="grid min-h-[60vh] place-items-center px-5">
-        <span
-          aria-label="Loading"
-          className="h-7 w-7 animate-spin rounded-full border-2 border-navy/20 border-t-coral"
-        />
-      </div>
-    );
-  }
+  const handleDecline = () => {
+    if (leaving.current) return;
+    leaving.current = true;
+    trackOtoDecline();
+    router.push('/welcome');
+  };
 
   /* ── Shared pieces ────────────────────────────────────────────────────── */
 
@@ -202,10 +179,21 @@ export default function UpgradeClient() {
     </button>
   );
 
+  const declineButton = (
+    <button
+      type="button"
+      onClick={handleDecline}
+      className="w-full rounded-pill border border-navy/35 bg-white px-6 py-4 font-body text-[15px] font-semibold text-navy transition-colors duration-200 hover:border-navy hover:bg-navy hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/20 sm:text-[16px]"
+    >
+      {UPGRADE.cta.decline}
+    </button>
+  );
+
   const buttonPair = (
     <div className="space-y-3.5">
       {yesButton}
       <p className="text-center font-body text-[12px] text-navy/55">{UPGRADE.cta.note}</p>
+      {declineButton}
     </div>
   );
 
@@ -213,9 +201,8 @@ export default function UpgradeClient() {
     <>
       {/* Alert bar */}
       <div className="bg-coral">
-        <p className="container-page flex items-center justify-center gap-2 py-3.5 text-center font-body text-[14px] font-bold leading-snug text-navy sm:gap-2.5 sm:text-[15.5px]">
-          <Gift className="gift-wiggle h-[18px] w-[18px] shrink-0" strokeWidth={2.3} />
-          <span>{UPGRADE.alert}</span>
+        <p className="container-page py-3.5 text-center font-body text-[14px] font-bold leading-snug text-navy sm:text-[15.5px]">
+          {UPGRADE.alert}
         </p>
       </div>
 
@@ -559,9 +546,20 @@ export default function UpgradeClient() {
             </p>
           </Reveal>
 
-          {/* Repeat button */}
-          <Reveal delay={60} className="mx-auto mt-9 max-w-[720px] pb-10 sm:mt-11 sm:pb-14">
+          {/* Repeat buttons, same order */}
+          <Reveal delay={60} className="mx-auto mt-9 max-w-[720px] sm:mt-11">
             {buttonPair}
+          </Reveal>
+
+          {/* Closing note */}
+          <Reveal
+            delay={80}
+            className="mx-auto mb-10 mt-6 max-w-[720px] rounded-2xl border border-navy/12 bg-warm px-5 py-4 sm:mb-14"
+          >
+            <p className="flex items-start justify-center gap-2 text-center font-body text-[13px] leading-relaxed text-navy/70 sm:text-[14px]">
+              <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-coral-dark" />
+              {UPGRADE.closing}
+            </p>
           </Reveal>
         </div>
       </main>
@@ -625,11 +623,23 @@ export default function UpgradeClient() {
 
             <button
               type="button"
-              onClick={handleYes}
-              className="btn-primary min-h-[46px] flex-1 px-3 py-2 text-[13.5px] leading-tight sm:min-h-[52px] sm:px-6 sm:text-[15px]"
+              onClick={handleDecline}
+              className="min-h-[46px] shrink-0 rounded-pill border border-navy/30 bg-white px-3.5 font-body text-[12.5px] font-semibold leading-tight text-navy transition-colors duration-200 hover:border-navy hover:bg-navy hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/20 sm:min-h-[52px] sm:px-6 sm:text-[14px]"
             >
-              {/* Two lengths of the same promise, so the price always fits. */}
-              <span className="relative z-[3] lg:hidden">{UPGRADE.cta.yesShort(totalLabel)}</span>
+              <span className="lg:hidden">{UPGRADE.cta.declineShort}</span>
+              <span className="hidden lg:inline">{UPGRADE.cta.decline}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleYes}
+              className="btn-primary min-h-[46px] flex-1 px-3 py-2 text-[12.5px] leading-tight sm:min-h-[52px] sm:px-6 sm:text-[15px]"
+            >
+              {/* Three lengths of the same promise, so the price always fits. */}
+              <span className="relative z-[3] sm:hidden">{UPGRADE.cta.yesTiny(totalLabel)}</span>
+              <span className="relative z-[3] hidden sm:inline lg:hidden">
+                {UPGRADE.cta.yesShort(totalLabel)}
+              </span>
               <span className="relative z-[3] hidden lg:inline">
                 {UPGRADE.cta.yes(totalLabel)}
               </span>
